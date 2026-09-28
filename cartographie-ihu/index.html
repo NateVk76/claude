@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Controverse IHU Strasbourg</title>
+<meta name="description" content="Cartographie de la controverse : l'affaire des cochons de l'IHU de Strasbourg (2025-2026) — acteurs, arènes et relations.">
+<style>
+  /* Polices embarquées (OFL) : Outfit pour les titres, Work Sans pour le texte */
+  @font-face { font-family: "Outfit"; src: url("fonts/Outfit-Regular.ttf") format("truetype"); font-weight: 400 500; font-display: block; }
+  @font-face { font-family: "Outfit"; src: url("fonts/Outfit-Bold.ttf") format("truetype"); font-weight: 600 700; font-display: block; }
+  @font-face { font-family: "Work Sans"; src: url("fonts/WorkSans-Regular.ttf") format("truetype"); font-weight: 400 500; font-style: normal; font-display: block; }
+  @font-face { font-family: "Work Sans"; src: url("fonts/WorkSans-Bold.ttf") format("truetype"); font-weight: 600 700; font-style: normal; font-display: block; }
+  @font-face { font-family: "Work Sans"; src: url("fonts/WorkSans-Italic.ttf") format("truetype"); font-weight: 400; font-style: italic; font-display: block; }
+
+  /* Tokens — direction « Minimalism & Swiss Style » (ui-ux-pro-max) */
+  :root {
+    --bg: #FAFAFA;
+    --card: #FFFFFF;
+    --ink: #09090B;
+    --ink-2: #3F3F46;
+    --muted: #52525B;
+    --faint: #6B6B73;
+    --border: #E4E4E7;
+    --arena: #F0F0F2;
+    --focal: #18181B;
+    --focal-ink: #FFFFFF;
+    --focal-muted: #D4D4D8;
+    --potentiel: #71717A;
+
+    /* Relations — contraste texte ≥ 4.5:1 sur blanc */
+    --critique: #DC2626;
+    --soutien: #0F766E;
+    --pouvoir: #B45309;
+    --prejudice: #4D7C0F;
+    --info: #2563EB;
+    --desolid: #7C3AED;
+
+    --font-display: "Outfit", system-ui, sans-serif;
+    --font-body: "Work Sans", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); }
+  .frame { max-width: 2000px; margin: 0 auto; }
+  svg { display: block; width: 100%; height: auto; }
+
+  .t-eyebrow { font: 600 13px var(--font-body); letter-spacing: .14em; text-transform: uppercase; fill: var(--faint); }
+  .t-title { font: 700 38px var(--font-display); letter-spacing: 0; fill: var(--ink); }
+  .t-title-muted { fill: #85858D; font-weight: 500; }
+  .t-sub { font: 400 17px var(--font-body); fill: var(--muted); }
+  .t-legend { font: 500 13px var(--font-body); fill: var(--ink-2); }
+  .t-legend-head { font: 600 11.5px var(--font-body); letter-spacing: .14em; text-transform: uppercase; fill: var(--faint); }
+  .t-source { font: 400 12.5px var(--font-body); fill: var(--faint); }
+  .t-source b { font-weight: 600; }
+
+  .t-arena { font: 600 11.5px var(--font-body); letter-spacing: .14em; text-transform: uppercase; fill: var(--muted); }
+  .t-arena-sub { font: 500 12px var(--font-body); letter-spacing: 0; text-transform: none; fill: var(--faint); }
+
+  .t-node { font: 600 18px var(--font-display); fill: var(--ink); }
+  .t-node-line { font: 400 13.5px var(--font-body); fill: var(--muted); }
+  .focal .t-node { font-size: 21px; fill: var(--focal-ink); }
+  .focal .t-node-line { fill: var(--focal-muted); }
+
+  .t-chip { font: 600 13px var(--font-body); }
+  .t-chip-line { font: 400 12.5px var(--font-body); fill: var(--muted); }
+
+  .t-ethic-q { font: 600 21px var(--font-display); fill: var(--ink); }
+  .t-ethic-quote { font: italic 400 15px var(--font-body); fill: var(--ink-2); }
+  .t-ethic-who { font: 500 12.5px var(--font-body); fill: var(--faint); }
+
+  .edge { fill: none; stroke-width: 2; stroke-linejoin: round; }
+  .edge.dashed { stroke-dasharray: 7 6; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <svg id="map" viewBox="0 0 2000 1470" role="img" aria-labelledby="map-title map-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="map-title">Cartographie de la controverse : l'affaire des cochons de l'IHU de Strasbourg (2025-2026)</title>
+    <desc id="map-desc">Dix acteurs répartis en trois arènes (administrative, institutionnelle, éthique) et dix-sept relations typées : critique, soutien, pouvoir, préjudice, information, désolidarisation et lien potentiel.</desc>
+  </svg>
+</div>
+
+<script>
+const render = () => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('map');
+  const W = 2000, H = 1470, MARGIN = 72;
+
+  const el = (tag, attrs = {}, parent = svg) => {
+    const n = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+    parent.appendChild(n);
+    return n;
+  };
+  const text = (str, attrs, parent) => { const t = el('text', attrs, parent); t.textContent = str; return t; };
+
+  const TYPES = {
+    critique:  { label: 'Critique / désaccord',          color: 'var(--critique)' },
+    soutien:   { label: 'Soutien / défense',             color: 'var(--soutien)' },
+    pouvoir:   { label: 'Pouvoir / décision / contrôle', color: 'var(--pouvoir)' },
+    prejudice: { label: 'Préjudice / perte',             color: 'var(--prejudice)' },
+    info:      { label: 'Information / alerte',          color: 'var(--info)' },
+    desolid:   { label: 'Désolidarisation',              color: 'var(--desolid)' },
+  };
+
+  /* ---------- defs : flèches + ombre ---------- */
+  const defs = el('defs');
+  for (const [key, t] of Object.entries(TYPES)) {
+    const m = el('marker', {
+      id: `arrow-${key}`, viewBox: '0 0 12 12', refX: 8, refY: 6,
+      markerWidth: 12, markerHeight: 12, markerUnits: 'userSpaceOnUse', orient: 'auto-start-reverse',
+    }, defs);
+    el('path', { d: 'M1,1.2 L11.5,6 L1,10.8 L3.6,6 Z', style: `fill:${t.color}` }, m);
+  }
+  const f = el('filter', { id: 'card-shadow', x: '-10%', y: '-20%', width: '120%', height: '150%' }, defs);
+  el('feDropShadow', { dx: 0, dy: 1, stdDeviation: 1, 'flood-color': '#18181B', 'flood-opacity': .06 }, f);
+  el('feDropShadow', { dx: 0, dy: 8, stdDeviation: 12, 'flood-color': '#18181B', 'flood-opacity': .06 }, f);
+
+  el('rect', { x: 0, y: 0, width: W, height: H, style: 'fill:var(--bg)' });
+
+  /* ---------- en-tête ---------- */
+  text('Cartographie de la controverse', { x: MARGIN, y: 72, class: 't-eyebrow' });
+  const title = text('L’affaire des cochons de l’IHU de Strasbourg', { x: MARGIN, y: 118, class: 't-title' });
+  const ts = el('tspan', { class: 't-title-muted' }, title); ts.textContent = '  2025–2026';
+  text('Des cochons prioritaires sur des malades du cancer ? L’arbitrage entre recherche et soins sur le plateau d’imagerie de l’IHU.',
+       { x: MARGIN, y: 154, class: 't-sub' });
+
+  /* ---------- légende ---------- */
+  const LEG_Y = 214;
+  el('line', { x1: MARGIN, y1: 184, x2: W - MARGIN, y2: 184, style: 'stroke:var(--border)' });
+  let lx = MARGIN;
+  const legHead = text('Légende', { x: lx, y: LEG_Y + 4, class: 't-legend-head' });
+  lx += legHead.getBBox().width + 28;
+
+  const legendItem = (drawSwatch, label) => {
+    drawSwatch(lx);
+    const t = text(label, { x: lx + 40, y: LEG_Y + 4.5, class: 't-legend' });
+    lx += 40 + t.getBBox().width + 30;
+  };
+  legendItem(x => el('rect', { x, y: LEG_Y - 9, width: 30, height: 18, rx: 5, style: 'fill:var(--card);stroke:#A1A1AA;stroke-width:1.2' }), 'Acteur');
+  legendItem(x => el('rect', { x, y: LEG_Y - 9, width: 30, height: 18, rx: 9, style: 'fill:var(--arena)' }), 'Arène de débat');
+  el('line', { x1: lx - 8, y1: LEG_Y - 12, x2: lx - 8, y2: LEG_Y + 12, style: 'stroke:var(--border)' });
+  lx += 22;
+  for (const [key, t] of Object.entries(TYPES)) {
+    legendItem(x => el('path', { d: `M${x},${LEG_Y} H${x + 27}`, class: 'edge', style: `stroke:${t.color}`, 'marker-end': `url(#arrow-${key})` }), t.label);
+  }
+  legendItem(x => el('path', { d: `M${x},${LEG_Y} H${x + 27}`, class: 'edge dashed', style: 'stroke:var(--potentiel);stroke-dasharray:5 4' }), 'Pointillés : lien potentiel');
+
+  /* ---------- arènes ---------- */
+  const arenas = el('g');
+  const arena = (x, y, w, h, label, sub) => {
+    el('rect', { x, y, width: w, height: h, rx: 28, style: 'fill:var(--arena)' }, arenas);
+    const t = text(label, { x: x + 26, y: y + 30, class: 't-arena' }, arenas);
+    if (sub) { const s = el('tspan', { class: 't-arena-sub' }, t); s.textContent = `   ${sub}`; }
+  };
+  arena(638, 262, 859, 188, 'Arène administrative', 'État');
+  arena(268, 510, 1604, 250, 'Arène institutionnelle', 'membres fondateurs de l’IHU');
+  arena(600, 1166, 800, 156, 'Arène éthique');
+
+  /* ---------- acteurs ---------- */
+  const nodes = {
+    ars:   { cx: 820,  top: 318, w: 300, title: 'ARS Grand Est',
+             lines: ['enquête demandée par le ministère', 'de la Santé (mai 2025)'] },
+    igas:  { cx: 1270, top: 318, w: 390, title: 'Mission IGAS – IGESR',
+             lines: ['commandée par les ministères (Santé, Recherche)', 'rapport confidentiel (déc. 2025), révélé en 2026'] },
+    uni:   { cx: 450,  cy: 650, w: 300, title: 'Université de Strasbourg',
+             lines: ['Faculté de médecine : J. Sibilia,', 'doyen, membre du CA de l’IHU'] },
+    ihu:   { cx: 1000, cy: 650, w: 340, title: 'IHU de Strasbourg', focal: true,
+             lines: ['Fondation de recherche (dir. Pr C. Debry)', 'Défense : manque de personnel,', '« turbulences actuelles »'] },
+    hus:   { cx: 1660, cy: 650, w: 360, title: 'HUS',
+             lines: ['Hôpitaux universitaires de Strasbourg', 'membre fondateur de l’IHU,', 'partenaire du plateau d’imagerie'] },
+    pers:  { cx: 232,  top: 970, w: 320, title: 'Personnel de l’imagerie',
+             lines: ['radiologues, manipulateurs, secrétaires', 'lanceurs d’alerte : 11 signataires', '(2 manipulateurs sur 11 en mars 2025)'] },
+    rp:    { cx: 745,  top: 970, w: 324, title: 'Recherche privée',
+             lines: ['essais sur cochons (et un cadavre)', 'pour 2 entreprises (française, allemande)'] },
+    pat:   { cx: 1255, top: 970, w: 310, title: 'Patients atteints de cancer',
+             lines: ['43 examens annulés (mars 2025)', 'proches : collectif de victimes envisagé'] },
+    med:   { cx: 1758, top: 970, w: 340, title: 'Médias',
+             lines: ['Le Point (21/05/2025) :', '« Les cochons prioritaires sur les cancéreux', 'aux Hôpitaux universitaires de Strasbourg »', 'Rue89 Strasbourg, DNA, France 3…'] },
+    pop:   { cx: 1838, top: 1200, w: 180, title: 'Population',
+             lines: ['opinion publique'] },
+  };
+
+  for (const n of Object.values(nodes)) {
+    const titleBase = n.focal ? 40 : 37;
+    n.h = titleBase + 25 + (n.lines.length - 1) * 20 + 22;
+    if (n.top === undefined) n.top = n.cy - n.h / 2;
+    n.cy = n.top + n.h / 2;
+    n.x = n.cx - n.w / 2;
+    n.titleBase = titleBase;
+  }
+
+  /* Ports d'accroche */
+  const T = (id, dx = 0) => ({ x: nodes[id].cx + dx, y: nodes[id].top });
+  const B = (id, dx = 0) => ({ x: nodes[id].cx + dx, y: nodes[id].top + nodes[id].h });
+  const L = (id, dy = 0) => ({ x: nodes[id].x, y: nodes[id].cy + dy });
+  const R = (id, dy = 0) => ({ x: nodes[id].x + nodes[id].w, y: nodes[id].cy + dy });
+  const P = (x, y) => ({ x, y });
+
+  /* ---------- relations ---------- */
+  const TRIM = 3;
+  const trim = (a, b, d) => {
+    const len = Math.hypot(b.x - a.x, b.y - a.y);
+    return { x: b.x - (b.x - a.x) * d / len, y: b.y - (b.y - a.y) * d / len };
+  };
+  const roundedPath = (pts, r = 20) => {
+    let d = `M${pts[0].x},${pts[0].y}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const [p0, p1, p2] = [pts[i - 1], pts[i], pts[i + 1]];
+      const d1 = Math.hypot(p1.x - p0.x, p1.y - p0.y), d2 = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+      const rr = Math.min(r, d1 / 2, d2 / 2);
+      const a = { x: p1.x + (p0.x - p1.x) * rr / d1, y: p1.y + (p0.y - p1.y) * rr / d1 };
+      const b = { x: p1.x + (p2.x - p1.x) * rr / d2, y: p1.y + (p2.y - p1.y) * rr / d2 };
+      d += ` L${a.x},${a.y} Q${p1.x},${p1.y} ${b.x},${b.y}`;
+    }
+    const last = pts[pts.length - 1];
+    return d + ` L${last.x},${last.y}`;
+  };
+
+  // label.at : centre de la pastille ; label.side : 'above' | 'below' pour les liaisons courtes
+  const edges = [
+    { type: 'critique', pts: [L('igas'), R('ars')],
+      label: { title: 'Inaction', side: 'above' } },
+    { type: 'pouvoir', pts: [B('ars'), P(820, 538), P(890, 538), T('ihu', -110)],
+      label: { title: 'Enquête', at: P(820, 480) } },
+    { type: 'pouvoir', pts: [B('igas'), P(1270, 538), P(1110, 538), T('ihu', 110)],
+      label: { title: 'Inspection', lines: ['1er–11 juillet 2025'], at: P(1270, 480) } },
+    { type: 'critique', pts: [R('igas'), P(1620, nodes.igas.cy), T('hus', -40)],
+      label: { title: 'Inaction malgré les alertes', lines: ['selon le rapport d’inspection'], at: P(1620, 480) } },
+    { type: 'desolid', pts: [L('hus', -22), R('ihu', -22)],
+      label: { title: 'Désolidarisation', lines: ['« aucun pouvoir décisionnaire', 'unilatéral »'], side: 'above' } },
+    { type: 'pouvoir', pts: [L('hus', 22), R('ihu', 22)],
+      label: { title: 'Régularisation, enquête interne', lines: ['en tant que membre fondateur', '(saisine du procureur non exclue)'], side: 'below' } },
+    { type: 'soutien', pts: [R('uni'), L('ihu')],
+      label: { title: 'Prudence', lines: ['« attendre les conclusions »'], side: 'above' } },
+    { type: 'info', pts: [T('pers', -100), P(132, nodes.ars.cy), L('ars')], radius: 28,
+      label: { title: 'Alerte', lines: ['lettre du 26 mars 2025'], at: P(410, nodes.ars.cy) } },
+    { type: 'critique', pts: [T('pers', 110), P(342, 810), P(860, 810), B('ihu', -140)],
+      label: { title: 'Alerte interne', lines: ['courrier du 14 mai 2025'], at: P(600, 810) } },
+    { type: 'pouvoir', pts: [B('ihu', -55), P(945, 860), P(745, 860), T('rp')],
+      label: { title: 'Priorité aux essais', lines: ['créneaux d’imagerie maintenus'], at: P(745, 915) } },
+    { type: 'prejudice', pts: [B('ihu', 55), P(1055, 860), P(1255, 860), T('pat')],
+      label: { title: 'Perte de chance', lines: ['examens déprogrammés'], at: P(1255, 915) } },
+    { type: 'critique', pts: [T('med', -128), P(1630, 810), P(1140, 810), B('ihu', 140)],
+      label: { title: 'Révélations, critique', at: P(1400, 810) } },
+    { type: 'critique', pts: [B('hus', 130), T('med', 32)],
+      label: { title: 'Droit de réponse', lines: ['communiqué du 22 mai 2025 :', 'dénonce une confusion HUS / IHU'], at: P(1790, 866) } },
+    { type: 'soutien', both: true, pts: [R('pat'), L('med', nodes.pat.cy - nodes.med.cy)],
+      label: { title: ['Témoignages,', 'défense'], side: 'above' } },
+    { type: 'soutien', dashed: true, pts: [B('rp'), P(745, 1116), P(1255, 1116), B('pat')],
+      label: { title: 'Intérêt potentiel à long terme', lines: ['innovations pour de futurs patients'], at: P(1000, 1116) } },
+    { type: 'info', pts: [B('pers'), P(232, 1376), P(1668, 1376), B('med', -90)], radius: 28,
+      label: { title: 'Sources internes', lines: ['courriels et courriers transmis à la presse'], at: P(1000, 1376) } },
+    { type: 'info', pts: [B('med', 80), T('pop')],
+      label: { title: 'Informe', at: P(1838, 1154) } },
+  ];
+
+  const chips = [];
+  const edgeLayer = el('g');
+  const labelLayer = el('g');
+  const nodeLayer = el('g');
+
+  for (const e of edges) {
+    const color = TYPES[e.type].color;
+    const pts = e.pts.map(p => ({ ...p }));
+    pts[pts.length - 1] = trim(pts[pts.length - 2], pts[pts.length - 1], TRIM);
+    if (e.both) pts[0] = trim(pts[1], pts[0], TRIM);
+    const attrs = {
+      d: roundedPath(pts, e.radius ?? 20),
+      class: `edge${e.dashed ? ' dashed' : ''}`,
+      style: `stroke:${color}`,
+      'marker-end': `url(#arrow-${e.type})`,
+    };
+    if (e.both) attrs['marker-start'] = `url(#arrow-${e.type})`;
+    el('path', attrs, edgeLayer);
+    if (e.label) drawChip(e, color);
+  }
+
+  function drawChip(e, color) {
+    const { title, lines = [], side } = e.label;
+    const g = el('g', {}, labelLayer);
+    const LH = 17, PX = 12, PY = 7;
+    const titles = [].concat(title);
+    titles.forEach((tl, i) => text(tl, { x: 0, y: i * LH, class: 't-chip', 'text-anchor': 'middle', style: `fill:${color}` }, g));
+    lines.forEach((ln, i) => text(ln, { x: 0, y: (titles.length + i) * LH, class: 't-chip-line', 'text-anchor': 'middle' }, g));
+    const bb = g.getBBox();
+    const w = Math.ceil(bb.width + PX * 2), h = Math.ceil(bb.height + PY * 2);
+    const rect = el('rect', { x: bb.x - PX, y: bb.y - PY, width: w, height: h, rx: 8,
+      style: `fill:var(--card);stroke:${color};stroke-opacity:.28;stroke-width:1` });
+    g.insertBefore(rect, g.firstChild);
+
+    let cx, cy;
+    if (side) {
+      const [a, b] = e.pts;
+      cx = (a.x + b.x) / 2;
+      cy = side === 'above' ? a.y - 8 - h / 2 : a.y + 8 + h / 2;
+    } else {
+      ({ x: cx, y: cy } = e.label.at);
+    }
+    const ox = cx - (bb.x - PX + w / 2), oy = cy - (bb.y - PY + h / 2);
+    g.setAttribute('transform', `translate(${ox},${oy})`);
+    chips.push({ name: titles.join(' '), x: cx - w / 2, y: cy - h / 2, w, h });
+  }
+
+  for (const n of Object.values(nodes)) {
+    const g = el('g', { class: n.focal ? 'focal' : '' }, nodeLayer);
+    el('rect', { x: n.x, y: n.top, width: n.w, height: n.h, rx: 14, filter: 'url(#card-shadow)',
+      style: n.focal ? 'fill:var(--focal)' : 'fill:var(--card);stroke:var(--border);stroke-width:1' }, g);
+    text(n.title, { x: n.cx, y: n.top + n.titleBase, class: 't-node', 'text-anchor': 'middle' }, g);
+    n.lines.forEach((ln, i) =>
+      text(ln, { x: n.cx, y: n.top + n.titleBase + 25 + i * 20, class: 't-node-line', 'text-anchor': 'middle' }, g));
+    const inner = { width: Math.max(...[...g.querySelectorAll('text')].map(t => t.getBBox().width)) };
+    if (inner.width > n.w - 36) console.warn(`[débordement] ${n.title} : texte ${Math.round(inner.width)}px / carte ${n.w}px`);
+  }
+
+  /* ---------- contenu de l'arène éthique ---------- */
+  const eth = el('g');
+  text('Recherche ou soins d’abord ?', { x: 1000, y: 1222, class: 't-ethic-q', 'text-anchor': 'middle' }, eth);
+  el('line', { x1: 1000, y1: 1246, x2: 1000, y2: 1300, style: 'stroke:#D4D4D8' }, eth);
+  text('une « faute d’humanité »', { x: 800, y: 1266, class: 't-ethic-quote', 'text-anchor': 'middle' }, eth);
+  text('Ph. Amiel · comité Éthique et cancer', { x: 800, y: 1290, class: 't-ethic-who', 'text-anchor': 'middle' }, eth);
+  text('une logique « productiviste »', { x: 1200, y: 1266, class: 't-ethic-quote', 'text-anchor': 'middle' }, eth);
+  text('F. Pierru · sociologue', { x: 1200, y: 1290, class: 't-ethic-who', 'text-anchor': 'middle' }, eth);
+
+  /* ---------- sources ---------- */
+  el('line', { x1: MARGIN, y1: 1424, x2: W - MARGIN, y2: 1424, style: 'stroke:var(--border)' });
+  const src = text('', { x: MARGIN, y: 1450, class: 't-source' });
+  const b = el('tspan', { style: 'font-weight:600' }, src); b.textContent = 'Sources  ';
+  const r = el('tspan', {}, src);
+  r.textContent = 'Le Point (21/05/2025) · communiqué des HUS (22/05/2025) · Rue89 Strasbourg (22/05, 07/06 et 20/11/2025 ; 18/09/2026) · France 3 Grand Est (mai-juillet 2025) · DNA (07/07/2025) · What’s Up Doc (23/05/2025)';
+
+  /* Contrôle qualité : aucune pastille ne doit toucher une carte ou une autre pastille */
+  const GAP = 8;
+  const hit = (a, b) => a.x < b.x + b.w + GAP && b.x < a.x + a.w + GAP && a.y < b.y + b.h + GAP && b.y < a.y + a.h + GAP;
+  const cards = Object.values(nodes).map(n => ({ name: n.title, x: n.x, y: n.top, w: n.w, h: n.h }));
+  chips.forEach((c, i) => {
+    cards.forEach(n => hit(c, n) && console.warn(`[collision] pastille « ${c.name} » / carte « ${n.name} »`));
+    chips.slice(i + 1).forEach(d => hit(c, d) && console.warn(`[collision] pastille « ${c.name} » / pastille « ${d.name} »`));
+  });
+
+  document.documentElement.dataset.ready = '1';
+};
+
+// Mesure des pastilles après chargement des polices (sinon getBBox mesure la police de secours)
+const faces = ['500 18px Outfit', '600 18px Outfit', '700 38px Outfit',
+               '400 13px "Work Sans"', '500 13px "Work Sans"', '600 13px "Work Sans"', 'italic 400 15px "Work Sans"'];
+Promise.all(faces.map(f => document.fonts.load(f))).catch(() => {}).finally(render);
+</script>
+</body>
+</html>
