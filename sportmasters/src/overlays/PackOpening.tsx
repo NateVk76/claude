@@ -7,7 +7,7 @@ import { isIcon, overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import type { CardFace } from '../engine/types';
 import { Card } from '../components/Card';
 import { PackArt } from '../components/PackArt';
-import { Logo, LogoMark } from '../components/Logo';
+import { Logo } from '../components/Logo';
 import { Flag, COUNTRY_NAMES } from '../components/Flag';
 import { SportIcon } from '../components/SportIcon';
 import { Confetti, type ConfettiHandle } from '../components/Confetti';
@@ -46,11 +46,13 @@ function confettiColors(card: CardFace): string[] {
 export function CardBack({ className = '' }: { className?: string }) {
   return (
     <div className={`card-back ${className}`}>
-      <div className="card-back__rings" />
+      <div className="card-back__bg" />
+      <div className="card-back__streak" />
       <div className="card-back__crest">
-        <LogoMark />
+        <i className="card-back__mark" />
         <Logo />
       </div>
+      <div className="card-back__frame" />
     </div>
   );
 }

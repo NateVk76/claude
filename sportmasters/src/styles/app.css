@@ -2216,42 +2216,69 @@
   }
 }
 
+/* Dos des cartes, même langage que les boosters : fond vert tramé, bandes diagonales,
+   carte blanche à pois avec ombre décalée. 1 cqw = 1 % de la largeur de la carte. */
 .card-back {
   position: relative;
   width: 100%;
   height: 100%;
+  container-type: inline-size;
   border-radius: 8% / 5.7%;
   overflow: hidden;
-  background:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 3px),
-    radial-gradient(90% 70% at 50% 40%, #1d4a2f 0%, #08140d 70%);
-  box-shadow: inset 0 0 0 2px rgba(30, 122, 60, 0.75), inset 0 0 0 7px #08140d, inset 0 0 0 8px rgba(30, 122, 60, 0.3), 0 10px 16px rgba(0, 0, 0, 0.5);
+  isolation: isolate;
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
 }
 
-.card-back__rings {
+.card-back > * {
   position: absolute;
   inset: 0;
-  background: repeating-radial-gradient(circle at 50% 42%, rgba(30, 122, 60, 0.16) 0 6%, transparent 6% 12%);
+}
+
+.card-back__bg {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.2) 0.6cqw, transparent 0.8cqw) 0 0 / 4cqw 4cqw,
+    linear-gradient(118deg, transparent 18%, #27c26c 18% 30%, #c6f36b 30% 34%, transparent 34% 66%, #c6f36b 66% 70%, #27c26c 70% 82%, transparent 82%),
+    #0b5a31;
+}
+
+.card-back__streak {
+  background: linear-gradient(118deg, transparent 44%, rgba(255, 255, 255, 0.1) 44% 56%, transparent 56%);
 }
 
 .card-back__crest {
-  position: absolute;
-  inset: 0;
   display: grid;
   place-items: center;
   align-content: center;
-  gap: 8px;
-  color: var(--accent-text);
+  gap: 5cqw;
+  z-index: 2;
 }
 
-.card-back__crest .logo-mark {
-  font-size: 3.4rem;
-  margin-bottom: 6px;
+.card-back__mark {
+  display: block;
+  width: 22cqw;
+  height: 31cqw;
+  border-radius: 3cqw;
+  transform: rotate(14deg);
+  background:
+    radial-gradient(circle, rgba(11, 90, 49, 0.35) 0.7cqw, transparent 0.9cqw) 0 0 / 3.2cqw 3.2cqw,
+    #fff;
+  border: 1.4cqw solid #0b5a31;
+  box-shadow: 2cqw 2cqw 0 #c6f36b;
 }
 
 .card-back__crest .logo {
-  font-size: 1.05rem;
-  color: var(--text);
+  --logo-card: #c6f36b;
+  font-size: 11cqw;
+  color: #fff;
+  text-shadow: 0.8cqw 0.8cqw 0 #0b5a31;
+}
+
+.card-back__frame {
+  inset: 3.5cqw;
+  border: 0.6cqw solid #c6f36b;
+  border-radius: 5cqw;
+  pointer-events: none;
+  z-index: 3;
 }
 
 .tag {

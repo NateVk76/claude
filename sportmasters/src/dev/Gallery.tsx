@@ -4,6 +4,7 @@ import { RARITIES, isIcon, rarityOf } from '../engine/cards';
 import { FREE_PACK, SHOP_PACKS, sportPack } from '../engine/packs';
 import { SPORTS } from '../data/sports';
 import { PackArt } from '../components/PackArt';
+import { CardBack } from '../overlays/PackOpening';
 import { Flag, COUNTRY_NAMES } from '../components/Flag';
 
 // Page de contrôle visuel (#galerie) : un échantillon de cartes et tous les drapeaux.
@@ -17,6 +18,9 @@ export function Gallery() {
     .filter((a) => a !== undefined);
   return (
     <div style={{ padding: 24, display: 'grid', gap: 32 }}>
+      <div style={{ width: 210, aspectRatio: '100 / 140' }}>
+        <CardBack />
+      </div>
       <section id="boosters" style={{ display: 'flex', flexWrap: 'wrap', gap: 20 }}>
         {[FREE_PACK, ...SHOP_PACKS, sportPack('foot', SPORTS.foot.name), sportPack('tennis', SPORTS.tennis.name)].map((pack) => (
           <div key={pack.id} style={{ width: 190 }}>
