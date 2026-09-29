@@ -26,7 +26,8 @@ for (const [id, credit] of Object.entries(credits)) {
   const sport = sportOf[id];
   if (!sport || !existsSync(file)) continue;
   chunks[sport] ??= {};
-  chunks[sport][id] = `data:image/webp;base64,${readFileSync(file).toString('base64')}`;
+  const type = credit.file.endsWith('.jpg') ? 'jpeg' : 'webp';
+  chunks[sport][id] = `data:image/${type};base64,${readFileSync(file).toString('base64')}`;
 }
 for (const [sport, map] of Object.entries(chunks)) {
   const text = JSON.stringify(map);

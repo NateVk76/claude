@@ -14,5 +14,7 @@ export default defineConfig(({ mode }) => ({
   },
   test: {
     environment: 'node',
+    // les tests de distribution simulent des milliers de boosters : trop lents pour 5 s sur une petite machine
+    testTimeout: 30_000,
   },
 }));

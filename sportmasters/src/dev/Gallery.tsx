@@ -1,5 +1,6 @@
 import { ATHLETES } from '../data/athletes';
 import { Card } from '../components/Card';
+import { isIcon, rarityOf } from '../engine/cards';
 import { Pictogram, ALL_POSES } from '../components/Pictogram';
 import { Flag, COUNTRY_NAMES } from '../components/Flag';
 
@@ -8,8 +9,17 @@ const SAMPLE = ['messi', 'mbappe', 'cristiano-ronaldo', 'lebron', 'bolt', 'pele'
 
 export function Gallery() {
   const sample = SAMPLE.map((id) => ATHLETES.find((a) => a.id === id)!).filter(Boolean);
+  // un athlète actuel par rareté (bronze → légende), pour comparer les matières
+  const tiers = (['commune', 'peu-commune', 'rare', 'epique', 'legendaire'] as const)
+    .map((id) => ATHLETES.find((a) => !isIcon(a) && rarityOf(a).id === id))
+    .filter((a) => a !== undefined);
   return (
     <div style={{ padding: 24, display: 'grid', gap: 32 }}>
+      <section style={{ display: 'flex', flexWrap: 'wrap', gap: 20 }}>
+        {tiers.map((a) => (
+          <Card key={a.id} card={{ athleteId: a.id, variant: 'base' }} size="lg" />
+        ))}
+      </section>
       <section style={{ display: 'flex', flexWrap: 'wrap', gap: 20 }}>
         <Card card={{ athleteId: 'messi', variant: 'base' }} size="lg" />
         <Card card={{ athleteId: 'mbappe', variant: 'base' }} size="lg" />

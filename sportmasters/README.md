@@ -54,7 +54,7 @@ Dans une même rareté, le niveau sportif réel de l'athlète et sa célébrité
 
 ### La carte
 
-Style vignette à collectionner : photo de l'athlète en grand (détourée quand c'est possible), fond métallisé selon la rareté, note et poste en haut à gauche avec le drapeau, écusson du sport en haut à droite, surnom écrit à la verticale (« MONDO », « LA PULGA », « KING JAMES »…), les deux meilleures stats en pastilles et le nom dans un bandeau. La fiche de chaque carte montre les 6 stats utilisées en match :
+Style « cadre métal » : fond métallisé selon le palier (Bronze = Commune, Argent = Peu commune, Or = Rare, Épique en chrome améthyste, Légende en or irisé, Icône en ivoire et or, Prime en feuille irisée façon « reverse »). Cadre sombre avec le code de l'athlète en onglet (« DUP », « WZE »), pastille avec le palier et la note, sport écrit à la verticale, photo dans une fenêtre, médaillon du sport, nom dans un bandeau et poste sur la plaque du bas. La fiche de chaque carte montre les 6 stats utilisées en match :
 
 | Stat | Ce qu'elle mesure |
 | --- | --- |
@@ -128,8 +128,11 @@ Le moteur (`src/engine`) ne dépend pas de l'interface : il prend un état, l'he
 Les photos viennent de Wikimedia Commons : uniquement des images sous licence libre (CC BY, CC BY-SA, domaine public), avec l'auteur et la licence affichés dans la fiche de chaque carte. Elles sont récupérées et détourées par la GitHub Action `.github/workflows/photos.yml` :
 
 1. `scripts/photos/telecharger-photos.mjs telecharger` trouve la page Wikipédia de chaque athlète (français puis anglais), vérifie que c'est le bon sport, et télécharge la photo principale si elle est libre.
-2. `scripts/photos/detourer.py` détoure les athlètes avec rembg (effet « joueur qui sort de la carte »).
-3. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` et les crédits dans `src/data/photos.json`.
+2. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` (la photo entière, avec son décor, cadrée au format 3:4 de la fenêtre des cartes) et les crédits dans `src/data/photos.json`.
+
+Les photos ne sont plus détourées. Pour y revenir : `"detourage": true` dans `scripts/photos/config.json` et lancer `scripts/photos/detourer.py` (rembg) avant « finaliser ».
+
+Sous Windows, si le module `sharp` est bloqué par la politique de sécurité du système, le script garde les images de Commons telles quelles ; lance alors `powershell -ExecutionPolicy Bypass -File scripts/photos/recadrer.ps1` entre les deux étapes pour les recadrer en 540 × 720 (JPEG).
 
 L'Action se relance à chaque modification de `scripts/photos/`. Si un athlète tombe sur la mauvaise page, ajoute le bon titre Wikipédia dans `scripts/photos/titres.json`. Sans photo, la carte affiche un pictogramme du sport.
 

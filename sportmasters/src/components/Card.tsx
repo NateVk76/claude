@@ -1,19 +1,29 @@
 import { memo, useCallback, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
-import type { Athlete, CardFace, OwnedCard, StatKey, Stats } from '../engine/types';
-import { POSITION_CODES, getAthlete, isIcon, overallOf, rarityOf, statsOf } from '../engine/cards';
-import { SPORTS, STAT_KEYS, STAT_LABELS } from '../data/sports';
+import type { Athlete, CardFace, OwnedCard, RarityId, StatKey, Stats } from '../engine/types';
+import { getAthlete, isIcon, overallOf, rarityOf } from '../engine/cards';
+import { SPORTS, STAT_KEYS } from '../data/sports';
 import { usePhoto } from '../photos';
 import { Flag } from './Flag';
 import { Bust } from './Bust';
 import { SportIcon } from './SportIcon';
 
-// Carte au style « vignette » : photo de l'athlète en grand sur un fond métallisé,
-// note et drapeau en haut à gauche, emblème du sport en haut à droite, surnom à la verticale,
-// deux stats en pastilles et le nom dans un bandeau. 1em = largeur de la carte / 24.
+// Carte au style « cadre métal » : fond métallisé selon le palier (bronze, argent, or…),
+// cadre sombre avec code de l'athlète en onglet, pastille de note, sport écrit à la verticale,
+// photo dans une fenêtre, médaillon du sport, bandeau du nom et plaque du poste.
+// 1em = largeur de la carte / 24. Le cadre est un SVG en 100 × 140 (proportions de la carte).
 
 export type CardSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 const WIDTHS: Record<CardSize, number> = { xs: 104, sm: 140, md: 196, lg: 250, xl: 300 };
+
+/** Nom du palier affiché au-dessus de la note. */
+const TIERS: Record<RarityId, string> = {
+  commune: 'Bronze',
+  'peu-commune': 'Argent',
+  rare: 'Or',
+  epique: 'Épique',
+  legendaire: 'Légende',
+};
 
 interface CardProps {
   card: CardFace | OwnedCard;
@@ -27,32 +37,62 @@ interface CardProps {
   style?: CSSProperties;
 }
 
-/** Les deux points forts de l'athlète, affichés sur la carte. */
+/** Les deux points forts de l'athlète (utilisé par les fiches et les écrans). */
 export function topStats(stats: Stats): StatKey[] {
   return STAT_KEYS.slice()
     .sort((a, b) => stats[b] - stats[a] || STAT_KEYS.indexOf(a) - STAT_KEYS.indexOf(b))
     .slice(0, 2);
 }
 
-/** Texte vertical : édition de la carte, sinon surnom, sinon rareté ou sport. */
-function edition(athlete: Athlete, prime: boolean): string {
-  if (prime) return athlete.prime ? `Prime ${athlete.prime.year}` : 'Prime';
-  if (isIcon(athlete)) return 'Icône';
-  if (athlete.nick && athlete.nick.length <= 14) return athlete.nick;
-  const rarity = rarityOf(athlete);
-  return rarity.order >= 2 ? rarity.name : SPORTS[athlete.sport].name;
+function plain(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toUpperCase()
+    .replace(/[^A-Z\s-]/g, '');
+}
+
+/** Code en 3 lettres de l'onglet : « DUP » pour Duplantis, « WZE » pour Warren Zaïre-Emery. */
+export function athleteCode(athlete: Athlete): string {
+  const parts = plain(athlete.last).split(/[\s-]+/).filter(Boolean);
+  if (parts.length >= 2) {
+    const initials = parts.map((part) => part[0]).join('');
+    return (plain(athlete.first).slice(0, 1) + initials).slice(-3);
+  }
+  const last = parts[0] ?? plain(athlete.first);
+  return last.slice(0, 3);
 }
 
 function nameSize(name: string): number {
-  if (name.length <= 10) return 1.55;
-  if (name.length <= 14) return 1.3;
-  if (name.length <= 18) return 1.1;
-  if (name.length <= 22) return 0.95;
-  return 0.82;
+  return Math.min(2.05, 27 / Math.max(name.length, 1));
 }
 
 function formatRecord(cm: number): string {
   return `${Math.floor(cm / 100)},${String(cm % 100).padStart(2, '0')} m`;
+}
+
+/** Cadre sombre percé de deux fenêtres (photo et plaque du poste). */
+const PANEL =
+  'M6.8 2.6 H93.2 Q96.4 2.6 96.4 5.8 V133.8 Q96.4 137 93.2 137 H6.8 Q3.6 137 3.6 133.8 V5.8 Q3.6 2.6 6.8 2.6 Z';
+const WINDOW =
+  'M9.4 14 Q9.4 11.2 12.2 11.2 H21.5 C25.8 11.2 26.4 4.6 31 4.6 H91.6 Q94.2 4.6 94.2 7.2 V113.4 Q94.2 116 91.6 116 H12 Q9.4 116 9.4 113.4 Z';
+const PLATE = 'M20 128.2 H92.4 Q94.2 128.2 94.2 130 V133 Q94.2 134.8 92.4 134.8 H20 Z';
+
+function Frame() {
+  return (
+    <svg className="card__frame" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true">
+      <path className="card__panel" d={`${PANEL} ${WINDOW} ${PLATE}`} fillRule="evenodd" />
+      <path className="card__trim" d={PANEL} />
+      <rect className="card__trim card__trim--thin" x="4.7" y="3.7" width="90.6" height="132.2" rx="2.4" />
+      <path className="card__trim card__trim--window" d={WINDOW} />
+      <rect className="card__trim card__trim--thin" x="25.5" y="117.6" width="68.7" height="9.2" rx="1.2" />
+      <path className="card__trim" d={PLATE} />
+      <g className="card__rail">
+        <path d="M6.5 24 V36 M6.5 70 V81 M6.5 91 V105" />
+        <path className="card__diamond" d="M6.5 83.2 L7.7 86 L6.5 88.8 L5.3 86 Z" />
+      </g>
+    </svg>
+  );
 }
 
 export const Card = memo(function Card({ card, size = 'md', tilt = false, locked = false, onClick, className = '', style }: CardProps) {
@@ -62,9 +102,9 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
   const athlete = getAthlete(card.athleteId);
   const variant = card.variant;
   const rarity = rarityOf(athlete);
-  const stats = statsOf(athlete, variant);
   const icon = isIcon(athlete);
   const prime = variant === 'prime';
+  const sport = SPORTS[athlete.sport];
   const width = WIDTHS[size];
   const tiny = size === 'xs';
   const compact = size === 'xs' || size === 'sm';
@@ -72,7 +112,15 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
   const photo = usePhoto(athlete);
   const showPhoto = !!photo.src && !photoFailed;
   const fullName = athlete.first && !compact ? `${athlete.first} ${athlete.last}` : athlete.last;
-  const label = edition(athlete, prime);
+  const overall = overallOf(athlete, variant);
+  const tier = prime ? 'Prime' : icon ? 'Icône' : TIERS[rarity.id];
+  const subtitle = [
+    athlete.role,
+    record ? `Record ${formatRecord(record)}` : '',
+    athlete.died ? `${athlete.born ?? ''}–${athlete.died}` : '',
+  ]
+    .filter(Boolean)
+    .join(' · ');
 
   const handleMove = useCallback(
     (event: PointerEvent<HTMLDivElement>) => {
@@ -107,6 +155,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     'card',
     `card--${size}`,
     `r-${rarity.id}`,
+    `s-${athlete.sport}`,
     icon ? 'is-icon' : '',
     prime ? 'is-prime' : '',
     compact ? 'is-compact' : '',
@@ -120,13 +169,13 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     .filter(Boolean)
     .join(' ');
 
-  const ariaLabel = `${athlete.first} ${athlete.last}, ${rarity.name}${prime ? ' Prime' : ''}${icon ? ', Icône' : ''}, note ${overallOf(athlete, variant)}`;
+  const ariaLabel = `${athlete.first} ${athlete.last}, ${rarity.name}${prime ? ' Prime' : ''}${icon ? ', Icône' : ''}, note ${overall}`;
 
   return (
     <div
       ref={ref}
       className={classes}
-      style={{ ['--card-w' as string]: `${width}px`, ['--sport' as string]: SPORTS[athlete.sport].color, ...style }}
+      style={{ ['--card-w' as string]: `${width}px`, ['--sport' as string]: sport.color, ...style }}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
       onClick={onClick}
@@ -146,63 +195,57 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     >
       <div className="card__body">
         <div className="card__bg" />
-        <div className="card__rings" />
-        <div className="card__ghost" aria-hidden="true">
-          {athlete.num ?? overallOf(athlete, variant)}
-        </div>
-        <div className="card__lines" />
 
-        <div className="card__player">
-          {showPhoto ? (
-            <img className="card__photo" src={photo.src} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setPhotoFailed(true)} />
-          ) : (
-            <Bust color={SPORTS[athlete.sport].color} num={athlete.num} className="card__bust" />
-          )}
+        <div className="card__window">
+          <div className="card__scene" />
+          <div className="card__player">
+            {showPhoto ? (
+              <img className="card__photo" src={photo.src} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setPhotoFailed(true)} />
+            ) : (
+              <Bust color={sport.color} num={athlete.num} className="card__bust" />
+            )}
+          </div>
         </div>
 
-        <div className="card__tile">
-          <b className="card__ovr">{overallOf(athlete, variant)}</b>
-          <span className="card__pos">{POSITION_CODES[athlete.archetype] ?? SPORTS[athlete.sport].short}</span>
+        <Frame />
+
+        <div className="card__code metal-text">{athleteCode(athlete)}</div>
+
+        <div className="card__badge">
+          <span className="card__tier">
+            <i>{tier}</i>
+          </span>
+          <span className="card__rating">
+            <b className="metal-text">{overall}</b>
+          </span>
         </div>
-        <Flag code={athlete.country} className="card__flag" />
-        <div className="card__crest" title={SPORTS[athlete.sport].name}>
-          <SportIcon sport={athlete.sport} />
-        </div>
+
+        {!tiny && <Flag code={athlete.country} className="card__flag" />}
 
         {!tiny && (
-          <div className="card__vertical" aria-hidden="true" style={{ fontSize: `${label.length > 11 ? 1.75 : label.length > 8 ? 2.05 : 2.35}em` }}>
-            {label}
+          <div className="card__sport" aria-hidden="true" style={{ fontSize: `${sport.name.length > 12 ? 0.62 : 0.8}em` }}>
+            {sport.name}
           </div>
         )}
 
-        {!tiny && (
-          <div className="card__pills">
-            {topStats(stats).map((key) => (
-              <span key={key} className={`stat-pill stat-pill--${key}`} title={STAT_LABELS[key].name}>
-                <small>{STAT_LABELS[key].short}</small>
-                <b>{stats[key]}</b>
-              </span>
-            ))}
-          </div>
-        )}
+        <div className="card__medal" title={sport.name}>
+          <span>
+            <SportIcon sport={athlete.sport} />
+          </span>
+        </div>
 
         <div className="card__banner">
-          <span className="card__name" style={{ fontSize: `${nameSize(fullName) * (compact ? 1.25 : 1)}em` }}>
+          <span className="card__name metal-text" style={{ fontSize: `${nameSize(fullName) * (compact ? 1.2 : 1)}em` }}>
             {fullName}
           </span>
-          {record && !compact ? <span className="card__record">Record {formatRecord(record)}</span> : null}
-          {athlete.died && !compact ? (
-            <span className="card__record">
-              {athlete.born}–{athlete.died}
-            </span>
-          ) : null}
-        </div>
-        <div className="card__mark" aria-hidden="true">
-          <i className="card__gem" />
-          {!compact && <span>SM</span>}
         </div>
 
-        <div className="card__frame" />
+        {!tiny && (
+          <div className="card__subtitle">
+            <span>{subtitle}</span>
+          </div>
+        )}
+
         <div className="card__holo" aria-hidden="true" />
         <div className="card__shine" aria-hidden="true" />
       </div>

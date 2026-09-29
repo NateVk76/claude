@@ -7,14 +7,23 @@
 //
 // Étape « telecharger » : pour chaque athlète, trouve sa page Wikipédia (fr puis en), récupère
 // la photo principale si elle est hébergée sur Commons sous licence libre, et note l'auteur.
-// Étape « finaliser » : produit public/photos/<id>.webp (détourée si le détourage est propre,
-// sinon cadrée en portrait) et src/data/photos.json (crédits affichés dans le jeu).
+// Étape « finaliser » : produit public/photos/<id>.webp, la photo entière avec son décor cadrée au format
+// de la fenêtre des cartes (ou détourée si « detourage » vaut true dans config.json et que le détourage
+// est propre), et src/data/photos.json (crédits affichés dans le jeu).
 // Tourne dans la GitHub Action .github/workflows/photos.yml (il faut un accès à Wikimedia).
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import sharp from 'sharp';
+
+// sharp (module natif) peut être bloqué par la politique de sécurité de Windows : dans ce cas on garde
+// la miniature fournie par Commons telle quelle (jpg), et c'est la carte qui la cadre (object-fit: cover).
+let sharp = null;
+try {
+  sharp = (await import('sharp')).default;
+} catch {
+  console.warn('sharp indisponible : les photos seront gardées telles quelles, sans recadrage ni conversion.');
+}
 
 // chemins en texte : sharp n'accepte pas les objets URL
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
@@ -175,7 +184,7 @@ function stripHtml(html = '') {
 
 async function commonsInfo(file) {
   const data = await json(
-    `https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=720&titles=${encodeURIComponent(`File:${file}`)}`,
+    `https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=${sharp ? 1000 : 640}&titles=${encodeURIComponent(`File:${file}`)}`,
   );
   const page = data && Object.values(data.query?.pages ?? {})[0];
   const info = page?.imageinfo?.[0];
@@ -224,7 +233,9 @@ async function download() {
         } else {
           const response = await request(info.thumb);
           const buffer = Buffer.from(await response.arrayBuffer());
-          await sharp(buffer).rotate().resize({ width: 720, withoutEnlargement: true }).jpeg({ quality: 90 }).toFile(join(RAW_DIR, `${athlete.id}.jpg`));
+          const raw = join(RAW_DIR, `${athlete.id}.jpg`);
+          if (sharp) await sharp(buffer).rotate().resize({ width: 1000, withoutEnlargement: true }).jpeg({ quality: 90 }).toFile(raw);
+          else writeFileSync(raw, buffer);
           meta[athlete.id] = { title: page.title, lang: page.lang, file, ...info };
         }
       } catch (error) {
@@ -248,13 +259,22 @@ async function finalize() {
   const meta = JSON.parse(readFileSync(META_FILE, 'utf8'));
   const credits = {};
   let cutouts = 0;
+  // on repart de zéro : les anciennes photos (détourées, autre format) ne doivent pas rester
+  for (const name of readdirSync(OUT_DIR)) {
+    if (/\.(webp|jpg)$/.test(name)) rmSync(join(OUT_DIR, name));
+  }
   for (const [id, info] of Object.entries(meta).sort(([a], [b]) => a.localeCompare(b))) {
     const raw = join(RAW_DIR, `${id}.jpg`);
     if (!existsSync(raw)) continue;
+    if (!sharp) {
+      copyFileSync(raw, join(OUT_DIR, `${id}.jpg`));
+      credits[id] = { file: `${id}.jpg`, cutout: false, author: info.author, license: info.license, licenseUrl: info.licenseUrl, page: info.page };
+      continue;
+    }
     const target = join(OUT_DIR, `${id}.webp`);
     const cut = join(CUT_DIR, `${id}.png`);
     let cutout = false;
-    if (existsSync(cut)) {
+    if (CONFIG.detourage && existsSync(cut)) {
       // on ne garde le détourage que s'il a vraiment isolé l'athlète
       const { channels } = await sharp(cut).stats();
       const coverage = channels[3] ? channels[3].mean / 255 : 1;
@@ -269,7 +289,8 @@ async function finalize() {
       }
     }
     if (!cutout) {
-      await sharp(raw).resize(480, 640, { fit: 'cover', position: sharp.strategy.attention }).webp({ quality: 78 }).toFile(target);
+      // format de la fenêtre photo des cartes (3:4), cadré sur la zone la plus intéressante (visage, maillot)
+      await sharp(raw).resize(600, 800, { fit: 'cover', position: sharp.strategy.attention }).webp({ quality: 80 }).toFile(target);
     }
     credits[id] = { file: `${id}.webp`, cutout, author: info.author, license: info.license, licenseUrl: info.licenseUrl, page: info.page };
   }
