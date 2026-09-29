@@ -7,6 +7,7 @@ import { isIcon, overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import type { CardFace } from '../engine/types';
 import { Card } from '../components/Card';
 import { CardStats } from '../components/CardStats';
+import { Logo } from '../components/Logo';
 import { PackArt } from '../components/PackArt';
 import { Flag, COUNTRY_NAMES } from '../components/Flag';
 import { SportIcon } from '../components/SportIcon';
@@ -47,13 +48,7 @@ export function CardBack({ className = '' }: { className?: string }) {
   return (
     <div className={`card-back ${className}`}>
       <div className="card-back__rings" />
-      <div className="card-back__crest">
-        <svg viewBox="0 0 24 28" aria-hidden="true">
-          <path d="M12,1 L22,5 V13 C22,20 17,24.5 12,27 C7,24.5 2,20 2,13 V5 Z" />
-          <path d="M7,15 L10.5,11 L13,13.5 L17,8.5" />
-        </svg>
-        <span>SportMasters</span>
-      </div>
+      <Logo className="card-back__logo" decorative />
     </div>
   );
 }

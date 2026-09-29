@@ -3,6 +3,7 @@ import { useGame, MAX_FREE_PACKS } from './store/game';
 import { useUi, type Tab } from './store/ui';
 import { useNow, formatDuration } from './hooks/useNow';
 import { Balles } from './components/Balles';
+import { Logo } from './components/Logo';
 import { setMuted, sfx } from './audio/sfx';
 import { HomeScreen } from './screens/Home';
 import { CollectionScreen } from './screens/Collection';
@@ -53,16 +54,8 @@ function Topbar() {
 
   return (
     <header className="topbar">
-      <button type="button" className="brand" onClick={() => setTab('boosters')} aria-label="SportMasters, retour aux boosters">
-        <span className="brand__crest" aria-hidden="true">
-          <svg viewBox="0 0 24 28">
-            <path d="M12,1 L22,5 V13 C22,20 17,24.5 12,27 C7,24.5 2,20 2,13 V5 Z" />
-            <path d="M7,15 L10.5,11 L13,13.5 L17,8.5" className="brand__line" />
-          </svg>
-        </span>
-        <span className="brand__name">
-          Sport<b>Masters</b>
-        </span>
+      <button type="button" className="brand" onClick={() => setTab('boosters')} aria-label="Athleticards, retour aux boosters">
+        <Logo className="brand__logo" decorative />
       </button>
       <div className="topbar__right">
         <button type="button" className="chip chip--packs" onClick={() => setTab('boosters')} title="Boosters gratuits disponibles">

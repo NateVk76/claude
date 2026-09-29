@@ -27,11 +27,11 @@ interface CardProps {
   style?: CSSProperties;
 }
 
-/** Les deux points forts de l'athlète, affichés sur la carte. */
-export function topStats(stats: Stats): StatKey[] {
+/** Les meilleures stats de l'athlète (deux sur la carte, trois dans la fiche express). */
+export function topStats(stats: Stats, count = 2): StatKey[] {
   return STAT_KEYS.slice()
     .sort((a, b) => stats[b] - stats[a] || STAT_KEYS.indexOf(a) - STAT_KEYS.indexOf(b))
-    .slice(0, 2);
+    .slice(0, count);
 }
 
 /** Texte vertical : édition de la carte, sinon surnom, sinon rareté ou sport. */
@@ -199,7 +199,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
         </div>
         <div className="card__mark" aria-hidden="true">
           <i className="card__gem" />
-          {!compact && <span>SM</span>}
+          {!compact && <i className="card__brand" />}
         </div>
 
         <div className="card__frame" />

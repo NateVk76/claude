@@ -13,7 +13,7 @@ const LARGEUR = 420;
 const QUALITE = 74;
 
 const html = readFileSync('dist-single/index.html', 'utf8');
-const title = html.match(/<title>[\s\S]*?<\/title>/)?.[0] ?? '<title>SportMasters</title>';
+const title = html.match(/<title>[\s\S]*?<\/title>/)?.[0] ?? '<title>Athleticards</title>';
 const styles = [...html.matchAll(/<style[^>]*>[\s\S]*?<\/style>/g)].map((m) => m[0].replace(/<style[^>]*>/, '<style>'));
 const scripts = [...html.matchAll(/<script[^>]*>[\s\S]*?<\/script>/g)].map((m) => m[0].replace(/<script[^>]*>/, '<script type="module">'));
 if (!scripts.length) throw new Error('Aucun script trouvé dans le build');
@@ -21,8 +21,8 @@ if (!scripts.length) throw new Error('Aucun script trouvé dans le build');
 const page = [title, ...styles, '<div id="root"></div>', ...scripts].join('\n');
 rmSync('artifact', { recursive: true, force: true });
 mkdirSync('artifact/photos', { recursive: true });
-writeFileSync('artifact/sportmasters.html', page);
-console.log(`artifact/sportmasters.html : ${(page.length / 1024 / 1024).toFixed(2)} Mo`);
+writeFileSync('artifact/athleticards.html', page);
+console.log(`artifact/athleticards.html : ${(page.length / 1024 / 1024).toFixed(2)} Mo`);
 
 const credits = JSON.parse(readFileSync('src/data/photos.json', 'utf8'));
 const source = readFileSync('src/data/athletes.ts', 'utf8');

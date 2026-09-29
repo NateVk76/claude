@@ -547,6 +547,7 @@ export const useGame = create<GameState>()(
       };
     },
     {
+      // ancien nom du jeu, gardé pour ne pas perdre les sauvegardes
       name: 'sportmasters-save',
       version: 2,
       storage: createJSONStorage(() => safeStorage),

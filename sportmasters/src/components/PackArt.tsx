@@ -2,8 +2,9 @@ import { useId } from 'react';
 import type { PackDef } from '../engine/packs';
 import type { SportId } from '../engine/types';
 import { SPORTS } from '../data/sports';
-import { SportIcon } from './SportIcon';
+import { Logo } from './Logo';
 
+// Sachet de booster : la matière (sa couleur dit de quel pack il s'agit) et le logo, rien d'autre.
 const TONES: Record<PackDef['tone'], { from: string; to: string; ink: string; trim: string }> = {
   bronze: { from: '#e2a66f', to: '#6f3d1f', ink: '#2c170a', trim: '#ffd9b3' },
   silver: { from: '#f4f6f9', to: '#7d8998', ink: '#18202b', trim: '#ffffff' },
@@ -22,18 +23,18 @@ const PACK_PATH = `M6,4 ${CRIMP_TOP} L114,4 L116,14 L116,156 L114,166 ${CRIMP_BO
 
 interface PackArtProps {
   tone: PackDef['tone'];
-  name: string;
+  /** nom du pack (affiché à côté, pas sur le sachet) */
+  name?: string;
   sport?: SportId;
   className?: string;
 }
 
-export function PackArt({ tone, name, sport, className = '' }: PackArtProps) {
+export function PackArt({ tone, sport, className = '' }: PackArtProps) {
   const id = useId().replace(/:/g, '');
   const palette = tone === 'sport' && sport ? { ...TONES.sport, from: SPORTS[sport].color, to: '#0d1422' } : TONES[tone];
-  const words = name.replace(/^Pack /, '').replace(/^Booster /, '');
   return (
-    <div className={`pack-art pack-art--${tone} ${className}`} style={{ color: palette.ink }}>
-      <svg viewBox="0 0 120 170" aria-hidden="true">
+    <div className={`pack-art pack-art--${tone} ${className}`} style={{ color: palette.ink, ['--pack-trim' as string]: palette.trim }}>
+      <svg className="pack-art__foil" viewBox="0 0 120 170" aria-hidden="true">
         <defs>
           <linearGradient id={`pg-${id}`} x1="0" y1="0" x2="0.4" y2="1">
             {tone === 'prime' ? (
@@ -53,7 +54,7 @@ export function PackArt({ tone, name, sport, className = '' }: PackArtProps) {
           </linearGradient>
           <linearGradient id={`ps-${id}`} x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#fff" stopOpacity="0" />
-            <stop offset="0.5" stopColor="#fff" stopOpacity="0.55" />
+            <stop offset="0.5" stopColor="#fff" stopOpacity="0.45" />
             <stop offset="1" stopColor="#fff" stopOpacity="0" />
           </linearGradient>
           <clipPath id={`pc-${id}`}>
@@ -63,22 +64,10 @@ export function PackArt({ tone, name, sport, className = '' }: PackArtProps) {
         <path d={PACK_PATH} fill={`url(#pg-${id})`} />
         <g clipPath={`url(#pc-${id})`}>
           <rect className="pack-art__shine" x={-60} y={-20} width={40} height={220} fill={`url(#ps-${id})`} transform="rotate(20)" />
-          <g opacity={0.12} stroke={palette.ink} strokeWidth={1}>
-            {Array.from({ length: 14 }, (_, i) => (
-              <line key={i} x1={-20 + i * 12} y1={180} x2={40 + i * 12} y2={-10} />
-            ))}
-          </g>
         </g>
         <path d={PACK_PATH} fill="none" stroke={palette.trim} strokeWidth={1.5} opacity={0.8} />
-        <line x1={8} y1={18} x2={112} y2={18} stroke={palette.trim} strokeWidth={0.8} strokeDasharray="2 3" opacity={0.7} />
-        <circle cx={60} cy={70} r={25} fill="none" stroke={palette.ink} strokeWidth={2} opacity={0.9} />
-        <circle cx={60} cy={70} r={20} fill={palette.ink} opacity={0.12} />
       </svg>
-      <div className="pack-art__emblem">
-        {sport ? <SportIcon sport={sport} /> : <span className="pack-art__monogram">SM</span>}
-      </div>
-      <div className="pack-art__brand">SPORTMASTERS</div>
-      <div className="pack-art__name">{words}</div>
+      <Logo className="pack-art__logo" framed decorative />
     </div>
   );
 }

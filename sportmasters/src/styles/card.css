@@ -451,15 +451,16 @@
   z-index: 3;
 }
 
-.card__mark span {
-  padding: 0.18em 0.4em 0.12em;
-  border-radius: 0.3em;
-  background: var(--banner-bg);
-  color: var(--banner-ink);
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 0.95em;
-  letter-spacing: 0.04em;
+/* la carte verte du logo Athleticards */
+.card__brand {
+  display: block;
+  width: 0.95em;
+  height: 1.3em;
+  border-radius: 0.2em;
+  transform: rotate(14deg);
+  background: var(--brand-green, #3fd06f);
+  border: 0.12em solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.35);
 }
 
 .card__gem {

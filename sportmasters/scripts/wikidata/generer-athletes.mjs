@@ -22,7 +22,7 @@ if (!args.contact) {
 }
 const PER_SPORT = Number(args['par-sport'] ?? 700);
 const OUTPUT = args.sortie ?? 'src/data/athletes.generated.json';
-const USER_AGENT = `SportMastersGenerator/1.0 (${args.contact})`;
+const USER_AGENT = `AthleticardsGenerator/1.0 (${args.contact})`;
 
 // Métiers Wikidata (P106) par sport. Vérifie un identifiant sur https://www.wikidata.org/wiki/Q… en cas de doute.
 const SPORTS = [

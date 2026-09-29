@@ -1,8 +1,10 @@
-# SportMasters
+# Athleticards
 
 Jeu de cartes à collectionner de sportifs, jouable dans le navigateur. On ouvre des boosters, on collectionne des athlètes réels (des stars mondiales aux pépites méconnues), on les revend au marché des transferts et on les fait jouer en match.
 
 Inspiré de WikiMasters (les cartes y sont des pages Wikipédia) et du mode Ultimate Team de FIFA.
+
+Le logo (`src/components/Logo.tsx`) écrit « athleticards » en minuscules, et le point du i est une carte verte inclinée. Il est dessiné en tracés, sans police à charger. Les sachets de booster n'affichent que lui, sur la couleur du pack.
 
 ## Lancer le jeu
 
@@ -54,7 +56,7 @@ Dans une même rareté, le niveau sportif réel de l'athlète et sa célébrité
 
 ### La carte
 
-Style vignette à collectionner : photo de l'athlète en grand (détourée quand c'est possible), fond métallisé selon la rareté, note et poste en haut à gauche avec le drapeau, écusson du sport en haut à droite, surnom écrit à la verticale (« MONDO », « LA PULGA », « KING JAMES »…), les deux meilleures stats en pastilles et le nom dans un bandeau. La fiche de chaque carte montre les 6 stats utilisées en match :
+Style vignette à collectionner : photo de l'athlète en grand (détourée quand c'est possible), fond métallisé selon la rareté, note et poste en haut à gauche avec le drapeau, écusson du sport en haut à droite, surnom écrit à la verticale (« MONDO », « LA PULGA », « KING JAMES »…), les deux meilleures stats en pastilles, le nom dans un bandeau et, dans le coin, la carte verte du logo. La fiche de chaque carte montre les 6 stats utilisées en match :
 
 | Stat | Ce qu'elle mesure |
 | --- | --- |
@@ -91,7 +93,7 @@ Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » 
 - Un booster gratuit toutes les 10 minutes, jusqu'à 10 en réserve.
 - Boutique : Découverte, Pro (1 Rare garantie), Élite (1 Épique garantie), Icônes, Prime (1 Prime de légende garantie, 250 000 Balles), Légende (1 Légendaire garantie) et un pack par sport. Les chances sont affichées sur chaque pack.
 - Les Épiques, Légendaires et Prime ont droit à leur « walkout » : drapeau, puis sport, puis note, puis la carte avec confettis et fanfare.
-- Pendant l'ouverture, chaque carte révélée s'accompagne de sa fiche express : nom, pays, sport, poste, note, les six stats et l'ulti (toucher une carte déjà retournée affiche la sienne).
+- Pendant l'ouverture, chaque carte révélée s'accompagne de sa fiche express : nom, pays, sport, poste, note, ses trois meilleures stats et l'ulti (toucher une carte déjà retournée affiche la sienne).
 
 ### Mercato (marché des transferts)
 
@@ -159,4 +161,4 @@ node scripts/wikidata/generer-athletes.mjs --contact "ton.adresse@exemple.fr" --
 - **Multijoueur** : un vrai marché entre joueurs demande un serveur qui fait autorité sur les soldes, l'ouverture des boosters et les ventes (sinon on peut tricher). Piste simple : Supabase (PostgreSQL, comptes, temps réel), puis Node + PostgreSQL + Redis si le nombre de joueurs explose.
 - **Matchs entre joueurs**, classement, saisons, événements (cartes « Équipe de la semaine »).
 
-Les notes et stats sont une interprétation de jeu. Les noms des athlètes appartiennent à leurs titulaires ; SportMasters est un projet de fan non officiel.
+Les notes et stats sont une interprétation de jeu. Les noms des athlètes appartiennent à leurs titulaires ; Athleticards est un projet de fan non officiel.

@@ -43,7 +43,7 @@ const choiceOf = (id) => {
 };
 const EXPLORE_DIR = path('scripts/photos/explorer');
 const REPO = process.env.GITHUB_REPOSITORY ?? 'NateVk76/claude';
-const USER_AGENT = `SportMastersPhotos/1.0 (https://github.com/${REPO}; jeu de fan non commercial)`;
+const USER_AGENT = `AthleticardsPhotos/1.0 (https://github.com/${REPO}; jeu de fan non commercial)`;
 
 const argv = process.argv.slice(2);
 const step = argv[0];

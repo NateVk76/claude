@@ -248,7 +248,7 @@ export function HomeScreen() {
       <MarketNewsPanel />
       <p className="footnote">
         Les notes et stats sont une interprétation de jeu. {ATHLETES.length} athlètes, dont {ATHLETES.filter((a) => a.retired).length} Icônes.
-        Tous les noms appartiennent à leurs titulaires ; SportMasters est un projet de fan non officiel.
+        Tous les noms appartiennent à leurs titulaires ; Athleticards est un projet de fan non officiel.
       </p>
     </div>
   );

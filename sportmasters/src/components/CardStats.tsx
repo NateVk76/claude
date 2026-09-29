@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
 import type { CardFace } from '../engine/types';
 import { getAthlete, isIcon, overallOf, rarityOf, statsOf, ultiOf } from '../engine/cards';
-import { SPORTS, STAT_KEYS, STAT_LABELS } from '../data/sports';
+import { SPORTS, STAT_LABELS } from '../data/sports';
 import { Flag, COUNTRY_NAMES } from './Flag';
 import { topStats } from './Card';
 
-// Fiche express d'une carte : nom, pays, sport, note, les six stats et l'ulti.
-// Elle accompagne l'ouverture des boosters, où la carte seule ne montre que deux stats.
+// Fiche express d'une carte : nom, pays, sport, note, ses trois meilleures stats et l'ulti.
+// Elle accompagne l'ouverture des boosters ; la fiche complète garde les six stats.
 
 interface CardStatsProps {
   card: CardFace;
@@ -19,7 +19,7 @@ export function CardStats({ card, children, className = '' }: CardStatsProps) {
   const athlete = getAthlete(card.athleteId);
   const rarity = rarityOf(athlete);
   const stats = statsOf(athlete, card.variant);
-  const onCard = topStats(stats);
+  const best = topStats(stats, 3);
   const ulti = ultiOf(athlete, card.variant);
   const prime = card.variant === 'prime';
   const overall = overallOf(athlete, card.variant);
@@ -54,17 +54,17 @@ export function CardStats({ card, children, className = '' }: CardStatsProps) {
         </div>
       </header>
 
-      <ul className="card-stats__grid">
-        {STAT_KEYS.map((key) => (
-          <li key={key} className={`card-stats__stat card-stats__stat--${key}${onCard.includes(key) ? ' is-top' : ''}`} title={STAT_LABELS[key].desc}>
+      <ul className="card-stats__grid" aria-label="Ses trois meilleures stats">
+        {best.map((key) => (
+          <li key={key} className={`card-stats__stat card-stats__stat--${key}`} title={STAT_LABELS[key].desc}>
             <span className="card-stats__label">
               <span className="card-stats__long">{STAT_LABELS[key].name}</span>
               <span className="card-stats__short">{STAT_LABELS[key].short}</span>
             </span>
+            <b>{stats[key]}</b>
             <span className="card-stats__track">
               <span style={{ width: `${stats[key]}%` }} />
             </span>
-            <b>{stats[key]}</b>
           </li>
         ))}
       </ul>

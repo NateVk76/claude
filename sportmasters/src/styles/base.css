@@ -23,6 +23,8 @@
   --r-epique: #b98cff;
   --r-legendaire: #ffd76a;
   --prime: #ff9ad5;
+  /* vert du logo Athleticards (la carte qui sert de point au i) */
+  --brand-green: #3fd06f;
 
   --font-display: 'Big Shoulders Display', 'Oswald', 'Arial Narrow', Impact, sans-serif;
   --font-body: 'Barlow', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -97,3 +99,12 @@ h3 {
   white-space: nowrap;
 }
 .gallery-flag{width:60px;height:40px;display:block}
+
+/* ───────────── Logo ───────────── */
+.logo {
+  display: block;
+}
+
+.logo__card {
+  fill: var(--brand-green);
+}
