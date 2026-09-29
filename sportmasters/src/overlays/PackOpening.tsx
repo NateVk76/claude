@@ -6,6 +6,7 @@ import { SPORTS } from '../data/sports';
 import { isIcon, overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import type { CardFace } from '../engine/types';
 import { Card } from '../components/Card';
+import { CardStats } from '../components/CardStats';
 import { PackArt } from '../components/PackArt';
 import { Flag, COUNTRY_NAMES } from '../components/Flag';
 import { SportIcon } from '../components/SportIcon';
@@ -145,11 +146,13 @@ function Walkout({ card, onDone }: { card: CardFace; onDone: () => void }) {
           <p className="walkout__title" data-text={title}>
             {title}
           </p>
-          <Card card={card} size="xl" tilt className="walkout__card" />
-          <p className="walkout__name">
-            {athlete.first} {athlete.last}
-            {prime && athlete.prime && <span> · Prime {athlete.prime.year}</span>}
-          </p>
+          <div className="walkout__body">
+            <Card card={card} size="xl" tilt className="walkout__card" />
+            {/* lire la fiche ne ferme pas la révélation */}
+            <div className="walkout__stats" onClick={(event) => event.stopPropagation()}>
+              <CardStats card={card} />
+            </div>
+          </div>
           <button type="button" className="btn btn--primary" onClick={onDone}>
             Continuer
           </button>
@@ -184,6 +187,9 @@ export function PackOpening() {
   const [revealed, setRevealed] = useState(0);
   const [walkoutIndex, setWalkoutIndex] = useState<number | null>(null);
   const [soldDupes, setSoldDupes] = useState(false);
+  // carte dont la fiche est affichée (par défaut : la dernière révélée, puis la meilleure)
+  const [focus, setFocus] = useState<number | null>(null);
+  const summaryStats = useRef<HTMLDivElement>(null);
   const confetti = useRef<ConfettiHandle>(null);
 
   // nouvelle ouverture : on repart du sachet fermé
@@ -193,6 +199,7 @@ export function PackOpening() {
       setRevealed(0);
       setWalkoutIndex(null);
       setSoldDupes(false);
+      setFocus(null);
     }
   }, [opening]);
 
@@ -210,6 +217,7 @@ export function PackOpening() {
     sfx.flip();
     window.setTimeout(() => sfx.reveal(tierOf(card)), 120);
     if (tierOf(card) === 2) confetti.current?.burst(['#f2c94c', '#fff3c4', '#ffffff'], 60);
+    setFocus(null);
     setRevealed((r) => r + 1);
   }, [opening, revealed, cards]);
 
@@ -220,6 +228,7 @@ export function PackOpening() {
     if (next > revealed) {
       sfx.flip();
       sfx.reveal(tierOf(cards[next - 1]));
+      setFocus(null);
       setRevealed(next);
     }
     if (next < cards.length) {
@@ -255,6 +264,10 @@ export function PackOpening() {
     window.setTimeout(() => setStage('cards'), 1150);
   };
 
+  const lastRevealed = Math.min(revealed, cards.length) - 1;
+  const focusIndex = stage === 'summary' ? (focus ?? cards.length - 1) : focus !== null && focus <= lastRevealed ? focus : lastRevealed;
+  const focusCard = focusIndex >= 0 ? cards[focusIndex] : undefined;
+  const focusOwned = focusCard ? collection.find((c) => c.uid === focusCard.uid) : undefined;
   const dupes = cards.filter((c) => !c.isNew);
   const ownedDupes = dupes.filter((c) => collection.some((o) => o.uid === c.uid && !o.locked));
   const dupesValue = ownedDupes.reduce((sum, c) => sum + quickSellValue(ATHLETES_BY_ID[c.athleteId], c.variant), 0);
@@ -285,9 +298,9 @@ export function PackOpening() {
               return (
                 <div
                   key={card.uid}
-                  className={`flip${shown ? ' is-flipped' : ''}${next ? ' is-next' : ''}${!shown && isSpecial(card) ? ' is-special' : ''}`}
+                  className={`flip${shown ? ' is-flipped' : ''}${next ? ' is-next' : ''}${!shown && isSpecial(card) ? ' is-special' : ''}${shown && i === focusIndex ? ' is-focus' : ''}`}
                   style={{ ['--glow' as string]: glowOf(card), animationDelay: `${i * 90}ms` }}
-                  onClick={next ? revealNext : undefined}
+                  onClick={next ? revealNext : shown ? () => setFocus(i) : undefined}
                 >
                   <div className="flip__inner">
                     <div className="flip__back">
@@ -310,6 +323,8 @@ export function PackOpening() {
               Tout révéler
             </button>
           </div>
+          {/* sous les boutons, pour que « Révéler » ne bouge pas d'une carte à l'autre */}
+          {focusCard && <CardStats card={focusCard} />}
         </div>
       )}
 
@@ -319,6 +334,7 @@ export function PackOpening() {
           onDone={() => {
             setRevealed(walkoutIndex + 1);
             setWalkoutIndex(null);
+            setFocus(null);
             setStage('cards');
           }}
         />
@@ -332,14 +348,16 @@ export function PackOpening() {
             {cards.filter((c) => c.isNew).length > 1 ? 's' : ''} · {dupes.length} doublon{dupes.length > 1 ? 's' : ''}
           </p>
           <div className="opening__grid">
-            {cards.map((card) => (
-              <div key={card.uid} className="opening__cell">
+            {cards.map((card, i) => (
+              <div key={card.uid} className={`opening__cell${i === focusIndex ? ' is-focus' : ''}`}>
                 <Card
                   card={card}
                   size="sm"
                   onClick={() => {
-                    const owned = collection.find((c) => c.uid === card.uid);
-                    if (owned) openDetail({ card: owned });
+                    setFocus(i);
+                    // sur téléphone, la fiche est sous les cartes : on l'amène à l'écran
+                    const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    requestAnimationFrame(() => summaryStats.current?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'nearest' }));
                   }}
                 />
                 <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>
@@ -375,6 +393,19 @@ export function PackOpening() {
               Terminer
             </button>
           </div>
+          {focusCard && (
+            <div ref={summaryStats} className="opening__stats">
+              <CardStats card={focusCard}>
+                {focusOwned && (
+                  <div className="card-stats__actions">
+                    <button type="button" className="btn btn--ghost btn--sm" onClick={() => openDetail({ card: focusOwned })}>
+                      Fiche complète
+                    </button>
+                  </div>
+                )}
+              </CardStats>
+            </div>
+          )}
         </div>
       )}
       <Confetti ref={confetti} />

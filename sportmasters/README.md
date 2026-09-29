@@ -91,6 +91,7 @@ Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » 
 - Un booster gratuit toutes les 10 minutes, jusqu'à 10 en réserve.
 - Boutique : Découverte, Pro (1 Rare garantie), Élite (1 Épique garantie), Icônes, Prime (1 Prime de légende garantie, 250 000 Balles), Légende (1 Légendaire garantie) et un pack par sport. Les chances sont affichées sur chaque pack.
 - Les Épiques, Légendaires et Prime ont droit à leur « walkout » : drapeau, puis sport, puis note, puis la carte avec confettis et fanfare.
+- Pendant l'ouverture, chaque carte révélée s'accompagne de sa fiche express : nom, pays, sport, poste, note, les six stats et l'ulti (toucher une carte déjà retournée affiche la sienne).
 
 ### Mercato (marché des transferts)
 
