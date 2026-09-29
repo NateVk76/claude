@@ -1,0 +1,114 @@
+import { useState } from 'react';
+import { useGame } from '../store/game';
+import { SPORTS, SPORT_ORDER } from '../data/sports';
+import { RARITIES, RARITY_ORDER } from '../engine/cards';
+import { SHOP_PACKS, sportPack, type PackDef } from '../engine/packs';
+import type { SportId } from '../engine/types';
+import { PackArt } from '../components/PackArt';
+import { Balles } from '../components/Balles';
+import { SportIcon } from '../components/SportIcon';
+import { sfx } from '../audio/sfx';
+
+function Odds({ pack }: { pack: PackDef }) {
+  const total = RARITY_ORDER.reduce((sum, id) => sum + pack.odds[id], 0);
+  return (
+    <details className="odds">
+      <summary>Chances par carte</summary>
+      <ul>
+        {RARITY_ORDER.slice()
+          .reverse()
+          .filter((id) => pack.odds[id] > 0)
+          .map((id) => (
+            <li key={id} className={`rarity-row rarity-row--${id}`}>
+              <span className="rarity-dot" />
+              <span>{RARITIES[id].name}</span>
+              <b>{((pack.odds[id] / total) * 100).toLocaleString('fr-FR', { maximumFractionDigits: 1 })} %</b>
+            </li>
+          ))}
+        <li className="rarity-row rarity-row--prime">
+          <span className="rarity-dot" />
+          <span>Version Prime</span>
+          <b>{(pack.primeChance * 100).toLocaleString('fr-FR', { maximumFractionDigits: 1 })} %</b>
+        </li>
+      </ul>
+      {pack.guaranteed && (
+        <p className="small muted">
+          Dernière carte : {RARITIES[pack.guaranteed.min].name} ou mieux garantie{pack.guaranteed.prime ? ', en version Prime' : ''}.
+        </p>
+      )}
+    </details>
+  );
+}
+
+function PackTile({ pack }: { pack: PackDef }) {
+  const balles = useGame((s) => s.balles);
+  const buy = useGame((s) => s.buyPack);
+  const affordable = balles >= pack.price;
+  return (
+    <article className={`pack-tile pack-tile--${pack.tone}`}>
+      <PackArt tone={pack.tone} name={pack.name} sport={pack.sport} />
+      <div className="pack-tile__body">
+        <h3>{pack.name}</h3>
+        <p className="muted small">{pack.tagline}</p>
+        <Odds pack={pack} />
+        <button
+          type="button"
+          className="btn btn--primary"
+          disabled={!affordable}
+          onClick={() => {
+            if (buy(pack.id)) sfx.whoosh();
+          }}
+        >
+          Acheter <Balles value={pack.price} />
+        </button>
+        {!affordable && <p className="small muted">Il te manque {(pack.price - balles).toLocaleString('fr-FR')} balles.</p>}
+      </div>
+    </article>
+  );
+}
+
+export function ShopScreen() {
+  const [sport, setSport] = useState<SportId>('athle');
+  const balles = useGame((s) => s.balles);
+  return (
+    <div className="screen">
+      <header className="screen__head">
+        <div>
+          <p className="eyebrow">Boutique</p>
+          <h1>Packs</h1>
+          <p className="muted">
+            Tu as <Balles value={balles} />. Gagne des balles en vendant sur le marché, en jouant des matchs et en remplissant les objectifs.
+          </p>
+        </div>
+      </header>
+      <div className="pack-grid">
+        {SHOP_PACKS.map((pack) => (
+          <PackTile key={pack.id} pack={pack} />
+        ))}
+      </div>
+      <section className="panel">
+        <h2>Packs par sport</h2>
+        <p className="muted small">5 cartes d’un seul sport, pour compléter ton album plus vite.</p>
+        <div className="sport-tabs" role="tablist" aria-label="Choisir un sport">
+          {SPORT_ORDER.map((id) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={sport === id}
+              className={`sport-tab${sport === id ? ' is-active' : ''}`}
+              style={{ ['--sport' as string]: SPORTS[id].color }}
+              onClick={() => setSport(id)}
+            >
+              <SportIcon sport={id} />
+              <span>{SPORTS[id].name}</span>
+            </button>
+          ))}
+        </div>
+        <div className="pack-grid pack-grid--single">
+          <PackTile pack={sportPack(sport, SPORTS[sport].name)} />
+        </div>
+      </section>
+    </div>
+  );
+}

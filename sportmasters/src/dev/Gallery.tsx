@@ -1,0 +1,50 @@
+import { ATHLETES } from '../data/athletes';
+import { Card } from '../components/Card';
+import { Pictogram, ALL_POSES } from '../components/Pictogram';
+import { Flag, COUNTRY_NAMES } from '../components/Flag';
+
+// Page de contrôle visuel (#galerie) : toutes les poses, tous les drapeaux, un échantillon de cartes.
+const SAMPLE = ['duplantis', 'vinicius', 'pele', 'lebron', 'kante', 'kobe', 'wembanyama', 'riner', 'collet', 'gasquet', 'ngapeth', 'kvaratskhelia'];
+
+export function Gallery() {
+  const sample = SAMPLE.map((id) => ATHLETES.find((a) => a.id === id)!).filter(Boolean);
+  return (
+    <div style={{ padding: 24, display: 'grid', gap: 32 }}>
+      <section style={{ display: 'flex', flexWrap: 'wrap', gap: 20 }}>
+        <Card card={{ athleteId: 'duplantis', variant: 'base', record: 630 }} size="lg" />
+        <Card card={{ athleteId: 'duplantis', variant: 'prime', record: 634 }} size="lg" />
+        <Card card={{ athleteId: 'ronaldo-nazario', variant: 'base' }} size="lg" />
+        <Card card={{ athleteId: 'ronaldo-nazario', variant: 'prime' }} size="lg" />
+        <Card card={{ athleteId: 'lebron', variant: 'prime' }} size="lg" />
+      </section>
+      <section style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+        {sample.map((a) => (
+          <Card key={a.id} card={{ athleteId: a.id, variant: 'base' }} size="md" />
+        ))}
+      </section>
+      <section style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+        {sample.map((a) => (
+          <Card key={a.id} card={{ athleteId: a.id, variant: 'base' }} size="sm" />
+        ))}
+      </section>
+      <section style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+        {ALL_POSES.map((pose) => (
+          <figure key={pose} style={{ margin: 0, width: 120, textAlign: 'center', fontSize: 11, color: '#9ba5bb' }}>
+            <div style={{ background: '#e4b746', color: '#2a1d03', borderRadius: 8, ['--pic-accent' as string]: '#fff' }}>
+              <Pictogram pose={pose} />
+            </div>
+            {pose}
+          </figure>
+        ))}
+      </section>
+      <section style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+        {Object.keys(COUNTRY_NAMES).map((code) => (
+          <figure key={code} style={{ margin: 0, width: 64, textAlign: 'center', fontSize: 10, color: '#9ba5bb' }}>
+            <Flag code={code} className="gallery-flag" />
+            {code}
+          </figure>
+        ))}
+      </section>
+    </div>
+  );
+}

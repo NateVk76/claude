@@ -1,0 +1,118 @@
+# SportMasters
+
+Jeu de cartes à collectionner de sportifs, jouable dans le navigateur. On ouvre des boosters, on collectionne des athlètes réels (des stars mondiales aux pépites méconnues), on les revend au marché des transferts et on les fait jouer en match.
+
+Inspiré de WikiMasters (les cartes y sont des pages Wikipédia) et du mode Ultimate Team de FIFA.
+
+## Lancer le jeu
+
+```bash
+cd sportmasters
+npm install
+npm run dev          # http://localhost:5173
+npm test             # tests du moteur (boosters, marché, matchs)
+npm run build        # version de production dans dist/
+npm run build:single # un seul fichier HTML autonome dans artifact/
+```
+
+`#galerie` à la fin de l'adresse affiche une planche de contrôle visuel : toutes les poses, tous les drapeaux et les matières de cartes.
+
+## Les règles du jeu
+
+### Rareté = célébrité
+
+Chaque athlète a un score de célébrité (0-100), estimé d'après son audience. Plus il est connu, plus sa carte est rare.
+
+| Rareté | Célébrité | Athlètes | Booster gratuit |
+| --- | --- | --- | --- |
+| Légendaire | 90 et plus | 31 | 0,8 % par carte |
+| Épique | 75 à 89 | 42 | 3,2 % |
+| Rare | 60 à 74 | 92 | 10 % |
+| Peu commune | 44 à 59 | 140 | 26 % |
+| Commune | moins de 44 | 218 | 60 % |
+
+À l'intérieur d'une rareté, les plus célèbres sortent encore moins souvent : Messi sort environ 5 fois moins que Duplantis.
+
+### Versions spéciales
+
+- **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or, années de vie pour les disparus.
+- **Prime** : la meilleure saison d'un athlète (LeBron 2016, Messi 2012, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. 1,5 à 2 % de chances par carte, valeur ×6 au marché.
+
+### La carte
+
+Note globale et poste (comme sur FUT), drapeau, sport, et 6 stats :
+
+| Stat | Ce qu'elle mesure |
+| --- | --- |
+| VIT | Vitesse |
+| FOR | Force |
+| END | Endurance |
+| TEC | Technique |
+| INT | Intelligence, lecture du jeu |
+| AUR | Aura : sang-froid, charisme, présence dans les grands rendez-vous |
+
+La popularité ne s'affiche pas sur la carte : c'est elle qui fixe la rareté, et elle compte dans l'épreuve « Bain de foule ».
+
+### Sports et particularités
+
+16 sports, chacun avec un passif en match et ses propres ultis :
+
+| Sport | Particularité |
+| --- | --- |
+| Football | Collectif : +2 par autre footballeur dans l'équipe |
+| Basketball | Main chaude : +6 après une manche gagnée |
+| Tennis | Duelliste : +5 en Face-à-face et Money time |
+| Athlétisme | Explosivité : +6 à la 1re manche et au Sprint |
+| Natation | Fluidité : insensible aux malus adverses |
+| Cyclisme | Diesel : +2 par numéro de manche |
+| Sports mécaniques | Aspiration : +7 quand l'équipe est menée |
+| Sports de combat | Instinct du tueur : +1 énergie après une manche écrasée |
+| Rugby | Rouleau compresseur : +6 en Bras de fer et Décathlon |
+| Handball, volley, hiver, gym, golf, glisse, sports US | voir l'écran Matchs, section Règles |
+
+Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » pour Duplantis (son record inscrit sur la carte monte d'1 cm à chaque utilisation), « Lightning Bolt » pour Bolt, « SIUUU » pour Ronaldo, « The Block » pour LeBron, « Night Night » pour Curry, « Ippon » pour Riner…
+
+### Boosters et boutique
+
+- Un booster gratuit toutes les 10 minutes, jusqu'à 10 en réserve.
+- Boutique : Découverte, Pro (1 Rare garantie), Élite (1 Épique garantie), Icônes, Prime (1 Prime garantie), Légende (1 Légendaire garantie) et un pack par sport. Les chances sont affichées sur chaque pack.
+- Les Épiques, Légendaires et Prime ont droit à leur « walkout » : drapeau, puis sport, puis note, puis la carte avec confettis et fanfare.
+
+### Mercato (marché des transferts)
+
+- Des managers IA mettent des cartes en vente, enchérissent et achètent les tiennes.
+- Achat immédiat ou enchères (remboursement automatique si quelqu'un surenchérit).
+- Vente : enchère de départ, prix d'achat immédiat, durée de 5 min à 3 h. Taxe de 5 % sur chaque vente.
+- La cote de chaque carte fluctue (courbe sur 24 h dans la fiche) et des actus font bouger les prix : « Semaine du tennis +15 % », « Ruée sur les cartes Marchand »…
+- Le marché continue de tourner quand le jeu est fermé : les ventes se font pendant ton absence.
+
+### Matchs
+
+- Équipe de 5 athlètes, tous sports mélangés.
+- 5 manches, chacune est une épreuve tirée au sort : Sprint, Bras de fer, Marathon, Coup de génie, Geste technique, Money time, Face-à-face, Bain de foule, Décathlon.
+- À chaque manche on choisit qui envoyer sans connaître le choix adverse. Puissance = stats de l'épreuve + particularité du sport + ulti + forme du jour.
+- Énergie : 2 au départ, un ulti en coûte 1, chaque manche perdue en rend 1.
+- Championnat de la division 10 à la division 1 : victoire +3 points, nul +1, promotion à 7 points.
+
+## Organisation du code
+
+```
+src/
+  data/athletes.ts   base des athlètes (523 dont 143 Icônes)
+  data/sports.ts     sports, particularités, ultis de sport, épreuves
+  engine/            moteur pur, sans interface : cartes, boosters, marché, matchs
+  store/             état du jeu (sauvegarde locale) et état de l'interface
+  components/        carte, pictogrammes, drapeaux, packs
+  overlays/          ouverture de booster, fiche carte
+  screens/           Boosters, Collection, Mercato, Matchs, Boutique
+```
+
+Le moteur (`src/engine`) ne dépend pas de l'interface : il prend un état, l'heure et une source de hasard, et renvoie le nouvel état. C'est ce qui permettra de le faire tourner sur un serveur pour le multijoueur.
+
+## Et ensuite
+
+- **10 000 athlètes** : générer la base depuis Wikidata et les vues Wikipédia, puis recalculer la rareté par percentile pour garder des légendaires très rares.
+- **Multijoueur** : un vrai marché entre joueurs demande un serveur qui fait autorité sur les soldes, l'ouverture des boosters et les ventes (sinon on peut tricher). Piste simple : Supabase (PostgreSQL, comptes, temps réel), puis Node + PostgreSQL + Redis si le nombre de joueurs explose.
+- **Matchs entre joueurs**, classement, saisons, événements (cartes « Équipe de la semaine »).
+
+Les notes et stats sont une interprétation de jeu. Les noms des athlètes appartiennent à leurs titulaires ; SportMasters est un projet de fan non officiel.
