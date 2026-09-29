@@ -5,12 +5,13 @@ import { ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS } from '../data/sports';
 import { isIcon, overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import type { CardFace } from '../engine/types';
-import { Card, CARD_PATH } from '../components/Card';
+import { Card } from '../components/Card';
 import { PackArt } from '../components/PackArt';
 import { Flag, COUNTRY_NAMES } from '../components/Flag';
 import { SportIcon } from '../components/SportIcon';
 import { Confetti, type ConfettiHandle } from '../components/Confetti';
 import { sfx } from '../audio/sfx';
+import { usePhoto } from '../photos';
 
 type Stage = 'pack' | 'tearing' | 'cards' | 'walkout' | 'summary';
 
@@ -44,27 +45,13 @@ function confettiColors(card: CardFace): string[] {
 export function CardBack({ className = '' }: { className?: string }) {
   return (
     <div className={`card-back ${className}`}>
-      <svg viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="cb-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#1d2742" />
-            <stop offset="1" stopColor="#090c16" />
-          </linearGradient>
-          <pattern id="cb-pat" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <line x1="0" y1="0" x2="0" y2="8" stroke="#ffffff" strokeOpacity="0.05" strokeWidth="3" />
-          </pattern>
-        </defs>
-        <path d={CARD_PATH} fill="url(#cb-grad)" />
-        <path d={CARD_PATH} fill="url(#cb-pat)" />
-        <path d={CARD_PATH} fill="none" stroke="#ffb020" strokeOpacity="0.8" strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
-        <path d={CARD_PATH} transform="translate(5 7) scale(0.9)" fill="none" stroke="#ffb020" strokeOpacity="0.3" strokeWidth="1" vectorEffect="non-scaling-stroke" />
-      </svg>
+      <div className="card-back__rings" />
       <div className="card-back__crest">
         <svg viewBox="0 0 24 28" aria-hidden="true">
           <path d="M12,1 L22,5 V13 C22,20 17,24.5 12,27 C7,24.5 2,20 2,13 V5 Z" />
           <path d="M7,15 L10.5,11 L13,13.5 L17,8.5" />
         </svg>
-        <span>SM</span>
+        <span>SportMasters</span>
       </div>
     </div>
   );
@@ -77,13 +64,33 @@ function Walkout({ card, onDone }: { card: CardFace; onDone: () => void }) {
   const confetti = useRef<ConfettiHandle>(null);
   const prime = card.variant === 'prime';
   const title = prime ? 'PRIME' : rarity.name.toUpperCase();
+  const photo = usePhoto(athlete);
+  const silhouette = photo.src && photo.cutout ? photo.src : null;
+  // étapes : 0 drapeau, 1 sport, 2 note, (2.5 silhouette si photo détourée), 3 carte
+  const [shadow, setShadow] = useState(false);
 
   useEffect(() => {
     if (step >= 3) return;
-    if (step === 0) sfx.drumroll(2.6);
-    const id = window.setTimeout(() => setStep((s) => s + 1), step === 0 ? 1100 : 950);
+    if (step === 0) sfx.drumroll(silhouette ? 3.6 : 2.6);
+    const id = window.setTimeout(
+      () => {
+        if (step === 2 && silhouette && !shadow) {
+          setShadow(true);
+          return;
+        }
+        setStep((s) => s + 1);
+      },
+      step === 0 ? 1100 : 950,
+    );
     return () => window.clearTimeout(id);
-  }, [step]);
+  }, [step, silhouette, shadow]);
+
+  useEffect(() => {
+    if (!shadow) return;
+    sfx.whoosh();
+    const id = window.setTimeout(() => setStep(3), 1100);
+    return () => window.clearTimeout(id);
+  }, [shadow]);
 
   useEffect(() => {
     if (step === 3) {
@@ -111,7 +118,7 @@ function Walkout({ card, onDone }: { card: CardFace; onDone: () => void }) {
       <div className="walkout__beams" aria-hidden="true" />
       <div className="walkout__floor" aria-hidden="true" />
       {step < 3 && (
-        <div className="walkout__clue" key={step}>
+        <div className="walkout__clue" key={`${step}-${shadow}`}>
           {step === 0 && (
             <>
               <Flag code={athlete.country} className="walkout__flag" />
@@ -124,12 +131,13 @@ function Walkout({ card, onDone }: { card: CardFace; onDone: () => void }) {
               <span className="walkout__label">{SPORTS[athlete.sport].name}</span>
             </>
           )}
-          {step === 2 && (
+          {step === 2 && !shadow && (
             <>
               <span className="walkout__ovr">{overallOf(athlete, card.variant)}</span>
               <span className="walkout__label">{isIcon(athlete) ? 'Icône' : athlete.role}</span>
             </>
           )}
+          {step === 2 && shadow && silhouette && <img className="walkout__silhouette" src={silhouette} alt="" />}
         </div>
       )}
       {step === 3 && (

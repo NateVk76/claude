@@ -126,9 +126,37 @@ export const POSITION_CODES: Record<ArchetypeId, string> = {
   quarterback: 'QB', receveur: 'TE', baseball: 'MLB', hockey: 'NHL',
 };
 
-/** Note globale affichée en haut de la carte. */
+// ───────────── Note ─────────────
+// Plus une carte est rare, plus elle est forte : chaque rareté a sa plage de notes.
+// Dans une même rareté, le niveau sportif réel (level) et la célébrité départagent les athlètes.
+export const RATING_BANDS: Record<RarityId, [number, number]> = {
+  commune: [58, 69],
+  'peu-commune': [70, 77],
+  rare: [78, 84],
+  epique: [85, 90],
+  legendaire: [91, 99],
+};
+
+const ratingCache = new Map<string, number>();
+
+/** Note de la version classique. */
+export function baseRating(athlete: Athlete): number {
+  const cached = ratingCache.get(athlete.id);
+  if (cached !== undefined) return cached;
+  const rarity = rarityOf(athlete);
+  const [lo, hi] = RATING_BANDS[rarity.id];
+  const [fameLo, fameHi] = fameSpan(rarity);
+  const fameScore = clamp((athlete.fame - fameLo) / (fameHi - fameLo), 0, 1);
+  const levelScore = clamp((athlete.level - 72) / 27, 0, 1);
+  const rating = Math.round(lo + (0.6 * levelScore + 0.4 * fameScore) * (hi - lo));
+  ratingCache.set(athlete.id, rating);
+  return rating;
+}
+
+/** Note globale affichée en haut de la carte (la version Prime gagne +3). */
 export function overallOf(athlete: Athlete, variant: Variant = 'base'): number {
-  return variant === 'prime' ? Math.min(99, athlete.level + PRIME_LEVEL_BOOST) : athlete.level;
+  const rating = baseRating(athlete);
+  return variant === 'prime' ? Math.min(99, rating + PRIME_LEVEL_BOOST) : rating;
 }
 
 const statCache = new Map<string, Stats>();
@@ -139,19 +167,23 @@ export function statsOf(athlete: Athlete, variant: Variant = 'base'): Stats {
   if (cached) return cached;
 
   const [oFor, oVit, oEnd, oTec, oInt, oMen] = ARCHETYPES[athlete.archetype] ?? [0, 0, 0, 0, 0, 0];
+  const rating = baseRating(athlete);
   const noise = (stat: string) => Math.round((hashUnit(`${athlete.id}:${stat}`) - 0.5) * 8);
-  const skill = (offset: number, stat: string) => clamp(athlete.level + offset + noise(stat), 25, 99);
+  const skill = (offset: number, stat: string) => clamp(rating + offset + noise(stat), 25, 99);
   const stats: Stats = {
     vit: skill(oVit, 'vit'),
     for: skill(oFor, 'for'),
     end: skill(oEnd, 'end'),
     tec: skill(oTec, 'tec'),
     int: skill(oInt, 'int'),
-    aur: clamp(Math.round(athlete.level * 0.55 + athlete.fame * 0.35 + oMen * 0.8 + 6) + noise('aur'), 25, 99),
+    aur: clamp(Math.round(rating * 0.62 + athlete.fame * 0.3 + oMen * 0.8 + 4) + noise('aur'), 25, 99),
   };
 
+  // les stats notées à la main expriment un point fort par rapport au niveau réel : on garde l'écart
   if (athlete.stats) {
-    for (const [stat, value] of Object.entries(athlete.stats) as Array<[StatKey, number]>) stats[stat] = value;
+    for (const [stat, value] of Object.entries(athlete.stats) as Array<[StatKey, number]>) {
+      stats[stat] = clamp(value - athlete.level + rating, 25, 99);
+    }
   }
   if (variant === 'prime') {
     for (const stat of Object.keys(stats) as StatKey[]) stats[stat] = Math.min(99, stats[stat] + PRIME_STAT_BOOST);
@@ -198,7 +230,7 @@ export function baseValueOf(athlete: Athlete, variant: Variant = 'base'): number
   const [lo, hi] = fameSpan(rarity);
   const withinTier = (athlete.fame - lo) / (hi - lo); // 0 → 1
   const fameFactor = 1 + withinTier * 1.5;
-  const levelFactor = 0.7 + Math.max(0, athlete.level - 70) / 60;
+  const levelFactor = 0.7 + Math.max(0, baseRating(athlete) - 58) / 70;
   const value = rarity.baseValue * fameFactor * levelFactor * (variant === 'prime' ? PRIME_VALUE_MULTIPLIER : 1);
   return roundPrice(value);
 }

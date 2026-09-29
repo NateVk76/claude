@@ -1,6 +1,6 @@
-/* ───────────── Carte ─────────────
+/* ───────────── Carte (style vignette) ─────────────
    Toutes les tailles internes sont en em : 1em = largeur de la carte / 24.
-   La matière (couleurs) dépend de la rareté ; Icône et Prime s'y superposent. */
+   La matière (fond métallisé, anneaux, textes) dépend de la rareté ; Icône et Prime s'y superposent. */
 
 .card {
   --w: var(--card-w, 196px);
@@ -13,23 +13,28 @@
   font-size: calc(var(--w) / 24);
   transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s;
-  filter: drop-shadow(0 0.7em 1em rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 0.7em 0.9em rgba(0, 0, 0, 0.45));
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
-  color: var(--ink);
 
   /* matière par défaut : bronze (commune) */
-  --bg: radial-gradient(120% 80% at 25% 0%, #f5d2ad 0%, rgba(245, 210, 173, 0) 55%),
-    linear-gradient(165deg, #dca673 0%, #b47646 42%, #7a4727 100%);
-  --ink: #2c190c;
-  --line: rgba(44, 25, 12, 0.32);
-  --trim: #f6d7b5;
-  --pic: #3b2313;
+  --foil: linear-gradient(160deg, #f6d3ad 0%, #d69a67 28%, #a8683c 62%, #6e3f1f 100%);
+  --ring: rgba(62, 30, 8, 0.55);
+  --ring-opacity: 0.5;
+  --ghost: rgba(255, 238, 220, 0.2);
+  --lines: rgba(255, 255, 255, 0.08);
+  --edition: #fff1df;
+  --edition-stroke: #3a1f0b;
+  --tile-bg: #fffaf4;
+  --tile-ink: #2b170a;
+  --banner-bg: #1c1008;
+  --banner-ink: #fff4e6;
+  --trim: rgba(255, 228, 200, 0.75);
+  --pic: #2c170a;
   --pic-accent: #fff0dc;
-  --wm: rgba(44, 25, 12, 0.16);
   --gem: #c98b5e;
-  --texture: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 7px);
+  --glow: rgba(255, 238, 215, 0.4);
 }
 
 .card[data-active='true'] {
@@ -42,105 +47,140 @@
 
 .card.is-clickable:not(.has-tilt):hover {
   transform: translateY(-0.35em) scale(1.02);
-  filter: drop-shadow(0 1em 1.3em rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 1em 1.2em rgba(0, 0, 0, 0.55));
 }
 
 .card:focus-visible {
   outline: 2px solid var(--accent, #ffb020);
-  outline-offset: 0.5em;
-  border-radius: 0.8em;
+  outline-offset: 0.4em;
+  border-radius: 1.3em;
 }
 
 .r-peu-commune {
-  --bg: radial-gradient(120% 80% at 25% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 55%),
-    linear-gradient(165deg, #edf1f5 0%, #c5ced8 45%, #8793a1 100%);
-  --ink: #17202b;
-  --line: rgba(23, 32, 43, 0.28);
-  --trim: #ffffff;
-  --pic: #1e2835;
+  --foil: linear-gradient(160deg, #ffffff 0%, #dfe5ec 30%, #aab5c2 65%, #6f7c8c 100%);
+  --ring: rgba(18, 28, 44, 0.5);
+  --ghost: rgba(255, 255, 255, 0.35);
+  --edition: #ffffff;
+  --edition-stroke: #18222f;
+  --tile-bg: #ffffff;
+  --tile-ink: #141c27;
+  --banner-bg: #121a26;
+  --banner-ink: #ffffff;
+  --trim: rgba(255, 255, 255, 0.85);
+  --pic: #1a2330;
   --pic-accent: #4f79ad;
-  --wm: rgba(23, 32, 43, 0.12);
   --gem: #e2e8ef;
-  --texture: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 5px);
+  --glow: rgba(255, 255, 255, 0.55);
 }
 
 .r-rare {
-  --bg: radial-gradient(120% 80% at 25% 0%, #fff7d6 0%, rgba(255, 247, 214, 0) 55%),
-    linear-gradient(165deg, #f8de89 0%, #e4b746 40%, #b5861f 78%, #8c6311 100%);
-  --ink: #2a1d03;
-  --line: rgba(42, 29, 3, 0.3);
-  --trim: #fff4c8;
-  --pic: #2a1d03;
+  --foil: linear-gradient(160deg, #fff6c9 0%, #f4d168 26%, #d9a632 58%, #9c6f12 100%);
+  --ring: rgba(22, 15, 2, 0.78);
+  --ring-opacity: 0.45;
+  --ghost: rgba(255, 246, 205, 0.3);
+  --edition: #fff4c4;
+  --edition-stroke: #1b1302;
+  --tile-bg: #fffbea;
+  --tile-ink: #241902;
+  --banner-bg: #140e02;
+  --banner-ink: #ffe9a6;
+  --trim: rgba(255, 244, 196, 0.9);
+  --pic: #1f1602;
   --pic-accent: #fffaf0;
-  --wm: rgba(42, 29, 3, 0.14);
   --gem: #f2c94c;
-  --texture: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0 2px, transparent 2px 9px);
+  --glow: rgba(255, 252, 225, 0.6);
 }
 
 .r-epique {
-  --bg: radial-gradient(120% 80% at 25% 0%, rgba(216, 184, 255, 0.95) 0%, rgba(216, 184, 255, 0) 55%),
-    linear-gradient(165deg, #9362f2 0%, #5b27c4 42%, #28096b 100%);
-  --ink: #fbf7ff;
-  --line: rgba(255, 255, 255, 0.34);
-  --trim: #e8d9ff;
+  --foil: linear-gradient(160deg, #e7d4ff 0%, #a877ff 26%, #6b2ee0 58%, #2c0a7a 100%);
+  --ring: rgba(14, 0, 48, 0.58);
+  --ghost: rgba(255, 255, 255, 0.16);
+  --edition: #ffffff;
+  --edition-stroke: #22064f;
+  --tile-bg: #ffffff;
+  --tile-ink: #26075a;
+  --banner-bg: #16043b;
+  --banner-ink: #ffffff;
+  --trim: rgba(236, 222, 255, 0.85);
   --pic: #ffffff;
   --pic-accent: #ffd66b;
-  --wm: rgba(255, 255, 255, 0.1);
   --gem: #c4a0ff;
-  --texture: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 7px);
+  --glow: rgba(255, 200, 255, 0.38);
 }
 
+/* légendaire : noir et or, anneaux dorés et paillettes */
 .r-legendaire {
-  --bg: radial-gradient(120% 80% at 25% 0%, rgba(255, 214, 120, 0.32) 0%, rgba(255, 214, 120, 0) 55%),
-    radial-gradient(90% 60% at 80% 100%, rgba(255, 170, 60, 0.18) 0%, rgba(255, 170, 60, 0) 60%),
-    linear-gradient(165deg, #2b2417 0%, #14100a 45%, #050403 100%);
-  --ink: #f8de94;
-  --line: rgba(248, 222, 148, 0.38);
-  --trim: url(#gold-grad);
+  --foil: radial-gradient(120% 90% at 55% 30%, #2c2311 0%, #0c0905 58%, #000 100%);
+  --glow: rgba(255, 196, 80, 0.42);
+  --ring: rgba(250, 212, 118, 0.95);
+  --ring-opacity: 0.58;
+  --ghost: rgba(250, 214, 120, 0.16);
+  --lines: rgba(255, 215, 120, 0.06);
+  --edition: #ffd978;
+  --edition-stroke: #000000;
+  --tile-bg: linear-gradient(160deg, #fff3c6, #e2b448 55%, #b8841c);
+  --tile-ink: #1a1203;
+  --banner-bg: linear-gradient(90deg, #f7d77e, #d6a43a);
+  --banner-ink: #1a1203;
+  --trim: rgba(247, 215, 126, 0.95);
   --pic: #f6d57e;
   --pic-accent: #fff6da;
-  --wm: rgba(248, 222, 148, 0.1);
   --gem: conic-gradient(from 0deg, #ff4fa3, #ffd84f, #5bffb0, #4fc3ff, #b44fff, #ff4fa3);
-  --texture: repeating-linear-gradient(135deg, rgba(248, 222, 148, 0.06) 0 1px, transparent 1px 6px);
 }
 
-/* Icônes : crème et or, quel que soit le palier de rareté. */
+/* Icônes : ivoire et or, façon carte vintage */
 .card.is-icon {
-  --bg: radial-gradient(120% 80% at 25% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 55%),
-    linear-gradient(165deg, #fffdf7 0%, #f5eedd 50%, #e3d6b6 100%);
-  --ink: #4a3912;
-  --line: rgba(74, 57, 18, 0.32);
-  --trim: url(#gold-grad);
+  --foil: linear-gradient(160deg, #fffdf7 0%, #f3ead3 40%, #dccb9f 100%);
+  --glow: rgba(255, 255, 255, 0.75);
+  --ring: rgba(176, 134, 52, 0.5);
+  --ghost: rgba(176, 134, 52, 0.16);
+  --lines: rgba(176, 134, 52, 0.07);
+  --edition: #fff8e6;
+  --edition-stroke: #6b4c12;
+  --tile-bg: #2a2215;
+  --tile-ink: #f5d98a;
+  --banner-bg: #2a2215;
+  --banner-ink: #f5e3b0;
+  --trim: rgba(201, 162, 74, 0.95);
   --pic: #6f5420;
   --pic-accent: #c79c3e;
-  --wm: rgba(111, 84, 32, 0.12);
-  --texture: repeating-linear-gradient(135deg, rgba(199, 156, 62, 0.07) 0 1px, transparent 1px 6px);
 }
 
-/* le liseré des Icônes rappelle leur palier de rareté */
-.card.is-icon.r-commune {
-  --trim: #c8946a;
-}
-.card.is-icon.r-peu-commune {
-  --trim: #a9b4c1;
-}
-.card.is-icon.r-epique {
-  --trim: #b98cff;
-}
-
+/* Prime : reflets arc-en-ciel */
 .card.is-prime {
-  --trim: url(#prime-grad);
+  --foil: linear-gradient(135deg, #ffd1ec 0%, #fff1b3 22%, #c4ffe6 45%, #bfe4ff 68%, #e5cbff 100%);
+  --glow: rgba(255, 255, 255, 0.7);
+  --ring: rgba(40, 24, 90, 0.42);
+  --ghost: rgba(255, 255, 255, 0.4);
+  --edition: #ffffff;
+  --edition-stroke: #2a1b58;
+  --tile-bg: #1b1438;
+  --tile-ink: #ffffff;
+  --banner-bg: #1b1438;
+  --banner-ink: #ffffff;
+  --trim: rgba(255, 255, 255, 0.95);
+  --pic: #2a1b58;
+  --pic-accent: #ff7ac8;
 }
 
+.card.is-prime.is-icon {
+  --foil: linear-gradient(135deg, #fff7df 0%, #ffe3f1 30%, #e3f6ff 60%, #f3e3c2 100%);
+}
+
+/* ─── structure ─── */
 .card__body {
   position: absolute;
   inset: 0;
-  clip-path: url(#card-clip);
   overflow: hidden;
+  border-radius: 1.1em;
+  isolation: isolate;
+  background: #111;
 }
 
 .card__bg,
-.card__texture,
+.card__rings,
+.card__lines,
+.card__frame,
 .card__holo,
 .card__shine {
   position: absolute;
@@ -149,132 +189,256 @@
 }
 
 .card__bg {
-  background: var(--bg);
+  background: radial-gradient(58% 42% at 62% 40%, var(--glow), transparent 72%), var(--foil);
 }
 
-.card__texture {
-  background: var(--texture);
-  opacity: 0.9;
+/* quelques grands arcs derrière l'athlète, comme sur les vignettes */
+.card__rings {
+  background: repeating-radial-gradient(circle at 66% 40%, transparent 0 3.2em, var(--ring) 3.2em 4.6em, transparent 4.6em 7.4em);
+  opacity: var(--ring-opacity, 0.55);
+  mask-image: linear-gradient(115deg, transparent 12%, #000 42%, #000 70%, transparent 96%);
+  -webkit-mask-image: linear-gradient(115deg, transparent 12%, #000 42%, #000 70%, transparent 96%);
 }
 
-.card__watermark {
+.card__lines {
+  background: repeating-linear-gradient(0deg, var(--lines) 0 1px, transparent 1px 3px);
+}
+
+.card__ghost {
   position: absolute;
-  right: 4%;
-  top: 7%;
+  right: -3%;
+  top: 4%;
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: 10.5em;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--wm);
+  font-size: 15em;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--ghost);
   pointer-events: none;
 }
 
-.card__art {
+/* ─── athlète ─── */
+.card__player {
   position: absolute;
-  left: 25%;
-  right: 3%;
-  top: 7%;
-  height: 52%;
+  left: 8%;
+  right: -2%;
+  top: 9%;
+  bottom: 17%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  pointer-events: none;
 }
 
+.card__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 100%;
+}
+
+.has-cutout .card__photo {
+  filter: drop-shadow(0 0.25em 0.45em rgba(0, 0, 0, 0.45)) saturate(1.08) contrast(1.04);
+}
+
+/* photo non détourée : cadrée dans une arche qui se fond dans la carte */
+.has-photo .card__player {
+  left: 17%;
+  right: 5%;
+  top: 7%;
+  bottom: 18%;
+}
+
+.has-photo .card__photo {
+  object-fit: cover;
+  object-position: 50% 18%;
+  border-radius: 45% 45% 0.6em 0.6em / 26% 26% 0.6em 0.6em;
+  mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
+  box-shadow: 0 0 0 0.25em var(--trim);
+}
+
+/* pas de photo : grand pictogramme façon autocollant */
 .card__picto {
   width: 100%;
   height: 100%;
   color: var(--pic);
-  filter: drop-shadow(0.12em 0.18em 0 rgba(0, 0, 0, 0.14));
+  filter: drop-shadow(0.09em 0 0 #fff) drop-shadow(-0.09em 0 0 #fff) drop-shadow(0 0.09em 0 #fff) drop-shadow(0 -0.09em 0 #fff)
+    drop-shadow(0.2em 0.35em 0.3em rgba(0, 0, 0, 0.35));
 }
 
-.card__side {
+.r-legendaire .card__picto,
+.r-epique .card__picto {
+  filter: drop-shadow(0.09em 0 0 #000) drop-shadow(-0.09em 0 0 #000) drop-shadow(0 0.09em 0 #000) drop-shadow(0 -0.09em 0 #000)
+    drop-shadow(0 0 0.8em rgba(255, 214, 110, 0.35));
+}
+
+/* ─── haut de carte ─── */
+.card__tile {
   position: absolute;
-  left: 6.5%;
-  top: 8.5%;
-  width: 22%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.18em;
+  left: 5%;
+  top: 3.6%;
+  width: 5.4em;
+  padding: 0.35em 0 0.3em;
+  display: grid;
+  justify-items: center;
+  border-radius: 0.8em;
+  background: var(--tile-bg);
+  color: var(--tile-ink);
+  box-shadow: 0 0.15em 0.4em rgba(0, 0, 0, 0.35), inset 0 0 0 0.08em rgba(0, 0, 0, 0.12);
+  z-index: 2;
 }
 
 .card__ovr {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: 4.2em;
-  line-height: 0.82;
+  font-size: 3.3em;
+  line-height: 0.9;
   letter-spacing: -0.02em;
 }
 
 .card__pos {
   font-family: var(--font-data);
   font-weight: 800;
-  font-size: 1.35em;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  margin-top: 0.15em;
+  font-size: 1em;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
 }
 
 .card__flag {
-  width: 2.9em;
-  height: 1.93em;
-  margin-top: 0.45em;
-  border-radius: 0.14em;
-  overflow: hidden;
-  box-shadow: 0 0.08em 0.2em rgba(0, 0, 0, 0.25);
-}
-
-.card__sport {
-  width: 2.1em;
-  height: 2.1em;
-  margin-top: 0.4em;
-  opacity: 0.9;
-}
-
-.card__prime,
-.card__iconmark {
   position: absolute;
-  top: 6.8%;
-  right: 6%;
+  left: 6.8%;
+  top: calc(3.6% + 6.95em);
+  width: 4.1em;
+  height: 2.73em;
+  border-radius: 0.3em;
+  overflow: hidden;
+  box-shadow: 0 0.12em 0.3em rgba(0, 0, 0, 0.4), 0 0 0 0.12em rgba(255, 255, 255, 0.85);
+  z-index: 2;
+}
+
+.card__crest {
+  position: absolute;
+  right: 5%;
+  top: 3.4%;
+  width: 4.3em;
+  height: 4.9em;
+  display: grid;
+  place-items: center;
+  padding-bottom: 0.5em;
+  color: #fff;
+  background: var(--sport);
+  clip-path: polygon(0 0, 100% 0, 100% 64%, 50% 100%, 0 64%);
+  box-shadow: inset 0 0 0 0.2em rgba(255, 255, 255, 0.55);
+  z-index: 2;
+}
+
+.card__crest svg {
+  width: 2.6em;
+  height: 2.6em;
+  filter: drop-shadow(0 0.08em 0.1em rgba(0, 0, 0, 0.4));
+}
+
+/* ─── texte vertical (surnom, Prime, Icône) ─── */
+.card__vertical {
+  position: absolute;
+  left: 4.2%;
+  bottom: 24%;
+  max-height: 44%;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--edition);
+  -webkit-text-stroke: 0.07em var(--edition-stroke);
+  paint-order: stroke fill;
+  text-shadow: 0.08em 0.08em 0 var(--edition-stroke);
+  z-index: 2;
+}
+
+/* ─── bas de carte ─── */
+.card__pills {
+  position: absolute;
+  left: 5%;
+  bottom: 14.2%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.22em 0.5em 0.18em;
-  border-radius: 0.35em;
+  gap: 0.4em;
+  z-index: 3;
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25em;
+  padding: 0.18em 0.55em 0.14em;
+  border-radius: 0.75em;
+  background: var(--pill, #555);
+  color: #fff;
+  border: 0.13em solid #fff;
+  box-shadow: 0 0.12em 0.3em rgba(0, 0, 0, 0.35);
   font-family: var(--font-data);
-  font-weight: 800;
-  font-size: 0.95em;
-  letter-spacing: 0.12em;
   line-height: 1;
 }
 
-.card__prime {
-  color: #140f1f;
-  background: linear-gradient(100deg, #ff9ad5, #ffe27a 30%, #8dffcf 55%, #8fd3ff 78%, #d9a2ff);
-  box-shadow: 0 0.1em 0.4em rgba(0, 0, 0, 0.3);
+.stat-pill small {
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
 }
 
-.card__prime small {
-  font-size: 0.85em;
-  letter-spacing: 0.06em;
-  margin-top: 0.12em;
+.stat-pill b {
+  font-size: 1.65em;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
 }
 
-.card__iconmark {
-  color: #fffaf0;
-  background: linear-gradient(160deg, #d8b25c, #a98124);
+.stat-pill--vit {
+  --pill: #0ea5d6;
+}
+.stat-pill--for {
+  --pill: #e23b3b;
+}
+.stat-pill--end {
+  --pill: #1fa35a;
+}
+.stat-pill--tec {
+  --pill: #7c4dff;
+}
+.stat-pill--int {
+  --pill: #2f6fe4;
+}
+.stat-pill--aur {
+  --pill: #e28a00;
+}
+
+.card__banner {
+  position: absolute;
+  left: 0;
+  right: 21%;
+  bottom: 4.6%;
+  min-height: 3.1em;
+  padding: 0.35em 1.2em 0.3em 5.5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--banner-bg);
+  color: var(--banner-ink);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 1.1em) 100%, 0 100%);
+  box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.35);
+  z-index: 3;
 }
 
 .card__name {
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  top: 58.4%;
-  text-align: center;
   font-family: var(--font-display);
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 1.02;
   text-transform: uppercase;
   letter-spacing: 0.01em;
   white-space: nowrap;
@@ -282,114 +446,64 @@
   text-overflow: ellipsis;
 }
 
-.card__sub {
-  position: absolute;
-  left: 8%;
-  right: 8%;
-  top: 65.3%;
-  text-align: center;
-  font-family: var(--font-data);
-  font-weight: 600;
-  font-size: 0.98em;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  opacity: 0.78;
-}
-
-.card__stats {
-  position: absolute;
-  left: 13%;
-  right: 13%;
-  top: 69.6%;
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-  gap: 0.2em 0.9em;
-  padding-top: 0.45em;
-  border-top: 1px solid var(--line);
-}
-
-.card__col {
-  display: flex;
-  flex-direction: column;
-  gap: 0.05em;
-}
-
-.card__sep {
-  background: var(--line);
-}
-
-.card__stat {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 0.35em;
-  font-family: var(--font-data);
-  line-height: 1.08;
-}
-
-.card__stat b {
-  font-weight: 800;
-  font-size: 1.52em;
-  font-variant-numeric: tabular-nums;
-  min-width: 1.3em;
-  text-align: right;
-}
-
-.card__stat span {
-  font-weight: 600;
-  font-size: 1.2em;
-  min-width: 1.95em;
-  opacity: 0.85;
-}
-
-.card__ulti {
-  position: absolute;
-  left: 13%;
-  right: 13%;
-  top: 87.5%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3em;
+.card__record {
   font-family: var(--font-data);
   font-weight: 700;
-  font-size: 0.92em;
-  letter-spacing: 0.06em;
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  opacity: 0.85;
   white-space: nowrap;
-  overflow: hidden;
 }
 
-.card__ulti span {
-  overflow: hidden;
-  text-overflow: ellipsis;
+.card__mark {
+  position: absolute;
+  right: 5%;
+  bottom: 5.4%;
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  z-index: 3;
 }
 
-.card__ulti svg {
-  width: 0.72em;
-  height: 0.96em;
-  flex: none;
-  fill: currentColor;
-}
-
-.card__ulti.is-signature svg {
-  fill: var(--pic-accent);
-  filter: drop-shadow(0 0 0.2em var(--pic-accent));
+.card__mark span {
+  padding: 0.18em 0.4em 0.12em;
+  border-radius: 0.3em;
+  background: var(--banner-bg);
+  color: var(--banner-ink);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.95em;
+  letter-spacing: 0.04em;
 }
 
 .card__gem {
-  position: absolute;
-  top: 0.9%;
-  left: 50%;
-  width: 0.95em;
-  height: 0.95em;
-  transform: translateX(-50%) rotate(45deg);
+  display: block;
+  width: 1em;
+  height: 1em;
+  transform: rotate(45deg);
   background: var(--gem);
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 0.35em rgba(255, 255, 255, 0.45);
+  border: 0.1em solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.35);
+}
+
+/* liseré intérieur */
+.card__frame {
+  inset: 0.45em;
+  border-radius: 0.8em;
+  border: 0.1em solid var(--trim);
+  opacity: 0.8;
+  z-index: 4;
+}
+
+.is-prime .card__frame {
+  border-width: 0.16em;
+  border-color: transparent;
+  background: linear-gradient(120deg, #ff7ac8, #ffe27a, #7dffc9, #7cc8ff, #d38bff, #ff7ac8) border-box;
+  mask: linear-gradient(#000 0 0) padding-box exclude, linear-gradient(#000 0 0) border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+  -webkit-mask-composite: xor;
+  opacity: 1;
 }
 
 /* ─── reflets ─── */
@@ -408,22 +522,23 @@
   );
   background-size: 260% 260%;
   background-position: var(--mx, 50%) var(--my, 50%);
+  z-index: 5;
 }
 
-.r-legendaire .card__holo {
-  opacity: 0.16;
-  animation: holo-drift 7s linear infinite;
-}
-
-.is-icon.r-legendaire .card__holo,
-.is-icon.r-epique .card__holo {
-  opacity: 0.22;
-  mix-blend-mode: multiply;
+.r-rare .card__holo,
+.r-epique .card__holo {
+  opacity: 0.14;
   animation: holo-drift 9s linear infinite;
 }
 
+.r-legendaire .card__holo {
+  opacity: 0.2;
+  animation: holo-drift 7s linear infinite;
+}
+
 .is-prime .card__holo {
-  opacity: 0.5;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
   animation: holo-drift 5s linear infinite;
 }
 
@@ -431,11 +546,27 @@
   animation: none;
 }
 
+/* paillettes des légendaires */
+.r-legendaire .card__lines {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 232, 160, 0.9) 0 0.06em, transparent 0.1em) 0 0 / 3.1em 3.7em,
+    radial-gradient(circle at 70% 60%, rgba(255, 232, 160, 0.7) 0 0.05em, transparent 0.09em) 0 0 / 2.3em 2.9em,
+    repeating-linear-gradient(0deg, var(--lines) 0 1px, transparent 1px 3px);
+  animation: sparkle 3.2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  50% {
+    opacity: 0.55;
+  }
+}
+
 .card__shine {
   opacity: 0;
   mix-blend-mode: overlay;
   background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 45%);
   transition: opacity 0.3s;
+  z-index: 6;
 }
 
 .has-tilt[data-active='true'] .card__shine {
@@ -451,57 +582,44 @@
   }
 }
 
-/* ─── cadre ─── */
-.card__frame {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: visible;
+/* ─── petites tailles ─── */
+.card.is-compact .card__banner {
+  right: 0;
+  min-height: 3.6em;
+  padding-left: 6%;
+  clip-path: none;
 }
 
-.card__frame path {
-  fill: none;
-  stroke: var(--trim);
+.card.is-compact .card__mark {
+  display: none;
 }
 
-.card__frame-outer {
-  stroke-width: 2.4px;
+.card.is-compact .card__pills {
+  bottom: 16%;
 }
 
-.card__frame-inner {
-  stroke-width: 1px;
-  opacity: 0.7;
+.card.is-tiny .card__player {
+  left: 4%;
+  bottom: 16%;
 }
 
-.is-prime .card__frame-outer {
-  stroke-width: 3.4px;
+.card.is-tiny .card__tile {
+  width: 6em;
 }
 
-/* ─── petites tailles : pas de stats, visuel plus grand ─── */
-.card.is-compact .card__art {
-  top: 7%;
-  height: 58%;
+.card.is-tiny .card__ovr {
+  font-size: 3.7em;
 }
 
-.card.is-compact .card__name {
-  top: 69%;
+.card.is-tiny .card__flag {
+  width: 4.6em;
+  height: 3.07em;
+  top: calc(3.6% + 7.8em);
 }
 
-.card.is-compact .card__side {
-  top: 9%;
-}
-
-.card.is-compact .card__watermark {
-  font-size: 9em;
-}
-
-.card.is-compact .card__prime,
-.card.is-compact .card__iconmark {
-  font-size: 1.05em;
-  padding: 0.25em 0.4em;
-  letter-spacing: 0.08em;
+.card.is-tiny .card__crest {
+  width: 5em;
+  height: 5.6em;
 }
 
 /* ─── album : carte pas encore obtenue ─── */
@@ -509,20 +627,13 @@
   filter: grayscale(1) brightness(0.42) contrast(0.95);
 }
 
-.card.is-locked .card__frame {
-  opacity: 0.35;
-}
-
-.card__lock {
-  display: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .card,
   .card[data-active='true'] {
     transition: none;
   }
-  .card__holo {
+  .card__holo,
+  .card__lines {
     animation: none !important;
   }
 }

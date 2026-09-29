@@ -3,7 +3,6 @@ import { useGame, MAX_FREE_PACKS } from './store/game';
 import { useUi, type Tab } from './store/ui';
 import { useNow, formatDuration } from './hooks/useNow';
 import { Balles } from './components/Balles';
-import { CardClipDefs } from './components/Card';
 import { setMuted, sfx } from './audio/sfx';
 import { HomeScreen } from './screens/Home';
 import { CollectionScreen } from './screens/Collection';
@@ -152,7 +151,6 @@ export function App() {
 
   return (
     <div className="app">
-      <CardClipDefs />
       <Topbar />
       <main className="content" id="contenu">
         {tab === 'boosters' && <HomeScreen />}

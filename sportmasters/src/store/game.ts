@@ -3,7 +3,7 @@ import { createJSONStorage, persist, type StateStorage } from 'zustand/middlewar
 import type { CardFace, OwnedCard } from '../engine/types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS, SPORT_ORDER } from '../data/sports';
-import { quickSellValue, rarityOf } from '../engine/cards';
+import { overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import { FREE_PACK, SHOP_PACKS, openPack, sportPack, type PackDef } from '../engine/packs';
 import {
   MAX_MY_LISTINGS,
@@ -459,8 +459,8 @@ export const useGame = create<GameState>()(
             const best = s.collection
               .slice()
               .sort((a, b) => {
-                const la = ATHLETES_BY_ID[a.athleteId].level + (a.variant === 'prime' ? 3 : 0);
-                const lb = ATHLETES_BY_ID[b.athleteId].level + (b.variant === 'prime' ? 3 : 0);
+                const la = overallOf(ATHLETES_BY_ID[a.athleteId], a.variant);
+                const lb = overallOf(ATHLETES_BY_ID[b.athleteId], b.variant);
                 return lb - la;
               })
               .filter((c) => {

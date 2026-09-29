@@ -10,6 +10,7 @@ import type { CardFace, OwnedCard } from '../engine/types';
 import { Card } from '../components/Card';
 import { Flag, COUNTRY_NAMES } from '../components/Flag';
 import { Balles } from '../components/Balles';
+import { photoCredit } from '../photos';
 
 function Sparkline({ points }: { points: Array<{ t: number; price: number }> }) {
   const w = 280;
@@ -224,6 +225,15 @@ export function CardDetail() {
         <div className="detail__card">
           <Card card={detail.card} size="lg" tilt />
           <p className="detail__tip">Bouge la carte avec le doigt ou la souris</p>
+          {photoCredit(face.athleteId) && (
+            <p className="detail__credit">
+              Photo :{' '}
+              <a href={photoCredit(face.athleteId)!.page} target="_blank" rel="noreferrer">
+                {photoCredit(face.athleteId)!.author}
+              </a>
+              , {photoCredit(face.athleteId)!.license}, Wikimedia Commons{photoCredit(face.athleteId)!.cutout ? ' (détourée)' : ''}
+            </p>
+          )}
         </div>
         <div className="detail__info">
           <div className="detail__chips">
@@ -247,7 +257,7 @@ export function CardDetail() {
           )}
           {face.variant === 'prime' && !athlete.prime && (
             <p className="detail__prime">
-              <b>Version Prime</b> : l’athlète à son meilleur niveau, +{overallOf(athlete, 'prime') - athlete.level} de note et des stats boostées.
+              <b>Version Prime</b> : l’athlète à son meilleur niveau, +{overallOf(athlete, 'prime') - overallOf(athlete)} de note et des stats boostées.
             </p>
           )}
 

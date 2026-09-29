@@ -71,14 +71,14 @@ const CLUB_NAMES = [
 ];
 
 export function divisionTarget(division: number): number {
-  return 70 + (10 - division) * 2.4;
+  return 64 + (10 - division) * 3.2;
 }
 
 /** Équipe adverse d'un niveau proche de la division. */
 export function createOpponent(division: number, rng: Rng): { name: string; cards: MatchCard[] } {
   const target = divisionTarget(division);
-  let pool = ATHLETES.filter((a) => Math.abs(a.level - target) <= 4);
-  if (pool.length < TEAM_SIZE) pool = ATHLETES.slice().sort((a, b) => Math.abs(a.level - target) - Math.abs(b.level - target)).slice(0, 20);
+  let pool = ATHLETES.filter((a) => Math.abs(overallOf(a) - target) <= 3);
+  if (pool.length < TEAM_SIZE) pool = ATHLETES.slice().sort((a, b) => Math.abs(overallOf(a) - target) - Math.abs(overallOf(b) - target)).slice(0, 20);
   const chosen = shuffle(rng, pool).slice(0, TEAM_SIZE);
   const cards = chosen.map((athlete) => {
     const variant = division <= 3 && rng() < 0.15 ? ('prime' as const) : ('base' as const);

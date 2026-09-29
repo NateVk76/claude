@@ -33,6 +33,20 @@ Chaque athlète a un score de célébrité (0-100), estimé d'après son audienc
 
 À l'intérieur d'une rareté, les plus célèbres sortent encore moins souvent : Messi sort environ 5 fois moins que Duplantis.
 
+### Plus une carte est rare, plus elle est forte
+
+Chaque rareté a sa plage de notes, donc une carte plus rare est toujours plus forte :
+
+| Rareté | Note |
+| --- | --- |
+| Légendaire | 91 à 99 |
+| Épique | 85 à 90 |
+| Rare | 78 à 84 |
+| Peu commune | 70 à 77 |
+| Commune | 58 à 69 |
+
+Dans une même rareté, le niveau sportif réel de l'athlète et sa célébrité le placent dans la plage (Messi, Ronaldo, Jordan et Bolt à 98, Duplantis à 96). Les stats découlent de la note. La version Prime ajoute +3 : elle est bien plus rare que la version classique, donc la règle tient toujours.
+
 ### Versions spéciales
 
 - **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or, années de vie pour les disparus.
@@ -40,7 +54,7 @@ Chaque athlète a un score de célébrité (0-100), estimé d'après son audienc
 
 ### La carte
 
-Note globale et poste (comme sur FUT), drapeau, sport, et 6 stats :
+Style vignette à collectionner : photo de l'athlète en grand (détourée quand c'est possible), fond métallisé selon la rareté, note et poste en haut à gauche avec le drapeau, écusson du sport en haut à droite, surnom écrit à la verticale (« MONDO », « LA PULGA », « KING JAMES »…), les deux meilleures stats en pastilles et le nom dans un bandeau. La fiche de chaque carte montre les 6 stats utilisées en match :
 
 | Stat | Ce qu'elle mesure |
 | --- | --- |
@@ -108,6 +122,18 @@ src/
 ```
 
 Le moteur (`src/engine`) ne dépend pas de l'interface : il prend un état, l'heure et une source de hasard, et renvoie le nouvel état. C'est ce qui permettra de le faire tourner sur un serveur pour le multijoueur.
+
+## Photos des athlètes
+
+Les photos viennent de Wikimedia Commons : uniquement des images sous licence libre (CC BY, CC BY-SA, domaine public), avec l'auteur et la licence affichés dans la fiche de chaque carte. Elles sont récupérées et détourées par la GitHub Action `.github/workflows/photos.yml` :
+
+1. `scripts/photos/telecharger-photos.mjs telecharger` trouve la page Wikipédia de chaque athlète (français puis anglais), vérifie que c'est le bon sport, et télécharge la photo principale si elle est libre.
+2. `scripts/photos/detourer.py` détoure les athlètes avec rembg (effet « joueur qui sort de la carte »).
+3. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` et les crédits dans `src/data/photos.json`.
+
+L'Action se relance à chaque modification de `scripts/photos/`. Si un athlète tombe sur la mauvaise page, ajoute le bon titre Wikipédia dans `scripts/photos/titres.json`. Sans photo, la carte affiche un pictogramme du sport.
+
+Les photos sont libres de droits d'auteur, mais l'image des personnes reste protégée : pour une sortie commerciale, il faudra des licences officielles (joueurs, clubs, ligues).
 
 ## Passer à 10 000 athlètes
 

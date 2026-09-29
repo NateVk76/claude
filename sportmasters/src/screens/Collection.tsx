@@ -3,7 +3,7 @@ import { useGame, formatBalles } from '../store/game';
 import { useUi } from '../store/ui';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS, SPORT_ORDER } from '../data/sports';
-import { RARITIES, RARITY_ORDER, quickSellValue, rarityOf } from '../engine/cards';
+import { RARITIES, RARITY_ORDER, overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import type { OwnedCard, RarityId, SportId } from '../engine/types';
 import { Card } from '../components/Card';
 import { SportIcon } from '../components/SportIcon';
@@ -65,7 +65,7 @@ function Club() {
       if (q && !normalize(`${athlete.first} ${athlete.last} ${athlete.nick ?? ''}`).includes(q)) return false;
       return true;
     });
-    const level = (g: Group) => ATHLETES_BY_ID[g.cards[0].athleteId].level + (g.cards[0].variant === 'prime' ? 3 : 0);
+    const level = (g: Group) => overallOf(ATHLETES_BY_ID[g.cards[0].athleteId], g.cards[0].variant);
     const rank = (g: Group) => rarityOf(ATHLETES_BY_ID[g.cards[0].athleteId]).order * 1000 + (g.cards[0].variant === 'prime' ? 500 : 0) + level(g);
     list = list.sort((a, b) => {
       if (sort === 'rating') return level(b) - level(a);

@@ -5,7 +5,6 @@ import './styles/base.css';
 import './styles/card.css';
 import './styles/app.css';
 import { App } from './App';
-import { CardClipDefs } from './components/Card';
 import { Gallery } from './dev/Gallery';
 import { useGame } from './store/game';
 
@@ -19,8 +18,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {isGallery ? (
       <>
-        <CardClipDefs />
-        <Gallery />
+          <Gallery />
       </>
     ) : (
       <App />

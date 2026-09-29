@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ATHLETES } from '../../data/athletes';
-import { athletesByRarity, baseValueOf, statsOf, overallOf, ultiOf, dropWeight } from '../cards';
+import { athletesByRarity, baseValueOf, statsOf, overallOf, ultiOf, dropWeight, RARITY_ORDER } from '../cards';
 
 describe('base de données', () => {
   it('a des identifiants uniques', () => {
@@ -27,5 +27,16 @@ describe('base de données', () => {
       expect(overallOf(athlete, 'prime')).toBeGreaterThanOrEqual(overallOf(athlete));
       expect(ultiOf(athlete).effects.length).toBeGreaterThan(0);
     }
+  });
+
+  it('rend toujours plus forte une carte plus rare', () => {
+    const byRarity = athletesByRarity();
+    for (let i = 0; i < RARITY_ORDER.length - 1; i++) {
+      const lower = byRarity[RARITY_ORDER[i]].map((a) => overallOf(a));
+      const higher = byRarity[RARITY_ORDER[i + 1]].map((a) => overallOf(a));
+      expect(Math.max(...lower)).toBeLessThan(Math.min(...higher));
+    }
+    const top = ATHLETES.slice().sort((a, b) => overallOf(b) - overallOf(a)).slice(0, 5).map((a) => `${a.id} ${overallOf(a)}`);
+    console.log('meilleures notes', top.join(', '), '| Duplantis', overallOf(ATHLETES.find((a) => a.id === 'duplantis')!));
   });
 });
