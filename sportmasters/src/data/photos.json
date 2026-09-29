@@ -1,1 +1,98 @@
-{}
+{
+ "bolt": {
+  "file": "bolt.webp",
+  "cutout": true,
+  "author": "Fernando Frazão/Agência Brasil",
+  "license": "CC BY 3.0 br",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0/br/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Usain_Bolt_Rio_100m_final_2016i-cr.jpg"
+ },
+ "cristiano-ronaldo": {
+  "file": "cristiano-ronaldo.webp",
+  "cutout": true,
+  "author": "Bryan Berlin",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg"
+ },
+ "djokovic": {
+  "file": "djokovic.webp",
+  "cutout": true,
+  "author": "Andymiah",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Novak_Djokovic_Paris_2024_Olympic_Games_(cropped).jpg"
+ },
+ "federer": {
+  "file": "federer.webp",
+  "cutout": true,
+  "author": "Squeaky Knees from Cornwall, UK",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Roger_Federer_(26_June_2009,_Wimbledon)_2.jpg"
+ },
+ "jordan": {
+  "file": "jordan.webp",
+  "cutout": true,
+  "author": "DOD photo by D. Myles Cullen",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Michael_Jordan_in_2014.jpg"
+ },
+ "lebron": {
+  "file": "lebron.webp",
+  "cutout": true,
+  "author": "Erik Drost",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Lebron_James_2022small.jpg"
+ },
+ "maradona": {
+  "file": "maradona.webp",
+  "cutout": true,
+  "author": "Unknown author Unknown author",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Argentina_celebrando_copa_(cropped).jpg"
+ },
+ "mbappe": {
+  "file": "mbappe.webp",
+  "cutout": true,
+  "author": "Bryan Berlin",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Kylian_Mbappe_-_France_v_Norway_-_26_June_2026_(cropped).jpg"
+ },
+ "messi": {
+  "file": "messi.webp",
+  "cutout": true,
+  "author": "Bryan Berlin",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg"
+ },
+ "nadal": {
+  "file": "nadal.webp",
+  "cutout": true,
+  "author": "y.caradec",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Rafael_Nadal_2011_Roland_Garros_2011.jpg"
+ },
+ "pele": {
+  "file": "pele.webp",
+  "cutout": true,
+  "author": "Unknown author Unknown author",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Pele_con_brasil_(cropped).jpg"
+ },
+ "zidane": {
+  "file": "zidane.webp",
+  "cutout": true,
+  "author": "Hadi Abyar",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Zinedine_Zidane_by_Tasnim_03.jpg"
+ }
+}
