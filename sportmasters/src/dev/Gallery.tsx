@@ -1,6 +1,9 @@
 import { ATHLETES } from '../data/athletes';
 import { Card } from '../components/Card';
-import { isIcon, rarityOf } from '../engine/cards';
+import { RARITIES, isIcon, rarityOf } from '../engine/cards';
+import { FREE_PACK, SHOP_PACKS, sportPack } from '../engine/packs';
+import { SPORTS } from '../data/sports';
+import { PackArt } from '../components/PackArt';
 import { Flag, COUNTRY_NAMES } from '../components/Flag';
 
 // Page de contrôle visuel (#galerie) : un échantillon de cartes et tous les drapeaux.
@@ -14,6 +17,19 @@ export function Gallery() {
     .filter((a) => a !== undefined);
   return (
     <div style={{ padding: 24, display: 'grid', gap: 32 }}>
+      <section id="boosters" style={{ display: 'flex', flexWrap: 'wrap', gap: 20 }}>
+        {[FREE_PACK, ...SHOP_PACKS, sportPack('foot', SPORTS.foot.name), sportPack('tennis', SPORTS.tennis.name)].map((pack) => (
+          <div key={pack.id} style={{ width: 190 }}>
+            <PackArt
+              tone={pack.tone}
+              name={pack.name}
+              sport={pack.sport}
+              size={pack.size}
+              guarantee={pack.guaranteed && (pack.guaranteed.prime ? '1 Prime garantie' : `1 ${RARITIES[pack.guaranteed.min].name} garantie`)}
+            />
+          </div>
+        ))}
+      </section>
       <section style={{ display: 'flex', flexWrap: 'wrap', gap: 20 }}>
         {tiers.map((a) => (
           <Card key={a.id} card={{ athleteId: a.id, variant: 'base' }} size="lg" />

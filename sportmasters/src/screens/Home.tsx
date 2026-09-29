@@ -45,7 +45,7 @@ function FreePackHero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero__pack">
-        <PackArt tone="bronze" name={FREE_PACK.name} className={freePacks > 0 ? 'is-ready' : ''} />
+        <PackArt tone="bronze" name={FREE_PACK.name} size={FREE_PACK.size} className={freePacks > 0 ? 'is-ready' : ''} />
         {freePacks > 0 && <span className="hero__count">×{freePacks}</span>}
       </div>
       <div className="hero__text">

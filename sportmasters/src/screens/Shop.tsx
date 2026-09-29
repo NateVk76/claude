@@ -57,7 +57,13 @@ function PackTile({ pack }: { pack: PackDef }) {
   const affordable = balles >= pack.price;
   return (
     <article className={`pack-tile pack-tile--${pack.tone}`}>
-      <PackArt tone={pack.tone} name={pack.name} sport={pack.sport} />
+      <PackArt
+        tone={pack.tone}
+        name={pack.name}
+        sport={pack.sport}
+        size={pack.size}
+        guarantee={pack.guaranteed && (pack.guaranteed.prime ? '1 Prime garantie' : `1 ${RARITIES[pack.guaranteed.min].name} garantie`)}
+      />
       <div className="pack-tile__body">
         <h3>{pack.name}</h3>
         <p className="muted small">{pack.tagline}</p>
