@@ -872,153 +872,136 @@
   gap: 8px;
 }
 
-/* ───────────── Pack ───────────── */
+/* ───────────── Pack (style graphique sportswear) ─────────────
+   1 cqw = 1 % de la largeur du sachet. Couleurs : --c1 fond, --c2 bande, --c3 accents. */
 .pack-art {
   position: relative;
   width: 100%;
-  aspect-ratio: 120 / 170;
+  aspect-ratio: 120 / 172;
   container-type: inline-size;
-  filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.5));
 }
 
-.pack-art svg {
+.pack-art__sachet {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
 }
 
+.pack-art__sachet > * {
+  position: absolute;
+}
+
+.pack-art__bg,
+.pack-art__streak,
 .pack-art__shine {
-  animation: pack-shine 3.8s ease-in-out infinite;
+  inset: 0;
+  pointer-events: none;
 }
 
-@keyframes pack-shine {
-  0%,
-  55% {
-    transform: rotate(20deg) translateX(0);
-  }
-  100% {
-    transform: rotate(20deg) translateX(220px);
-  }
+/* trame de points + bandes diagonales sur fond uni */
+.pack-art__bg {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.2) 0.6cqw, transparent 0.8cqw) 0 0 / 4cqw 4cqw,
+    linear-gradient(118deg, transparent 52%, var(--c2) 52% 66%, var(--c3) 66% 71%, transparent 71%),
+    var(--c1);
 }
 
-.pack-art__holo {
-  mix-blend-mode: soft-light;
-  opacity: 0.3;
+.pack-art--prime .pack-art__bg {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.2) 0.6cqw, transparent 0.8cqw) 0 0 / 4cqw 4cqw,
+    linear-gradient(118deg, transparent 50%, #ff4fa3 50% 56%, #ffd84f 56% 62%, #4fffb0 62% 67%, #4fd6ff 67% 72%, #a66bff 72% 76%, transparent 76%),
+    var(--c1);
 }
 
-.pack-art--prime .pack-art__holo {
-  opacity: 1;
+.pack-art__streak {
+  background: linear-gradient(118deg, transparent 30%, rgba(255, 255, 255, 0.12) 30% 34%, transparent 34%);
 }
 
-/* cartouche du logo, sous la soudure du haut */
-.pack-art__logo {
+/* nombre de cartes en grand chiffre détouré */
+.pack-art__big {
+  right: 4%;
+  top: 17%;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 30cqw;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 0.5cqw var(--c3);
+  opacity: 0.9;
+}
+
+/* trois cartes en éventail, la dernière inclinée comme dans le logo */
+.pack-art__emblem {
+  left: 0;
+  right: 0;
+  top: 22%;
+  height: 50%;
+}
+
+.pack-art__emblem i {
   position: absolute;
   left: 50%;
-  top: 8.2%;
-  transform: translateX(-50%) rotate(-3deg);
-  padding: 1.2cqw 4.2cqw 1cqw;
-  border-radius: 99px;
-  background: #fff;
-  border: 1.1cqw solid var(--pk-ribbon);
-  box-shadow: 0 0.8cqw 0 rgba(0, 0, 0, 0.35), inset 0 -0.8cqw 0 rgba(0, 0, 0, 0.08);
-  white-space: nowrap;
+  top: 50%;
+  width: 32cqw;
+  height: 45cqw;
+  margin: -22.5cqw 0 0 -16cqw;
+  border-radius: 3.2cqw;
+}
+
+.pack-art__emblem i:nth-child(1) {
+  transform: translateX(-12cqw) rotate(-18deg);
+  border: 0.8cqw solid var(--c3);
+}
+
+.pack-art__emblem i:nth-child(2) {
+  transform: translateX(-2cqw) rotate(-3deg);
+  background: var(--c2);
+}
+
+.pack-art__emblem i:nth-child(3) {
+  transform: translateX(9cqw) rotate(14deg);
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--c1) 35%, transparent) 0.7cqw, transparent 0.9cqw) 0 0 / 3.2cqw 3.2cqw,
+    #fff;
+  border: 1.4cqw solid var(--c1);
+  box-shadow: 2cqw 2cqw 0 var(--c3);
+}
+
+.pack-art__logo {
+  left: 0;
+  right: 0;
+  top: 8%;
+  text-align: center;
   z-index: 3;
 }
 
 .pack-art__logo .logo {
-  --logo-card: #1e7a3c;
-  display: block;
-  font-size: 9cqw;
-  color: #0c1a12;
+  --logo-card: var(--c3);
+  font-size: 10cqw;
+  color: #fff;
 }
 
 .pack-art__series {
-  position: absolute;
   left: 0;
   right: 0;
-  top: 18.6%;
+  top: 15.5%;
   text-align: center;
-  font-family: var(--font-data);
+  font-family: 'Outfit', var(--font-body);
   font-weight: 800;
-  font-size: 4.2cqw;
-  letter-spacing: 0.22em;
+  font-size: 3.6cqw;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--pk-ink);
-  opacity: 0.85;
-  z-index: 2;
-}
-
-/* la star du pack, dans un cadre blanc incliné façon carte Topps */
-.pack-art__hero {
-  position: absolute;
-  left: 23%;
-  top: 24.5%;
-  width: 54%;
-  aspect-ratio: 3 / 4;
-  padding: 2.2cqw;
-  background: #fff;
-  border-radius: 1.2cqw;
-  transform: rotate(-5deg);
-  box-shadow: 0 2cqw 3cqw rgba(0, 0, 0, 0.45);
-  z-index: 1;
-}
-
-.pack-art__hero img,
-.pack-art__hero-empty {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 18%;
-  border-radius: 0.4cqw;
-}
-
-.pack-art__hero-empty {
-  display: grid;
-  place-items: center;
-  background: linear-gradient(160deg, var(--bg-3), var(--bg));
-  color: var(--accent-text);
-  font-family: var(--font-display);
-  font-size: 14cqw;
-}
-
-.pack-art__hero-empty svg {
-  width: 50%;
-}
-
-.pack-art--icon .pack-art__hero {
-  background: #fbf3df;
-}
-
-.pack-art--icon .pack-art__hero img {
-  filter: sepia(0.35) contrast(1.05);
-}
-
-.pack-art--prime .pack-art__hero {
-  background: linear-gradient(135deg, #ff6fc0, #ffe36b, #6bffc4, #6bc6ff, #c28bff);
-}
-
-.pack-art--black .pack-art__hero {
-  background: linear-gradient(160deg, #fff1bf, #e9c46a 50%, #9c7420);
-}
-
-/* nom du pack sur un bandeau en biais */
-.pack-art__ribbon {
-  position: absolute;
-  left: -3%;
-  right: -3%;
-  top: 66.5%;
-  padding: 1.4cqw 0 1.1cqw;
-  transform: rotate(-7deg);
-  background: var(--pk-ribbon);
-  box-shadow: 0 1.2cqw 0 rgba(0, 0, 0, 0.3), inset 0 0.7cqw 0 rgba(255, 255, 255, 0.25);
-  text-align: center;
+  opacity: 0.8;
   z-index: 3;
 }
 
-.pack-art__ribbon span {
-  display: block;
+.pack-art__name {
+  left: 7%;
+  right: 4%;
+  bottom: 14%;
   font-family: var(--font-data);
   font-style: italic;
   font-weight: 900;
@@ -1026,55 +1009,75 @@
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
-  color: var(--pk-ribbon-ink);
-  text-shadow: 0 0.6cqw 0 rgba(0, 0, 0, 0.25);
+  transform: rotate(-4deg);
+  transform-origin: left bottom;
+  text-shadow: 1.2cqw 1.2cqw 0 var(--c1);
+  z-index: 3;
 }
 
-/* pastille étoilée : nombre de cartes */
-.pack-art__burst {
-  position: absolute;
-  right: 5%;
-  top: 76%;
-  width: 24%;
-  aspect-ratio: 1;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  background: var(--pk-burst);
-  color: var(--pk-burst-ink);
-  clip-path: polygon(50% 0%, 61% 13%, 77% 7%, 80% 24%, 96% 27%, 89% 43%, 100% 56%, 85% 65%, 88% 82%, 71% 82%, 62% 97%, 50% 87%, 38% 97%, 29% 82%, 12% 82%, 15% 65%, 0% 56%, 11% 43%, 4% 27%, 20% 24%, 23% 7%, 39% 13%);
-  transform: rotate(10deg);
+/* garantie ou nombre de cartes, dans une étiquette pleine pour rester lisible sur les bandes */
+.pack-art__line {
+  left: 8%;
+  bottom: 7.5%;
+  z-index: 3;
+}
+
+.pack-art__line span {
+  display: inline-block;
+  padding: 0.9cqw 2cqw 0.7cqw;
+  background: var(--c1);
+  color: var(--c3);
+  font-family: 'Outfit', var(--font-body);
+  font-weight: 800;
+  font-size: 3.8cqw;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* soudures nervurées */
+.pack-art__seal {
+  left: 0;
+  right: 0;
+  height: 5.5%;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.28) 0 1px, rgba(0, 0, 0, 0.12) 1px 3px), rgba(0, 0, 0, 0.18);
   z-index: 4;
 }
 
-.pack-art__burst b {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 9cqw;
-  line-height: 0.85;
+.pack-art__seal--top {
+  top: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
 }
 
-.pack-art__burst small {
-  font-family: var(--font-data);
-  font-weight: 800;
-  font-size: 3.2cqw;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.pack-art__seal--bottom {
+  bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.35);
 }
 
-.pack-art__guarantee {
-  position: absolute;
-  left: 7%;
-  right: 32%;
-  top: 83.5%;
-  font-family: var(--font-data);
-  font-style: italic;
-  font-weight: 900;
-  font-size: 5.6cqw;
-  line-height: 1.05;
-  text-transform: uppercase;
-  color: var(--pk-ink);
-  z-index: 2;
+/* reflet qui balaie le sachet */
+.pack-art__shine {
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.45) 48%, transparent 60%);
+  background-size: 250% 100%;
+  animation: pack-shine 4.5s ease-in-out infinite;
+  mix-blend-mode: overlay;
+  z-index: 5;
+}
+
+@keyframes pack-shine {
+  0%,
+  45% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack-art__shine {
+    animation: none;
+  }
 }
 
 .pack-art.is-ready {
