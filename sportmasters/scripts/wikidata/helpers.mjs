@@ -298,12 +298,12 @@ function citedCountries(description) {
  */
 export function pickCountry(sportCodes = [], citizenCodes = [], description = '', birthCodes = []) {
   const clean = (codes) => [...new Set(codes.map((code) => CODE_ALIASES[code] ?? code))];
-  const sport = clean(sportCodes);
-  const citizen = clean(citizenCodes);
-  const birth = clean(birthCodes);
-  const cited = citedCountries(description)
-    .map((c) => (VANISHED.has(c) ? birth[0] : c))
-    .filter(Boolean);
+  const birth = clean(birthCodes).filter((c) => !VANISHED.has(c));
+  // pays disparu (URSS, Yougoslavie, Tchécoslovaquie) : le pays de naissance, tel qu'il est aujourd'hui
+  const modern = (codes) => [...new Set(clean(codes).map((c) => (VANISHED.has(c) ? birth[0] : c)).filter(Boolean))];
+  const sport = modern(sportCodes);
+  const citizen = modern(citizenCodes);
+  const cited = modern(citedCountries(description));
   // « nord-irlandais » vaut pour un Britannique
   const within = (c, pool) => pool.includes(c) || (c.startsWith('GB-') && pool.includes('GB'));
   let code;
@@ -313,4 +313,39 @@ export function pickCountry(sportCodes = [], citizenCodes = [], description = ''
   if (!code) return null;
   if (code === 'GB') code = cited.find((c) => c.startsWith('GB-')) ?? 'GB';
   return code;
+}
+
+// ───────────── Carrière ─────────────
+
+// Tournures d'une introduction Wikipédia qui disent la carrière finie : « est un ancien footballeur »,
+// « qui évoluait au poste de… », « professionnelle de 1995 à 2022 », « a mis un terme à sa carrière »…
+const RETIRED_CLUES = [
+  /(?<!\p{L})(est|était) (un |une )?(ancien|ancienne) /iu,
+  /(?<!\p{L})(est|était) (un |une )?ex-/iu,
+  /(?<!\p{L})(évoluait|jouait)(?!\p{L})/iu,
+  /(?<!\p{L})(ayant|qui a) (évolué|joué)(?!\p{L})/iu,
+  /(?<!\p{L})professionnel(le)? (de|entre) \d{4} (à|et) \d{4}/iu,
+  /(?<!\p{L})retraitée?(?!\p{L})/iu,
+  /(?<!\p{L})(prend|pris|prenant|prendre|annonce|annoncé|annonçant|depuis|après) sa retraite/iu,
+  /(?<!\p{L})(met|mis|mettant|mettre) (un terme|fin) à sa carrière/iu,
+  /(?<!\p{L})reconvertie?(?!\p{L})/iu,
+];
+// … et celles qui la disent en cours (« qui évolue au poste de… »).
+const ACTIVE_CLUE = /(?<!\p{L})(évolue|évoluant|joue|jouant) (au|aux|à|en|pour|dans|actuellement|depuis|comme|sous)(?!\p{L})/iu;
+/** Âge à partir duquel un athlète est tenu pour retraité quand son introduction ne dit pas le contraire. */
+const RETIREMENT_AGE = 50;
+
+/**
+ * Pourquoi la carrière est finie (une carte d'athlète retraité est une Icône), ou null si elle continue.
+ * D'abord le décès, puis l'introduction Wikipédia, enfin l'âge : à 50 ans passés, la carrière est finie
+ * sauf si l'introduction est au présent (« qui évolue au poste d'attaquant », comme Kazuyoshi Miura).
+ */
+export function retirementClue(intro = '', born, died, year = new Date().getUTCFullYear()) {
+  if (died) return `mort en ${died}`;
+  for (const clue of RETIRED_CLUES) {
+    const match = intro.match(clue);
+    if (match) return `« ${match[0].trim()} »`;
+  }
+  if (born && year - born >= RETIREMENT_AGE && !ACTIVE_CLUE.test(intro)) return `${year - born} ans`;
+  return null;
 }

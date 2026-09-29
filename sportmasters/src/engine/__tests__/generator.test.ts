@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 // @ts-expect-error module JavaScript sans types (script Node)
-import { archetypeFor, describesAthlete, factFrom, fameFromAnchors, fameFromRank, isCoach, levelFromSitelinksRank, pickCountry, slugify, splitName } from '../../../scripts/wikidata/helpers.mjs';
+import { archetypeFor, describesAthlete, factFrom, fameFromAnchors, fameFromRank, isCoach, levelFromSitelinksRank, pickCountry, retirementClue, slugify, splitName } from '../../../scripts/wikidata/helpers.mjs';
 
 describe('générateur d’athlètes (Wikidata)', () => {
   it('garde très peu de légendaires même sur 10 000 athlètes', () => {
@@ -64,6 +64,9 @@ describe('générateur d’athlètes (Wikidata)', () => {
     expect(pickCountry([], ['FR', 'DZ'], 'footballeur international algérien')).toBe('DZ');
     expect(pickCountry([], ['FR', 'DZ'], 'footballeur international français')).toBe('FR');
     expect(pickCountry([], [], 'judoka')).toBeNull();
+    // pays disparu : le pays de naissance, même quand c'est la nationalité sportive
+    expect(pickCountry(['SU'], ['SU', 'BY', 'US'], 'gymnaste soviétique', ['BY'])).toBe('BY');
+    expect(pickCountry([], ['YU', 'RS'], 'basketteur yougoslave puis serbe', ['RS'])).toBe('RS');
     // la description l'emporte sur une nationalité seule : rugbyman irlandais né aux États-Unis
     expect(pickCountry([], ['US'], 'joueur de rugby à XV international irlandais')).toBe('IE');
     expect(pickCountry([], ['GB', 'IE'], 'golfeur nord-irlandais')).toBe('GB-NIR');
@@ -97,5 +100,22 @@ describe('générateur d’athlètes (Wikidata)', () => {
     expect(slugify('Tarjei Bø')).toBe('tarjei-bo');
     expect(slugify('Anita Włodarczyk')).toBe('anita-wlodarczyk');
     expect(factFrom('footballeur international français', 'Football')).toBe('Footballeur international français.');
+  });
+
+  it('reconnaît les retraités (futures Icônes) à leur introduction Wikipédia ou à leur âge', () => {
+    const retired = (intro: string, born?: number, died?: number) => retirementClue(intro, born, died, 2026) !== null;
+    expect(retired('Franck Ribéry, né le 7 avril 1983, est un ancien footballeur international français.', 1983)).toBe(true);
+    expect(retired('Marion Bartoli, née le 2 octobre 1984, est une ex-joueuse de tennis française.', 1984)).toBe(true);
+    expect(retired('Roberto Baggio est un footballeur international italien qui évoluait au poste de milieu offensif.', 1967)).toBe(true);
+    expect(retired('Andrés Iniesta est un footballeur espagnol ayant évolué au poste de milieu de terrain.', 1984)).toBe(true);
+    expect(retired('Serena Williams est une joueuse de tennis américaine, professionnelle de 1995 à 2022.', 1981)).toBe(true);
+    expect(retired('Tony Parker est un joueur de basket-ball français. Il met un terme à sa carrière en 2019.', 1982)).toBe(true);
+    // 50 ans passés : retraité, sauf si l'introduction dit qu'il joue encore
+    expect(retired('Björn Borg, né le 6 juin 1956, est un joueur de tennis suédois.', 1956)).toBe(true);
+    expect(retired('Kazuyoshi Miura est un footballeur international japonais évoluant au poste d’attaquant.', 1967)).toBe(false);
+    // en activité
+    expect(retired('Kylian Mbappé est un footballeur international français qui évolue au poste d’attaquant au Real Madrid.', 1998)).toBe(false);
+    expect(retired('Fernando Alonso, né le 29 juillet 1981, est un pilote automobile espagnol.', 1981)).toBe(false);
+    expect(retired('', undefined, 2001)).toBe(true);
   });
 });

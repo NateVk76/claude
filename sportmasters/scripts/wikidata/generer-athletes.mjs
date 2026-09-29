@@ -30,6 +30,7 @@ import {
   levelFromSitelinksRank,
   normalizeName,
   pickCountry,
+  retirementClue,
   slugify,
   splitName,
 } from './helpers.mjs';
@@ -181,12 +182,18 @@ async function resolveCurated(curated) {
   return resolved;
 }
 
-/** Décès confirmé par l'introduction Wikipédia (« … et mort le … »), pour ne jamais enterrer un vivant sur une erreur de Wikidata. */
-async function confirmDeaths(people) {
-  const dead = people.filter((person) => person.died);
-  const confirmed = new Set();
-  for (let i = 0; i < dead.length; i += 20) {
-    const batch = dead.slice(i, i + 20);
+/**
+ * Lit l'introduction Wikipédia de chaque athlète retenu :
+ * - un décès n'est gardé que si elle le confirme (« … et mort le … »), pour ne jamais enterrer un vivant
+ *   sur une erreur de Wikidata ;
+ * - « est un ancien footballeur », « qui évoluait au poste de… », « a mis un terme à sa carrière »…
+ *   (ou 50 ans passés sans « qui évolue… ») en font un retraité, donc une Icône, comme les légendes
+ *   retraitées de la base manuelle (voir retirementClue).
+ */
+async function readIntros(people) {
+  const intros = new Map();
+  for (let i = 0; i < people.length; i += 20) {
+    const batch = people.slice(i, i + 20);
     const params = new URLSearchParams({
       action: 'query',
       format: 'json',
@@ -203,15 +210,26 @@ async function confirmDeaths(people) {
     const hop = new Map([...(data?.query?.normalized ?? []), ...(data?.query?.redirects ?? [])].map((step) => [step.from, step.to]));
     const extracts = new Map((data?.query?.pages ?? []).map((page) => [page.title, page.extract ?? '']));
     for (const person of batch) {
-      const text = extracts.get(hop.get(person.title) ?? person.title) ?? '';
-      if (/(?<!\p{L})(mort|morte|décédé|décédée|meurt)(?!\p{L})/iu.test(text)) confirmed.add(person.qid);
+      let title = person.title;
+      for (let guard = 0; hop.has(title) && guard < 3; guard++) title = hop.get(title);
+      intros.set(person.qid, extracts.get(title) ?? '');
     }
+    await sleep(300);
   }
-  for (const person of dead) {
-    if (confirmed.has(person.qid)) continue;
-    console.log(`  décès non confirmé par Wikipédia, carte laissée « en vie » : ${person.name} (${person.died})`);
-    person.died = undefined;
+  const year = new Date().getUTCFullYear();
+  for (const person of people) {
+    const intro = intros.get(person.qid) ?? '';
+    if (person.died && intro && !/(?<!\p{L})(mort|morte|décédé|décédée|meurt)(?!\p{L})/iu.test(intro)) {
+      console.log(`  décès non confirmé par Wikipédia, carte laissée « en vie » : ${person.name} (${person.died})`);
+      person.died = undefined;
+    }
+    const clue = retirementClue(intro, person.born, person.died, year);
+    person.retired = Boolean(clue);
+    // de quoi relire les décisions dans le journal de l'Action
+    if (clue) console.log(`  retraité (${clue}) : ${person.name}`);
+    else if (person.born && year - person.born >= 38) console.log(`  en activité à ${year - person.born} ans ? ${person.name} : ${intro.slice(0, 160)}`);
   }
+  console.log(`${people.filter((person) => person.retired).length} retraités sur ${people.length}`);
 }
 
 // ───────────── Wikidata ─────────────
@@ -379,7 +397,7 @@ async function main() {
     await sleep(1_000);
   }
 
-  await confirmDeaths(selected);
+  await readIntros(selected);
 
   const usedIds = new Set(curatedIds);
   const athletes = selected.map((person) => {
@@ -400,7 +418,8 @@ async function main() {
       fame: 0,
       level: 0,
       fact: factFrom(person.description, role),
-      ...(person.died ? { retired: true, born: person.born, died: person.died } : {}),
+      ...(person.retired ? { retired: true } : {}),
+      ...(person.died ? { born: person.born, died: person.died } : {}),
       wikidata: person.qid,
       wiki: person.title,
       // mesures gardées pour --recaler
