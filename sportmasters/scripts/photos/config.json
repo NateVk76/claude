@@ -1,5 +1,7 @@
 {
   "limite": 0,
   "tout": false,
-  "explorer": []
+  "explorer": {
+    "duplantis": ["Armand Duplantis medal", "Duplantis gold medal", "Duplantis podium", "Duplantis 2025", "Duplantis 2026"]
+  }
 }

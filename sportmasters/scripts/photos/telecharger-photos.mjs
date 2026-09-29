@@ -253,27 +253,35 @@ async function commonsInfo(file) {
   };
 }
 
-/** Planche numérotée des photos Commons d'un athlète, pour en choisir une dans choix.json. */
-async function explore(athlete) {
-  const params = new URLSearchParams({
-    action: 'query',
-    format: 'json',
-    formatversion: '2',
-    generator: 'search',
-    gsrsearch: `${athlete.first} ${athlete.last} filetype:bitmap`.trim(),
-    gsrnamespace: '6',
-    gsrlimit: '40',
-    prop: 'imageinfo',
-    iiprop: 'url|size|extmetadata',
-    iiurlwidth: '330',
-  });
-  const data = await json(`https://commons.wikimedia.org/w/api.php?${params}`);
-  const pages = (data?.query?.pages ?? []).sort((a, b) => a.index - b.index);
+/** Planche numérotée des photos Commons d'un athlète (une ou plusieurs recherches), pour en choisir une dans choix.json. */
+async function explore(athlete, queries) {
+  const pages = [];
+  const seen = new Set();
+  for (const query of queries) {
+    const params = new URLSearchParams({
+      action: 'query',
+      format: 'json',
+      formatversion: '2',
+      generator: 'search',
+      gsrsearch: `${query} filetype:bitmap`,
+      gsrnamespace: '6',
+      gsrlimit: '40',
+      prop: 'imageinfo',
+      iiprop: 'url|size|extmetadata',
+      iiurlwidth: '330',
+    });
+    const data = await json(`https://commons.wikimedia.org/w/api.php?${params}`);
+    for (const page of (data?.query?.pages ?? []).sort((a, b) => a.index - b.index)) {
+      if (seen.has(page.title)) continue;
+      seen.add(page.title);
+      pages.push(page);
+    }
+  }
   const [W, H, LABEL, COLS] = [220, 290, 22, 6];
   const layers = [];
   const list = [];
   for (const page of pages) {
-    if (list.length >= 30) break;
+    if (list.length >= 36) break;
     const info = page.imageinfo?.[0];
     const file = page.title.replace(/^File:/, '');
     const license = stripHtml(info?.extmetadata?.LicenseShortName?.value);
@@ -308,8 +316,12 @@ async function download() {
   const currentFile = (id) => fileOfPage(current[id]?.page);
   const outdated = (a) => !current[a.id] || refused(a.id, currentFile(a.id)) || (CHOIX[a.id] && CHOIX[a.id] !== currentFile(a.id));
   let athletes = readAthletes();
-  for (const athlete of athletes.filter((a) => (CONFIG.explorer ?? []).includes(a.id))) {
-    await explore(athlete).catch((error) => console.warn(`  ${athlete.id} : ${error.message}`));
+  // "explorer" : une liste d'identifiants, ou { "identifiant": ["recherche", …] } pour chercher autre chose que le nom
+  const explorer = Array.isArray(CONFIG.explorer) ? Object.fromEntries(CONFIG.explorer.map((id) => [id, []])) : (CONFIG.explorer ?? {});
+  for (const athlete of athletes.filter((a) => a.id in explorer)) {
+    const queries = [explorer[athlete.id]].flat().filter(Boolean);
+    const search = queries.length ? queries : [`${athlete.first} ${athlete.last}`.trim()];
+    await explore(athlete, search).catch((error) => console.warn(`  ${athlete.id} : ${error.message}`));
   }
   if (only.length) athletes = athletes.filter((a) => only.includes(a.id));
   else if (!all) athletes = athletes.filter(outdated);
