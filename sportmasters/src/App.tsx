@@ -5,6 +5,7 @@ import { useNow, formatDuration } from './hooks/useNow';
 import { Balles } from './components/Balles';
 import { Logo, LogoMark } from './components/Logo';
 import { setMuted, sfx } from './audio/sfx';
+import { setMusicEnabled, startMusic } from './audio/music';
 import { HomeScreen } from './screens/Home';
 import { CollectionScreen } from './screens/Collection';
 import { MarketScreen } from './screens/Market';
@@ -48,6 +49,8 @@ function Topbar() {
   const nextFreePackAt = useGame((s) => s.nextFreePackAt);
   const muted = useGame((s) => s.muted);
   const toggleMute = useGame((s) => s.toggleMute);
+  const musicOff = useGame((s) => s.musicOff);
+  const toggleMusic = useGame((s) => s.toggleMusic);
   const setTab = useUi((s) => s.setTab);
   const now = useNow(1000);
   const full = freePacks >= MAX_FREE_PACKS;
@@ -67,6 +70,22 @@ function Topbar() {
           <span className="chip__timer">{full ? 'plein' : formatDuration(nextFreePackAt - now)}</span>
         </button>
         <Balles value={balles} className="chip chip--balles" />
+        <button
+          type="button"
+          className={`icon-btn${musicOff || muted ? ' is-off' : ''}`}
+          onClick={toggleMusic}
+          disabled={muted}
+          aria-label={musicOff ? 'Activer la musique' : 'Couper la musique'}
+          aria-pressed={!musicOff}
+          title={muted ? 'Le son est coupé' : musicOff ? 'Activer la musique' : 'Couper la musique'}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9,18 V6 L19,4 V16" />
+            <circle cx={6.5} cy={18} r={2.5} />
+            <circle cx={16.5} cy={16} r={2.5} />
+            {(musicOff || muted) && <path d="M3,3 L21,21" />}
+          </svg>
+        </button>
         <button
           type="button"
           className="icon-btn"
@@ -124,10 +143,32 @@ export function App() {
   const tab = useUi((s) => s.tab);
   const tick = useGame((s) => s.tick);
   const muted = useGame((s) => s.muted);
+  const musicOff = useGame((s) => s.musicOff);
 
   useEffect(() => {
     setMuted(muted);
   }, [muted]);
+
+  // musique de fond : démarre au premier geste du joueur, se coupe avec le son, le bouton musique
+  // ou quand l'onglet est caché
+  useEffect(() => {
+    const sync = () => setMusicEnabled(!muted && !musicOff && document.visibilityState === 'visible');
+    sync();
+    const onFirstGesture = () => {
+      startMusic();
+      sync();
+      window.removeEventListener('pointerdown', onFirstGesture);
+      window.removeEventListener('keydown', onFirstGesture);
+    };
+    window.addEventListener('pointerdown', onFirstGesture);
+    window.addEventListener('keydown', onFirstGesture);
+    document.addEventListener('visibilitychange', sync);
+    return () => {
+      window.removeEventListener('pointerdown', onFirstGesture);
+      window.removeEventListener('keydown', onFirstGesture);
+      document.removeEventListener('visibilitychange', sync);
+    };
+  }, [muted, musicOff]);
 
   // le marché et les boosters avancent en temps réel (et rattrapent le temps passé hors du jeu)
   useEffect(() => {

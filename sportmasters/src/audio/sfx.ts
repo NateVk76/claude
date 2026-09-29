@@ -10,6 +10,11 @@ export function setMuted(value: boolean): void {
 
 function audio(): AudioContext | null {
   if (muted) return null;
+  return sharedAudio();
+}
+
+/** Contexte audio commun aux effets et à la musique (créé au premier geste du joueur). */
+export function sharedAudio(): AudioContext | null {
   try {
     if (!ctx) {
       const Ctor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;

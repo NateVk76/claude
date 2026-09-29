@@ -276,6 +276,16 @@
   fill: currentColor;
 }
 
+/* musique coupée : icône barrée et atténuée */
+.icon-btn.is-off {
+  color: var(--text-dim);
+}
+
+.icon-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 @media (max-width: 520px) {
   .brand__logo {
     font-size: 1.35rem;

@@ -70,6 +70,8 @@ export interface GameState {
   stats: GameStats;
   claimed: string[];
   muted: boolean;
+  /** musique de fond coupée (les effets sonores restent) */
+  musicOff: boolean;
   opening: Opening | null;
   toasts: Toast[];
 
@@ -94,6 +96,7 @@ export interface GameState {
   toggleLock: (uid: string) => void;
   claimObjective: (id: string) => void;
   toggleMute: () => void;
+  toggleMusic: () => void;
   toast: (kind: ToastKind, text: string) => void;
   dismissToast: (id: string) => void;
   resetGame: () => void;
@@ -153,6 +156,7 @@ function initialState(now: number) {
     stats: { packsOpened: 0, cardsSold: 0, cardsBought: 0, matchesPlayed: 0, matchesWon: 0 } as GameStats,
     claimed: [] as string[],
     muted: false,
+    musicOff: false,
     opening: null as Opening | null,
     toasts: [] as Toast[],
   };
@@ -558,6 +562,7 @@ export const useGame = create<GameState>()(
         },
 
         toggleMute: () => set((s) => ({ muted: !s.muted })),
+        toggleMusic: () => set((s) => ({ musicOff: !s.musicOff })),
         toast: pushToast,
         dismissToast: (id) => set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })),
         resetGame: () => set({ ...initialState(Date.now()) }),
