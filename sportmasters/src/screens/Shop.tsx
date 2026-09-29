@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useGame } from '../store/game';
 import { SPORTS, SPORT_ORDER } from '../data/sports';
 import { RARITIES, RARITY_ORDER } from '../engine/cards';
-import { SHOP_PACKS, primeOdds, primePool, reverseOdds, sportPack, type PackDef } from '../engine/packs';
+import { SHOP_PACKS, mytheOdds, primeOdds, primePool, reverseOdds, sportPack, type PackDef } from '../engine/packs';
 import type { SportId } from '../engine/types';
 import { PackArt } from '../components/PackArt';
 import { Balles } from '../components/Balles';
@@ -43,6 +43,13 @@ function Odds({ pack }: { pack: PackDef }) {
           <span>Version Reverse</span>
           <b>{percent(reverseOdds(pack))}</b>
         </li>
+        {mytheOdds(pack) > 0 && (
+          <li className="rarity-row rarity-row--mythe">
+            <span className="rarity-dot" />
+            <span>Carte Mythe</span>
+            <b>{percent(mytheOdds(pack))}</b>
+          </li>
+        )}
       </ul>
       {pack.guaranteed && (
         <p className="small muted">

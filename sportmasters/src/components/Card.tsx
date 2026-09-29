@@ -1,5 +1,5 @@
 import { memo, useCallback, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
-import type { Athlete, CardFace, OwnedCard, RarityId, StatKey, Stats } from '../engine/types';
+import type { Athlete, CardFace, MytheKind, OwnedCard, RarityId, SportId, StatKey, Stats } from '../engine/types';
 import { getAthlete, isIcon, overallOf, rarityOf } from '../engine/cards';
 import { SPORTS, STAT_KEYS } from '../data/sports';
 import { usePhoto } from '../photos';
@@ -160,6 +160,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     icon ? 'is-icon' : '',
     prime ? 'is-prime' : '',
     reverse ? 'is-reverse' : '',
+    athlete.mythe ? 'is-mythe' : '',
     compact ? 'is-compact' : '',
     tiny ? 'is-tiny' : '',
     locked ? 'is-locked' : '',
@@ -171,7 +172,9 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     .filter(Boolean)
     .join(' ');
 
-  const ariaLabel = `${athlete.first} ${athlete.last}, ${rarity.name}${prime ? ' Prime' : ''}${reverse ? ' Reverse' : ''}${icon ? ', Icône' : ''}, note ${overall}`;
+  const ariaLabel = athlete.mythe
+    ? `${athlete.last}, carte Mythe, ${athlete.role}`
+    : `${athlete.first} ${athlete.last}, ${rarity.name}${prime ? ' Prime' : ''}${reverse ? ' Reverse' : ''}${icon ? ', Icône' : ''}, note ${overall}`;
 
   return (
     <div
@@ -195,6 +198,9 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
           : undefined
       }
     >
+      {athlete.mythe ? (
+        <MytheFace athlete={athlete} photo={showPhoto ? photo.src : undefined} onPhotoError={() => setPhotoFailed(true)} compact={compact} tiny={tiny} />
+      ) : (
       <div className="card__body">
         <div className="card__bg" />
 
@@ -251,6 +257,66 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
         <div className="card__holo" aria-hidden="true" />
         <div className="card__shine" aria-hidden="true" />
       </div>
+      )}
     </div>
   );
 });
+
+/** Libellé de l'année d'une carte Mythe selon son type. */
+function mytheYear(kind: MytheKind, year: string): string {
+  if (kind === 'club') return `Fondé en ${year}`;
+  if (kind === 'competition') return `Depuis ${year}`;
+  return year;
+}
+
+/**
+ * Face d'une carte Mythe (compétition, équipe de légende, club) : cadre « trophée » noir et or,
+ * photo sous une arche, année, palmarès et bonus de match. Même repère en em que les athlètes.
+ */
+function MytheFace({
+  athlete,
+  photo,
+  onPhotoError,
+  compact,
+  tiny,
+}: {
+  athlete: Athlete;
+  photo?: string;
+  onPhotoError: () => void;
+  compact: boolean;
+  tiny: boolean;
+}) {
+  const info = athlete.mythe!;
+  const bonusSport = info.bonus.sport === 'all' ? null : SPORTS[info.bonus.sport];
+  return (
+    <div className="card__body mythe">
+      <div className="mythe__bg" />
+      <div className="mythe__top">
+        <span className="mythe__label">★ Mythe ★</span>
+        {!tiny && <span className="mythe__kind">{athlete.role}</span>}
+      </div>
+      <div className="mythe__window">
+        {photo ? (
+          <img src={photo} alt="" loading="lazy" decoding="async" draggable={false} onError={onPhotoError} />
+        ) : (
+          <span className="mythe__emblem">
+            <SportIcon sport={athlete.sport} />
+          </span>
+        )}
+      </div>
+      <div className="mythe__year">{mytheYear(info.kind, info.year)}</div>
+      <div className="mythe__name metal-text" style={{ fontSize: `${Math.min(2.3, 30 / Math.max(athlete.last.length, 8)) * (compact ? 1.15 : 1)}em` }}>
+        {athlete.last}
+      </div>
+      {!compact && <div className="mythe__palmares">{info.palmares}</div>}
+      <div className="mythe__bonus" title="Bonus en match pour les athlètes concernés">
+        <span className="mythe__bonus-icon">{bonusSport ? <SportIcon sport={info.bonus.sport as SportId} /> : '★'}</span>
+        <b>+{info.bonus.value}</b>
+        {!tiny && <span>{bonusSport ? bonusSport.name : 'Tous les athlètes'}</span>}
+      </div>
+      <div className="mythe__frame" />
+      <div className="card__holo" aria-hidden="true" />
+      <div className="card__shine" aria-hidden="true" />
+    </div>
+  );
+}

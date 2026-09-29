@@ -58,6 +58,20 @@ export const PRIME_VALUE_MULTIPLIER = 6;
 export const REVERSE_CHANCE = 0.05;
 export const REVERSE_VALUE_MULTIPLIER = 2.5;
 
+// ───────────── Mythes ─────────────
+// Compétitions, équipes de légende et clubs : environ 1 carte sur 40 dans les boosters.
+export const MYTHE_CHANCE = 0.025;
+
+export function isMythe(athlete: Athlete): boolean {
+  return !!athlete.mythe;
+}
+
+/** Poids de tirage d'un Mythe selon sa rareté : les Légendes sortent six fois moins que les Or. */
+export function mytheWeight(athlete: Athlete): number {
+  const order = rarityOf(athlete).order;
+  return order >= 4 ? 1 : order === 3 ? 3 : 6;
+}
+
 // ───────────── Stats ─────────────
 // Décalages par profil : vitesse, force, endurance, technique, intelligence, sang-froid.
 // Le sang-froid ne s'affiche pas seul : il nourrit l'Aura avec la note et la célébrité.

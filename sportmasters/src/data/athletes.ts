@@ -1,4 +1,4 @@
-import type { Athlete, ArchetypeId, SportId, Ulti, UltiEffect } from '../engine/types';
+import type { Athlete, ArchetypeId, MytheBonus, MytheKind, SportId, Ulti, UltiEffect } from '../engine/types';
 import generated from './athletes.generated.json';
 
 // Base de sportifs réels.
@@ -31,6 +31,31 @@ function sig(id: string, name: string, desc: string, effect: UltiEffect | UltiEf
 const P = (year: string, note: string) => ({ prime: { year, note } });
 
 const R = { retired: true } as const;
+
+/** Profil de stats par défaut d'une carte Mythe (non utilisé en match, requis par le type Athlete). */
+const MYTHE_ARCHETYPE: Record<SportId, ArchetypeId> = {
+  foot: 'milieu', basket: 'meneur', tennis: 'tennis-complet', athle: 'sprinter', natation: 'nage-complet', cyclisme: 'rouleur',
+  auto: 'pilote-f1', combat: 'boxeur', rugby: 'demi', hand: 'hand-arriere', volley: 'volley-attaquant', hiver: 'skieur',
+  gym: 'gymnaste', golf: 'golfeur', glisse: 'surfeur', us: 'quarterback',
+};
+
+const MYTHE_ROLE: Record<MytheKind, string> = { competition: 'Compétition', equipe: 'Équipe de légende', club: 'Club' };
+
+/** Carte Mythe : compétition, équipe de légende ou club (identifiant préfixé par « mythe- »). */
+function M(
+  id: string,
+  name: string,
+  sport: SportId,
+  kind: MytheKind,
+  country: string,
+  fame: number,
+  year: string,
+  palmares: string,
+  fact: string,
+  bonus: MytheBonus,
+): Athlete {
+  return a(`mythe-${id}`, '', name, sport, MYTHE_ARCHETYPE[sport], MYTHE_ROLE[kind], country, fame, 85, fact, { mythe: { kind, year, palmares, bonus } });
+}
 
 const CURATED: Athlete[] = [
   // ───────────────────────── FOOTBALL ─────────────────────────
@@ -728,6 +753,45 @@ const CURATED: Athlete[] = [
   a('killy', 'Jean-Claude', 'Killy', 'hiver', 'skieur', 'Ski alpin', 'FR', 38, 97, 'Triple champion olympique aux Jeux de Grenoble en 1968.', { ...R }),
   a('seve', 'Seve', 'Ballesteros', 'golf', 'golfeur', 'Golf', 'ES', 40, 95, 'Cinq titres majeurs, génie du petit jeu.', { ...R, born: 1957, died: 2011 }),
   a('arnold-palmer', 'Arnold', 'Palmer', 'golf', 'golfeur', 'Golf', 'US', 38, 95, 'Sept titres majeurs, surnommé « The King ».', { ...R, born: 1929, died: 2016 }),
+
+  // ───────────────────────── MYTHES ─────────────────────────
+  // Compétitions, équipes de légende et clubs. Pas des athlètes : elles se placent dans l'emplacement
+  // « Mythe » de l'équipe et donnent un bonus en match. Célébrité 62 = Or, 80 = Épique, 92 = Légende.
+  ...[
+    // compétitions
+    M('coupe-du-monde', 'Coupe du monde', 'foot', 'competition', 'CH', 92, '1930', '5 titres pour le Brésil, record', 'Créée en 1930, la compétition la plus regardée de la planète.', { sport: 'foot', value: 5, events: ['money-time'], eventBonus: 3 }),
+    M('ligue-des-champions', 'Ligue des champions', 'foot', 'competition', 'CH', 80, '1955', '15 titres pour le Real Madrid', 'Née en 1955 sous le nom de Coupe des clubs champions européens.', { sport: 'foot', value: 4, events: ['face-a-face'], eventBonus: 2 }),
+    M('roland-garros', 'Roland-Garros', 'tennis', 'competition', 'FR', 92, '1891', '14 titres pour Rafael Nadal', 'Le seul tournoi du Grand Chelem joué sur terre battue.', { sport: 'tennis', value: 5, events: ['marathon'], eventBonus: 3 }),
+    M('wimbledon', 'Wimbledon', 'tennis', 'competition', 'GB-ENG', 80, '1877', '8 titres pour Roger Federer', 'Le plus ancien tournoi de tennis du monde, joué sur gazon.', { sport: 'tennis', value: 4, events: ['geste-technique'], eventBonus: 3 }),
+    M('jeux-olympiques', 'Jeux olympiques', 'athle', 'competition', 'GR', 92, '1896', 'Paris en 1900, 1924 et 2024', 'Relancés en 1896 à Athènes à l’initiative de Pierre de Coubertin.', { sport: 'all', value: 2 }),
+    M('tour-de-france', 'Tour de France', 'cyclisme', 'competition', 'FR', 80, '1903', '5 victoires pour Anquetil, Merckx, Hinault et Indurain', 'Trois semaines de course, et le maillot jaune depuis 1919.', { sport: 'cyclisme', value: 5, events: ['marathon'], eventBonus: 3 }),
+    M('super-bowl', 'Super Bowl', 'us', 'competition', 'US', 62, '1967', '6 titres pour les Patriots et les Steelers', 'La finale de la NFL, l’émission la plus regardée de la télévision américaine.', { sport: 'us', value: 5, events: ['bain-de-foule'], eventBonus: 3 }),
+    M('finales-nba', 'Finales NBA', 'basket', 'competition', 'US', 62, '1947', '18 titres pour les Boston Celtics', 'La série finale du championnat NBA, au meilleur des sept matchs.', { sport: 'basket', value: 4, events: ['money-time'], eventBonus: 3 }),
+    M('six-nations', 'Six Nations', 'rugby', 'competition', 'IE', 62, '1883', 'Le Grand Chelem : cinq victoires sur cinq', 'Né en 1883 entre les nations britanniques, avec la France depuis 1910.', { sport: 'rugby', value: 4, events: ['bras-de-fer'], eventBonus: 3 }),
+    M('24h-du-mans', '24 Heures du Mans', 'auto', 'competition', 'FR', 62, '1923', '9 victoires pour Tom Kristensen', 'La plus célèbre course d’endurance automobile, de jour comme de nuit.', { sport: 'auto', value: 4, events: ['marathon'], eventBonus: 4 }),
+    M('coupe-du-monde-rugby', 'Coupe du monde de rugby', 'rugby', 'competition', 'IE', 80, '1987', '4 titres pour l’Afrique du Sud', 'Le trophée Webb Ellis, remis tous les quatre ans depuis 1987.', { sport: 'rugby', value: 5, events: ['money-time'], eventBonus: 2 }),
+    // équipes de légende
+    M('france-1998', 'France 1998', 'foot', 'equipe', 'FR', 92, '1998', '3-0 contre le Brésil en finale', 'Première étoile des Bleus, au Stade de France, avec le doublé de Zidane.', { sport: 'foot', value: 4, events: ['face-a-face'], eventBonus: 3 }),
+    M('bresil-1970', 'Brésil 1970', 'foot', 'equipe', 'BR', 80, '1970', '6 victoires sur 6 au Mexique', 'Pelé, Jairzinho, Tostão, Rivelino : pour beaucoup, la plus belle équipe de l’histoire.', { sport: 'foot', value: 4, events: ['geste-technique'], eventBonus: 3 }),
+    M('espagne-2010', 'Espagne 2010', 'foot', 'equipe', 'ES', 62, '2010', 'Euro 2008, Mondial 2010, Euro 2012', 'Le tiki-taka au sommet : premier titre mondial de la Roja.', { sport: 'foot', value: 3, events: ['coup-de-genie'], eventBonus: 3 }),
+    M('dream-team', 'Dream Team 1992', 'basket', 'equipe', 'US', 92, '1992', '117 points de moyenne à Barcelone', 'Jordan, Magic, Bird : la première sélection américaine de joueurs NBA aux JO.', { sport: 'basket', value: 6 }),
+    M('all-blacks', 'All Blacks', 'rugby', 'equipe', 'NZ', 80, '1884', '3 Coupes du monde (1987, 2011, 2015)', 'Le haka avant chaque match, et le meilleur bilan de l’histoire du rugby.', { sport: 'rugby', value: 5, events: ['bain-de-foule'], eventBonus: 2 }),
+    M('les-experts', 'Les Experts', 'hand', 'equipe', 'FR', 62, '2008', '3 titres olympiques et 6 titres mondiaux', 'L’équipe de France de handball de Karabatić et Omeyer, qui a dominé le monde.', { sport: 'hand', value: 5 }),
+    M('bulls-1996', 'Chicago Bulls 1996', 'basket', 'equipe', 'US', 80, '1996', '72 victoires, 10 défaites', 'Jordan, Pippen et Rodman : record de victoires en saison régulière pendant vingt ans.', { sport: 'basket', value: 4, events: ['money-time'], eventBonus: 3 }),
+    M('barca-2009', 'Barça 2009', 'foot', 'equipe', 'ES', 80, '2009', 'Six titres sur six en 2009', 'Le Barça de Guardiola, de Xavi, d’Iniesta et de Messi.', { sport: 'foot', value: 4, events: ['coup-de-genie'], eventBonus: 3 }),
+    // clubs
+    M('real-madrid', 'Real Madrid', 'foot', 'club', 'ES', 92, '1902', '15 Ligues des champions', 'Élu club du XXe siècle par la FIFA.', { sport: 'foot', value: 4, events: ['money-time'], eventBonus: 4 }),
+    M('fc-barcelone', 'FC Barcelone', 'foot', 'club', 'ES', 80, '1899', '5 Ligues des champions', '« Més que un club » : plus qu’un club.', { sport: 'foot', value: 4, events: ['geste-technique'], eventBonus: 2 }),
+    M('manchester-united', 'Manchester United', 'foot', 'club', 'GB-ENG', 80, '1878', '20 titres de champion d’Angleterre', 'Les « Red Devils » d’Old Trafford, le « Théâtre des rêves ».', { sport: 'foot', value: 4, events: ['bain-de-foule'], eventBonus: 2 }),
+    M('bayern', 'Bayern Munich', 'foot', 'club', 'DE', 80, '1900', '6 Ligues des champions', 'Le club le plus titré d’Allemagne.', { sport: 'foot', value: 4, events: ['bras-de-fer'], eventBonus: 2 }),
+    M('liverpool', 'Liverpool', 'foot', 'club', 'GB-ENG', 62, '1892', '6 Ligues des champions', '« You’ll Never Walk Alone », chanté par tout Anfield.', { sport: 'foot', value: 3, events: ['bain-de-foule'], eventBonus: 3 }),
+    M('ac-milan', 'AC Milan', 'foot', 'club', 'IT', 62, '1899', '7 Ligues des champions', 'Le club des Maldini, de père en fils.', { sport: 'foot', value: 3, events: ['coup-de-genie'], eventBonus: 3 }),
+    M('psg', 'Paris Saint-Germain', 'foot', 'club', 'FR', 80, '1970', 'Vainqueur de la Ligue des champions 2025', 'Le club de la capitale, au Parc des Princes.', { sport: 'foot', value: 4, events: ['sprint'], eventBonus: 2 }),
+    M('om', 'Olympique de Marseille', 'foot', 'club', 'FR', 62, '1899', 'Premier club français champion d’Europe, en 1993', '« À jamais les premiers », au Vélodrome.', { sport: 'foot', value: 3, events: ['bain-de-foule'], eventBonus: 3 }),
+    M('lakers', 'Los Angeles Lakers', 'basket', 'club', 'US', 80, '1947', '17 titres NBA', 'Le club de Magic, Kareem, Shaq, Kobe et LeBron.', { sport: 'basket', value: 4, events: ['bain-de-foule'], eventBonus: 2 }),
+    M('stade-toulousain', 'Stade toulousain', 'rugby', 'club', 'FR', 62, '1907', '6 Coupes d’Europe, record', 'Le club le plus titré de France et d’Europe.', { sport: 'rugby', value: 4, events: ['geste-technique'], eventBonus: 2 }),
+    M('ferrari', 'Scuderia Ferrari', 'auto', 'club', 'IT', 80, '1929', '16 titres constructeurs en F1', 'La seule écurie présente depuis la première saison de F1, en 1950.', { sport: 'auto', value: 5 }),
+  ],
 ];
 
 // Athlètes générés depuis Wikidata (scripts/wikidata/generer-athletes.mjs). La base manuelle garde la priorité.

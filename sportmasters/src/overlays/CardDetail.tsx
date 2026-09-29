@@ -3,7 +3,7 @@ import { useGame, formatBalles } from '../store/game';
 import { useUi } from '../store/ui';
 import { useNow, formatDuration } from '../hooks/useNow';
 import { ATHLETES_BY_ID } from '../data/athletes';
-import { SPORTS, STAT_KEYS, STAT_LABELS } from '../data/sports';
+import { EVENTS, SPORTS, STAT_KEYS, STAT_LABELS } from '../data/sports';
 import { isIcon, overallOf, popularityOf, quickSellValue, rarityOf, statsOf, ultiOf } from '../engine/cards';
 import { MARKET_TAX, marketPrice, netAfterTax, nextMinBid, priceBounds, priceHistory, suggestedPrices } from '../engine/market';
 import type { CardFace, OwnedCard } from '../engine/types';
@@ -240,6 +240,7 @@ export function CardDetail() {
             <span className={`chip-rarity chip-rarity--${rarity.id}`}>{rarity.name}</span>
             {face.variant === 'prime' && <span className="chip-rarity chip-rarity--prime">Prime{athlete.prime ? ` ${athlete.prime.year}` : ''}</span>}
             {face.variant === 'reverse' && <span className="chip-rarity chip-rarity--reverse">Reverse</span>}
+            {athlete.mythe && <span className="chip-rarity chip-rarity--mythe">Mythe · {athlete.role}</span>}
             {isIcon(athlete) && <span className="chip-rarity chip-rarity--icon">Icône</span>}
           </div>
           <h2 id="detail-title">
@@ -267,6 +268,23 @@ export function CardDetail() {
             </p>
           )}
 
+          {athlete.mythe ? (
+            // une carte Mythe n'a pas de stats : elle donne un bonus à l'équipe
+            <div className="ulti-box is-signature">
+              <p className="ulti-box__label">Carte Mythe · bonus d’équipe en match</p>
+              <p className="ulti-box__name">
+                +{athlete.mythe.bonus.value}{' '}
+                {athlete.mythe.bonus.sport === 'all' ? 'pour tous les athlètes' : `pour les athlètes de ${SPORTS[athlete.mythe.bonus.sport].name.toLowerCase()}`}
+              </p>
+              <p className="ulti-box__desc">
+                {athlete.mythe.bonus.events?.length
+                  ? `+${athlete.mythe.bonus.eventBonus} de plus en ${athlete.mythe.bonus.events.map((e) => EVENTS[e].name).join(', ')}. `
+                  : ''}
+                Place-la dans l’emplacement Mythe de ton équipe, dans l’écran Matchs. Palmarès : {athlete.mythe.palmares}.
+              </p>
+            </div>
+          ) : (
+          <>
           <div className="detail__stats">
             {STAT_KEYS.map((key) => (
               <div key={key} className="statbar" title={STAT_LABELS[key].desc}>
@@ -302,6 +320,8 @@ export function CardDetail() {
               <b>{sport.passive.name}</b> : {sport.passive.desc}
             </p>
           </div>
+          </>
+          )}
 
           <div className="market-box">
             <div className="market-box__head">

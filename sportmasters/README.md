@@ -51,6 +51,13 @@ Dans une même rareté, le niveau sportif réel de l'athlète et sa célébrité
 
 - **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or, années de vie pour les disparus.
 - **Prime** : la meilleure saison d'une très grande légende, et seulement d'elles : 36 athlètes (Messi 2012, Cristiano Ronaldo 2014, Ronaldo Nazário 2002, LeBron 2016, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Une de ces légendes tirée dans un booster a 8 % de chances d'être en Prime, soit environ 1 carte sur 1 200 dans le booster gratuit, dix fois plus rare qu'une Légendaire. Valeur ×6 au marché.
+- **Reverse** : n'importe quelle carte peut sortir en finition holographique (environ 1 carte sur 20). Mêmes stats que la classique, valeur ×2,5 au marché.
+
+### Cartes Mythe
+
+30 cartes qui ne sont pas des athlètes : des compétitions (Coupe du monde, Roland-Garros, Tour de France…), des équipes de légende (France 1998, Dream Team 1992, All Blacks…) et des clubs (Real Madrid, PSG, Lakers, Stade toulousain…). Elles sortent dans tous les boosters, environ 1 carte sur 40 (jamais à la place de la carte garantie d'un pack). Design dédié : cadre « trophée » noir et or, photo libre du stade ou du trophée, année et palmarès.
+
+En match, une carte Mythe se place dans l'emplacement « Mythe » de l'équipe et donne un bonus aux athlètes de son sport (tous les athlètes pour les Jeux olympiques), avec un supplément sur certaines épreuves : Roland-Garros donne +5 aux joueurs de tennis, +3 de plus au Marathon. Dans les divisions hautes, l'adversaire aligne parfois lui aussi un Mythe. Les cartes Mythe sont définies à la fin de `src/data/athletes.ts` (fonction `M`).
 
 ### La carte
 

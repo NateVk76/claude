@@ -122,6 +122,9 @@ function readAthletes() {
   const out = [];
   const pattern = /^\s*a\('([^']+)', '([^']*)', '([^']*)', '([a-z]+)', '[^']*', '[^']*', '[A-Z-]+', (\d+), (\d+)/gm;
   for (const m of source.matchAll(pattern)) out.push({ id: m[1], first: m[2], last: m[3], sport: m[4], fame: Number(m[5]) });
+  // cartes Mythe : M('id', 'Nom', 'sport', 'type', 'PAYS', célébrité, …) → identifiant « mythe-id »
+  const mythes = /^\s*M\('([^']+)', '([^']*)', '([a-z]+)', '[a-z]+', '[A-Z-]+', (\d+)/gm;
+  for (const m of source.matchAll(mythes)) out.push({ id: `mythe-${m[1]}`, first: '', last: m[2], sport: m[3], fame: Number(m[4]) });
   return out.sort((a, b) => b.fame - a.fame);
 }
 

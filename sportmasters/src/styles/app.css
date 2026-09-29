@@ -3903,3 +3903,61 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ───────────── Emplacement Mythe de l'équipe ───────────── */
+.mythe-slot {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(224, 184, 90, 0.35);
+  background: radial-gradient(120% 140% at 0% 0%, rgba(224, 184, 90, 0.12), transparent 60%), var(--bg-2);
+}
+
+.mythe-slot__card {
+  flex: none;
+  width: 140px;
+}
+
+.mythe-slot__card .team-slot__empty {
+  width: 140px;
+  aspect-ratio: 100 / 140;
+  color: #e0b85a;
+  border-color: rgba(224, 184, 90, 0.45);
+}
+
+.mythe-slot__text {
+  display: grid;
+  gap: 6px;
+}
+
+.mythe-slot__text .eyebrow {
+  color: #e0b85a;
+}
+
+.mythe-slot__text p {
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .mythe-slot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.chip-rarity--mythe {
+  background: linear-gradient(180deg, #fff1bf, #e0b85a 60%, #a8801e);
+  color: #140e02;
+}
+
+.tag--mythe {
+  background: linear-gradient(180deg, #fff1bf, #e0b85a 60%, #a8801e);
+  color: #140e02;
+}
+
+.rarity-row--mythe {
+  --dot: linear-gradient(180deg, #fff1bf, #e0b85a);
+}

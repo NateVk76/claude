@@ -1,7 +1,7 @@
 import type { CardFace, EventId, StatKey, UltiEffect } from './types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { EVENTS, EVENT_ORDER, SPORTS } from '../data/sports';
-import { canBePrime, overallOf, popularityOf, primeRecordStart, rarityOf, statsOf, ultiOf } from './cards';
+import { canBePrime, isMythe, overallOf, popularityOf, primeRecordStart, rarityOf, statsOf, ultiOf } from './cards';
 import { makeUid, pick, shuffle, type Rng } from './random';
 
 // Matchs : 5 manches, chacune est une épreuve (Sprint, Bras de fer, Money time…).
@@ -26,6 +26,8 @@ export interface SideState {
   /** bonus permanent accumulé (ultis de type « toute l'équipe ») */
   buff: number;
   wonLast: boolean;
+  /** carte Mythe (compétition, équipe, club) qui donne un bonus à ses athlètes */
+  mythe?: MatchCard;
 }
 
 export interface PowerPart {
@@ -75,32 +77,40 @@ export function divisionTarget(division: number): number {
 }
 
 /** Équipe adverse d'un niveau proche de la division. */
-export function createOpponent(division: number, rng: Rng): { name: string; cards: MatchCard[] } {
+export function createOpponent(division: number, rng: Rng): { name: string; cards: MatchCard[]; mythe?: MatchCard } {
   const target = divisionTarget(division);
-  let pool = ATHLETES.filter((a) => Math.abs(overallOf(a) - target) <= 3);
-  if (pool.length < TEAM_SIZE) pool = ATHLETES.slice().sort((a, b) => Math.abs(overallOf(a) - target) - Math.abs(overallOf(b) - target)).slice(0, 20);
+  const athletes = ATHLETES.filter((a) => !isMythe(a));
+  let pool = athletes.filter((a) => Math.abs(overallOf(a) - target) <= 3);
+  if (pool.length < TEAM_SIZE) pool = athletes.slice().sort((a, b) => Math.abs(overallOf(a) - target) - Math.abs(overallOf(b) - target)).slice(0, 20);
   const chosen = shuffle(rng, pool).slice(0, TEAM_SIZE);
   const cards = chosen.map((athlete) => {
     const variant = division <= 3 && canBePrime(athlete) && rng() < 0.15 ? ('prime' as const) : ('base' as const);
     const record = primeRecordStart(athlete);
     return { uid: makeUid('o'), athleteId: athlete.id, variant, ...(record ? { record } : {}) };
   });
-  return { name: pick(rng, CLUB_NAMES), cards };
+  // dans les divisions hautes, l'adversaire aligne parfois un Mythe qui colle à son équipe
+  let mythe: MatchCard | undefined;
+  if (division <= 6 && rng() < 0.35) {
+    const sports = new Set(chosen.map((a) => a.sport));
+    const fitting = ATHLETES.filter((a) => a.mythe && (a.mythe.bonus.sport === 'all' || sports.has(a.mythe.bonus.sport)));
+    if (fitting.length) mythe = { uid: makeUid('o'), athleteId: pick(rng, fitting).id, variant: 'base' };
+  }
+  return { name: pick(rng, CLUB_NAMES), cards, mythe };
 }
 
-function newSide(name: string, cards: MatchCard[]): SideState {
-  return { name, cards, used: [], energy: 2, score: 0, wins: 0, buff: 0, wonLast: false };
+function newSide(name: string, cards: MatchCard[], mythe?: MatchCard): SideState {
+  return { name, cards, used: [], energy: 2, score: 0, wins: 0, buff: 0, wonLast: false, ...(mythe ? { mythe } : {}) };
 }
 
-export function createMatch(myCards: MatchCard[], division: number, rng: Rng, myName = 'Mon équipe'): MatchState {
+export function createMatch(myCards: MatchCard[], division: number, rng: Rng, myName = 'Mon équipe', myMythe?: MatchCard): MatchState {
   const opponent = createOpponent(division, rng);
   return {
     id: makeUid('match'),
     division,
     events: shuffle(rng, EVENT_ORDER).slice(0, ROUNDS),
     round: 0,
-    me: newSide(myName, myCards),
-    opp: newSide(opponent.name, opponent.cards),
+    me: newSide(myName, myCards, myMythe),
+    opp: newSide(opponent.name, opponent.cards, opponent.mythe),
     log: [],
     finished: false,
   };
@@ -162,6 +172,17 @@ function passiveBonus(side: SideState, other: SideState, card: CardFace, eventId
   }
 }
 
+/** Bonus de la carte Mythe de l'équipe, pour un athlète du bon sport (ou tous). */
+export function mytheBonus(side: Pick<SideState, 'mythe'>, card: CardFace, eventId: EventId): PowerPart | null {
+  const def = side.mythe && ATHLETES_BY_ID[side.mythe.athleteId];
+  const info = def?.mythe;
+  if (!def || !info) return null;
+  const sport = ATHLETES_BY_ID[card.athleteId].sport;
+  if (info.bonus.sport !== 'all' && info.bonus.sport !== sport) return null;
+  const extra = info.bonus.events?.includes(eventId) ? (info.bonus.eventBonus ?? 0) : 0;
+  return { label: `Mythe : ${def.last}`, value: info.bonus.value + extra };
+}
+
 function variance(card: CardFace): number {
   const sport = ATHLETES_BY_ID[card.athleteId].sport;
   if (sport === 'golf') return 1.5;
@@ -208,6 +229,8 @@ export function computePower(
 
   const passive = passiveBonus(side, other, card, eventId, round);
   if (passive) parts.push(passive);
+  const mythe = mytheBonus(side, card, eventId);
+  if (mythe) parts.push(mythe);
   if (side.buff) parts.push({ label: 'Bonus d’équipe', value: side.buff });
 
   let ultiBonus = 0;

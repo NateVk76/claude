@@ -121,6 +121,28 @@ export interface Athlete {
   ulti?: Ulti;
   /** identifiant Wikidata (athlètes générés automatiquement) */
   wikidata?: string;
+  /** carte « Mythe » : une compétition, une équipe de légende ou un club, et non un athlète */
+  mythe?: MytheInfo;
+}
+
+export type MytheKind = 'competition' | 'equipe' | 'club';
+
+/** Bonus d'une carte Mythe pendant un match, pour les athlètes du sport concerné (ou tous). */
+export interface MytheBonus {
+  sport: SportId | 'all';
+  value: number;
+  /** bonus supplémentaire sur certaines épreuves */
+  events?: EventId[];
+  eventBonus?: number;
+}
+
+export interface MytheInfo {
+  kind: MytheKind;
+  /** année de création, de la première édition ou de l'épopée */
+  year: string;
+  /** palmarès ou chiffre marquant, affiché sur la carte */
+  palmares: string;
+  bonus: MytheBonus;
 }
 
 export interface Rarity {

@@ -29,12 +29,15 @@ function tierOf(card: CardFace): number {
 }
 
 function isSpecial(card: CardFace): boolean {
+  // les Mythes n'ont pas de révélation « athlète » (drapeau, note) : ils se retournent sur place
+  if (ATHLETES_BY_ID[card.athleteId].mythe) return false;
   return tierOf(card) >= 3 || card.variant === 'prime';
 }
 
 function glowOf(card: CardFace): string {
   if (card.variant === 'prime') return '#ff9ad5';
   if (card.variant === 'reverse') return '#7fd6ff';
+  if (ATHLETES_BY_ID[card.athleteId].mythe) return '#e0b85a';
   return RARITY_GLOW[rarityOf(ATHLETES_BY_ID[card.athleteId]).id];
 }
 
@@ -71,6 +74,7 @@ function untilt3d(event: PointerEvent<HTMLElement>) {
 
 /** Étiquette sous une carte révélée : Reverse, sinon Nouveau ou Doublon. */
 function CardTag({ card }: { card: CardFace & { isNew?: boolean } }) {
+  if (ATHLETES_BY_ID[card.athleteId].mythe) return <span className="tag tag--mythe">{card.isNew ? 'Nouveau mythe' : 'Mythe'}</span>;
   if (card.variant === 'reverse') return <span className="tag tag--reverse">Reverse</span>;
   return <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>;
 }
