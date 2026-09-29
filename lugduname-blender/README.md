@@ -32,8 +32,9 @@ du nitrile (C≡N) avec trois ; chaque bâton prend la couleur de ses deux atome
 
 ## Ouvrir et rendre
 
-Ouvrir `lugduname.blend` avec **Blender 4.2 ou plus récent** : la vue caméra
-s'affiche en aperçu matériaux avec le fond dégradé.
+Ouvrir `lugduname.blend` avec **Blender 4.2 ou plus récent** (vérifié avec 4.2
+et 5.1, rendu identique) : la vue caméra s'affiche en aperçu matériaux avec le
+fond dégradé. Le fichier ne dépend d'aucune texture ni fichier externe.
 
 - **F12** : rend l'image fixe (réglages du rendu final : 3840 × 2160, 256 échantillons).
 - **Ctrl+F12** : rend le tourniquet, un tour complet de la molécule en 240 images
@@ -49,8 +50,8 @@ Le script et le SDF sont aussi embarqués dans le `.blend` (onglet *Scripting*).
 # avec Blender installé
 blender -b -P build_scene.py -- --save lugduname.blend --render renders/lugduname_4k.png
 
-# ou avec le module Python de Blender (Python 3.11)
-pip install bpy==4.2.0
+# ou avec le module Python de Blender
+pip install bpy==5.1.2   # Python 3.13 (ou bpy==4.2.0 avec Python 3.11)
 python build_scene.py --save lugduname.blend --render renders/lugduname_4k.png
 
 # aperçu rapide : 960 × 540, 64 échantillons

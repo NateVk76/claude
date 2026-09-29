@@ -4,7 +4,7 @@ Construit toute la scène à partir d'un fichier SDF (coordonnées 3D en Å) :
 atomes, liaisons simples/doubles/triples, matériaux, fond dégradé, éclairage,
 caméra, puis (optionnel) rend l'image et enregistre le .blend.
 
-Testé avec Blender 4.2 LTS (compatible 4.x). Trois façons de l'utiliser :
+Testé avec Blender 4.2 LTS et 5.1. Trois façons de l'utiliser :
 
   1. Dans Blender : onglet Scripting > Ouvrir ce fichier > Run Script
      (lugduname.sdf doit être à côté du script, ou dans le .blend comme texte).
@@ -100,6 +100,14 @@ def set_input(node, names, value):
     return None
 
 
+def ensure_node_tree(idblock):
+    """Matériau ou monde neuf : les nœuds sont à activer avant Blender 5.0,
+    toujours présents ensuite (use_nodes y est obsolète)."""
+    if idblock.node_tree is None:
+        idblock.use_nodes = True
+    return idblock.node_tree
+
+
 def socket(sockets, identifier):
     """Récupère une entrée/sortie par identifiant (ex. 'A_Color' du nœud Mix)."""
     for s in sockets:
@@ -192,9 +200,8 @@ def clear_scene():
 
 def make_material(name, hex_color):
     mat = bpy.data.materials.new(name)
-    mat.use_nodes = True
     mat.diffuse_color = srgb_to_linear(hex_color)  # couleur dans la vue Solid
-    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf = ensure_node_tree(mat).nodes["Principled BSDF"]
     set_input(bsdf, "Base Color", srgb_to_linear(hex_color))
     set_input(bsdf, "Roughness", 0.32)
     set_input(bsdf, ["Specular IOR Level", "Specular"], 0.5)
@@ -317,8 +324,7 @@ def build_molecule(atoms, bonds, positions, root_name, rotation):
 def build_world(aspect):
     world = bpy.data.worlds.new("Grand dégradé")
     bpy.context.scene.world = world
-    world.use_nodes = True
-    nt = world.node_tree
+    nt = ensure_node_tree(world)
     nodes, links = nt.nodes, nt.links
     nodes.clear()
 
@@ -577,6 +583,8 @@ def main():
         out = Path(args.animation).resolve()
         out.parent.mkdir(parents=True, exist_ok=True)
         render = bpy.context.scene.render
+        if hasattr(render.image_settings, "media_type"):  # Blender 5.0+
+            render.image_settings.media_type = "VIDEO"
         render.image_settings.file_format = "FFMPEG"
         render.ffmpeg.format = "MPEG4"
         render.ffmpeg.codec = "H264"
