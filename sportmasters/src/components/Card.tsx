@@ -1,5 +1,5 @@
 import { memo, useCallback, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
-import type { Athlete, CardFace, MytheKind, OwnedCard, RarityId, SportId, StatKey, Stats } from '../engine/types';
+import type { Athlete, CardFace, MytheKind, OwnedCard, RarityId, StatKey, Stats } from '../engine/types';
 import { getAthlete, isIcon, overallOf, rarityOf } from '../engine/cards';
 import { SPORTS, STAT_KEYS } from '../data/sports';
 import { usePhoto } from '../photos';
@@ -114,9 +114,13 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
   const showPhoto = !!photo.src && !photoFailed;
   const fullName = athlete.first && !compact ? `${athlete.first} ${athlete.last}` : athlete.last;
   const overall = overallOf(athlete, variant);
-  const tier = prime ? 'Prime' : reverse ? 'Reverse' : icon ? 'Icône' : TIERS[rarity.id];
+  const mythe = athlete.mythe;
+  const tier = mythe ? 'Mythe' : prime ? 'Prime' : reverse ? 'Reverse' : icon ? 'Icône' : TIERS[rarity.id];
+  // une carte Mythe affiche son bonus de match à la place de la note
+  const rating = mythe ? `+${mythe.bonus.value}` : String(overall);
   const subtitle = [
     athlete.role,
+    mythe ? mytheYear(mythe.kind, mythe.year) : '',
     record ? `Record ${formatRecord(record)}` : '',
     athlete.died ? `${athlete.born ?? ''}–${athlete.died}` : '',
   ]
@@ -198,9 +202,6 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
           : undefined
       }
     >
-      {athlete.mythe ? (
-        <MytheFace athlete={athlete} photo={showPhoto ? photo.src : undefined} onPhotoError={() => setPhotoFailed(true)} compact={compact} tiny={tiny} />
-      ) : (
       <div className="card__body">
         <div className="card__bg" />
 
@@ -209,6 +210,10 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
           <div className="card__player">
             {showPhoto ? (
               <img className="card__photo" src={photo.src} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setPhotoFailed(true)} />
+            ) : mythe ? (
+              <span className="card__emblem">
+                <SportIcon sport={athlete.sport} />
+              </span>
             ) : (
               <Bust color={sport.color} num={athlete.num} className="card__bust" />
             )}
@@ -224,7 +229,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
             <i>{tier}</i>
           </span>
           <span className="card__rating">
-            <b className="metal-text">{overall}</b>
+            <b className="metal-text">{rating}</b>
           </span>
         </div>
 
@@ -257,7 +262,6 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
         <div className="card__holo" aria-hidden="true" />
         <div className="card__shine" aria-hidden="true" />
       </div>
-      )}
     </div>
   );
 });
@@ -267,56 +271,4 @@ function mytheYear(kind: MytheKind, year: string): string {
   if (kind === 'club') return `Fondé en ${year}`;
   if (kind === 'competition') return `Depuis ${year}`;
   return year;
-}
-
-/**
- * Face d'une carte Mythe (compétition, équipe de légende, club) : cadre « trophée » noir et or,
- * photo sous une arche, année, palmarès et bonus de match. Même repère en em que les athlètes.
- */
-function MytheFace({
-  athlete,
-  photo,
-  onPhotoError,
-  compact,
-  tiny,
-}: {
-  athlete: Athlete;
-  photo?: string;
-  onPhotoError: () => void;
-  compact: boolean;
-  tiny: boolean;
-}) {
-  const info = athlete.mythe!;
-  const bonusSport = info.bonus.sport === 'all' ? null : SPORTS[info.bonus.sport];
-  return (
-    <div className="card__body mythe">
-      <div className="mythe__bg" />
-      <div className="mythe__top">
-        <span className="mythe__label">★ Mythe ★</span>
-        {!tiny && <span className="mythe__kind">{athlete.role}</span>}
-      </div>
-      <div className="mythe__window">
-        {photo ? (
-          <img src={photo} alt="" loading="lazy" decoding="async" draggable={false} onError={onPhotoError} />
-        ) : (
-          <span className="mythe__emblem">
-            <SportIcon sport={athlete.sport} />
-          </span>
-        )}
-      </div>
-      <div className="mythe__year">{mytheYear(info.kind, info.year)}</div>
-      <div className="mythe__name metal-text" style={{ fontSize: `${Math.min(2.3, 30 / Math.max(athlete.last.length, 8)) * (compact ? 1.15 : 1)}em` }}>
-        {athlete.last}
-      </div>
-      {!compact && <div className="mythe__palmares">{info.palmares}</div>}
-      <div className="mythe__bonus" title="Bonus en match pour les athlètes concernés">
-        <span className="mythe__bonus-icon">{bonusSport ? <SportIcon sport={info.bonus.sport as SportId} /> : '★'}</span>
-        <b>+{info.bonus.value}</b>
-        {!tiny && <span>{bonusSport ? bonusSport.name : 'Tous les athlètes'}</span>}
-      </div>
-      <div className="mythe__frame" />
-      <div className="card__holo" aria-hidden="true" />
-      <div className="card__shine" aria-hidden="true" />
-    </div>
-  );
 }
