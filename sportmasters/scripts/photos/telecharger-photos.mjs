@@ -7,9 +7,12 @@
 //
 // Étape « telecharger » : pour chaque athlète, prend la première photo libre de Commons parmi
 // l'image principale de sa page Wikipédia en français, celle de sa page en anglais, puis son
-// image Wikidata. Les photos listées dans refus.json sont ignorées (plusieurs personnes, athlète
-// de dos…). Par défaut, seuls les athlètes sans photo ou dont la photo est refusée sont traités ;
-// --tout (ou "tout": true dans config.json) les refait tous.
+// image Wikidata. Une photo choisie à la main dans choix.json passe avant tout ; celles listées
+// dans refus.json sont ignorées (plusieurs personnes, athlète de dos…). Par défaut, seuls les
+// athlètes sans photo, ou dont la photo est refusée ou n'est plus celle choisie, sont traités ;
+// --tout (ou "tout": true dans config.json) les refait tous. Pour les athlètes listés dans
+// "explorer" (config.json), une planche numérotée de leurs photos Commons est enregistrée dans
+// scripts/photos/explorer/ pour aider à choisir.
 // Étape « finaliser » : produit public/photos/<id>.webp (détourée si le détourage est propre,
 // sinon cadrée en portrait) et met à jour src/data/photos.json (crédits affichés dans le jeu).
 // Tourne dans la GitHub Action .github/workflows/photos.yml (il faut un accès à Wikimedia).
@@ -31,6 +34,8 @@ const readJson = (name) => JSON.parse(readFileSync(new URL(name, import.meta.url
 const CONFIG = readJson('./config.json');
 const OVERRIDES = readJson('./titres.json');
 const REFUS = readJson('./refus.json');
+const CHOIX = readJson('./choix.json');
+const EXPLORE_DIR = path('scripts/photos/explorer');
 const REPO = process.env.GITHUB_REPOSITORY ?? 'NateVk76/claude';
 const USER_AGENT = `SportMastersPhotos/1.0 (https://github.com/${REPO}; jeu de fan non commercial)`;
 
@@ -188,6 +193,10 @@ async function wikidataImages(item) {
 /** Photos possibles, dans l'ordre : page française, page anglaise, Wikidata. */
 async function* candidates(athlete, log) {
   const seen = new Set();
+  if (CHOIX[athlete.id]) {
+    seen.add(CHOIX[athlete.id]);
+    yield { file: CHOIX[athlete.id], source: 'choix' };
+  }
   let item = null;
   let enTitle = null;
   for (const lang of ['fr', 'en']) {
@@ -244,6 +253,51 @@ async function commonsInfo(file) {
   };
 }
 
+/** Planche numérotée des photos Commons d'un athlète, pour en choisir une dans choix.json. */
+async function explore(athlete) {
+  const params = new URLSearchParams({
+    action: 'query',
+    format: 'json',
+    formatversion: '2',
+    generator: 'search',
+    gsrsearch: `${athlete.first} ${athlete.last} filetype:bitmap`.trim(),
+    gsrnamespace: '6',
+    gsrlimit: '40',
+    prop: 'imageinfo',
+    iiprop: 'url|size|extmetadata',
+    iiurlwidth: '330',
+  });
+  const data = await json(`https://commons.wikimedia.org/w/api.php?${params}`);
+  const pages = (data?.query?.pages ?? []).sort((a, b) => a.index - b.index);
+  const [W, H, LABEL, COLS] = [220, 290, 22, 6];
+  const layers = [];
+  const list = [];
+  for (const page of pages) {
+    if (list.length >= 30) break;
+    const info = page.imageinfo?.[0];
+    const file = page.title.replace(/^File:/, '');
+    const license = stripHtml(info?.extmetadata?.LicenseShortName?.value);
+    if (!info || !isPhoto(file) || !license || info.extmetadata?.NonFree?.value === 'true') continue;
+    const response = await request(info.thumburl ?? info.url);
+    if (!response) continue;
+    const n = list.length + 1;
+    const [x, y] = [((n - 1) % COLS) * W, Math.floor((n - 1) / COLS) * (H + LABEL)];
+    const tile = await sharp(Buffer.from(await response.arrayBuffer())).rotate().resize(W, H, { fit: 'contain', background: '#222' }).jpeg().toBuffer();
+    const label = `<svg width="${W}" height="${LABEL}"><rect width="100%" height="100%" fill="#000"/><text x="6" y="16" font-family="sans-serif" font-size="14" fill="#fff">${n} · ${info.width}×${info.height}</text></svg>`;
+    layers.push({ input: tile, left: x, top: y }, { input: Buffer.from(label), left: x, top: y + H });
+    list.push({ n, file, license, width: info.width, height: info.height });
+  }
+  if (!list.length) {
+    console.log(`  ${athlete.id} : aucune photo libre trouvée sur Commons`);
+    return;
+  }
+  mkdirSync(EXPLORE_DIR, { recursive: true });
+  const size = { width: COLS * W, height: Math.ceil(list.length / COLS) * (H + LABEL), channels: 3, background: '#111' };
+  await sharp({ create: size }).composite(layers).jpeg({ quality: 72 }).toFile(join(EXPLORE_DIR, `${athlete.id}.jpg`));
+  writeFileSync(join(EXPLORE_DIR, `${athlete.id}.json`), `${JSON.stringify(list, null, 1)}\n`);
+  console.log(`  ${athlete.id} : ${list.length} photos sur la planche scripts/photos/explorer/${athlete.id}.jpg`);
+}
+
 async function download() {
   mkdirSync(RAW_DIR, { recursive: true });
   const all = argv.includes('--tout') || process.env.PHOTOS_TOUT === 'true' || CONFIG.tout === true;
@@ -251,9 +305,14 @@ async function download() {
   const limit = Number(option('limite') ?? CONFIG.limite ?? 0);
   const current = existsSync(CREDITS_FILE) ? JSON.parse(readFileSync(CREDITS_FILE, 'utf8')) : {};
   const refused = (id, file) => (REFUS[id] ?? []).includes(file);
+  const currentFile = (id) => fileOfPage(current[id]?.page);
+  const outdated = (a) => !current[a.id] || refused(a.id, currentFile(a.id)) || (CHOIX[a.id] && CHOIX[a.id] !== currentFile(a.id));
   let athletes = readAthletes();
+  for (const athlete of athletes.filter((a) => (CONFIG.explorer ?? []).includes(a.id))) {
+    await explore(athlete).catch((error) => console.warn(`  ${athlete.id} : ${error.message}`));
+  }
   if (only.length) athletes = athletes.filter((a) => only.includes(a.id));
-  else if (!all) athletes = athletes.filter((a) => !current[a.id] || refused(a.id, fileOfPage(current[a.id].page)));
+  else if (!all) athletes = athletes.filter(outdated);
   if (limit > 0) athletes = athletes.slice(0, limit);
 
   const photos = {};

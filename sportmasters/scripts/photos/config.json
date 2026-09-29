@@ -1,4 +1,5 @@
 {
   "limite": 0,
-  "tout": true
+  "tout": false,
+  "explorer": ["duplantis", "federer", "nadal", "biles", "riner", "maradona", "hamilton"]
 }
