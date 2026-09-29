@@ -42,7 +42,7 @@
   font-size: 0.8rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .muted {
@@ -165,7 +165,7 @@
 }
 
 .brand__name b {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 900;
 }
 
@@ -199,7 +199,7 @@
 }
 
 .chip--packs b {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .chip__timer {
@@ -323,7 +323,7 @@
 }
 
 .bottomnav__item.is-active {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .bottomnav__item.is-active::before {
@@ -404,11 +404,11 @@
 .btn--primary {
   background: linear-gradient(180deg, var(--accent-2), var(--accent));
   color: var(--accent-ink);
-  box-shadow: 0 6px 18px rgba(37, 168, 75, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 18px rgba(30, 122, 60, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .btn--primary:hover:not(:disabled) {
-  box-shadow: 0 8px 26px rgba(37, 168, 75, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 26px rgba(30, 122, 60, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .btn--gold {
@@ -428,7 +428,7 @@
 
 .btn--ghost.is-on {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .btn--danger {
@@ -506,7 +506,7 @@
   border-radius: 20px;
   border: 1px solid var(--line-2);
   background:
-    radial-gradient(120% 100% at 15% 0%, rgba(37, 168, 75, 0.18), transparent 55%),
+    radial-gradient(120% 100% at 15% 0%, rgba(30, 122, 60, 0.18), transparent 55%),
     radial-gradient(90% 90% at 100% 100%, rgba(150, 230, 110, 0.1), transparent 60%),
     /* bandes de tonte, comme une pelouse de stade */
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 64px, transparent 64px 128px),
@@ -539,7 +539,7 @@
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 1.4rem;
-  box-shadow: 0 6px 18px rgba(37, 168, 75, 0.4);
+  box-shadow: 0 6px 18px rgba(30, 122, 60, 0.4);
 }
 
 .hero__text {
@@ -789,7 +789,7 @@
 }
 
 .objective.is-complete .objective__text span:first-child {
-  color: var(--accent-2);
+  color: var(--accent-text);
 }
 
 @media (min-width: 560px) {
@@ -1157,8 +1157,8 @@
   gap: 10px;
   padding: 10px 14px;
   border-radius: 12px;
-  background: rgba(37, 168, 75, 0.08);
-  border: 1px solid rgba(37, 168, 75, 0.25);
+  background: rgba(30, 122, 60, 0.08);
+  border: 1px solid rgba(30, 122, 60, 0.25);
   font-size: 0.92rem;
 }
 
@@ -1644,7 +1644,7 @@
   font-size: 0.76rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   margin-bottom: 4px !important;
 }
 
@@ -1739,8 +1739,8 @@
   gap: 12px;
   padding: 14px;
   border-radius: 14px;
-  background: rgba(37, 168, 75, 0.06);
-  border: 1px solid rgba(37, 168, 75, 0.25);
+  background: rgba(30, 122, 60, 0.06);
+  border: 1px solid rgba(30, 122, 60, 0.25);
 }
 
 .sell-form p {
@@ -1808,7 +1808,7 @@
 
 .pill.is-active {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .pill:focus-within {
@@ -2065,7 +2065,7 @@
 @keyframes next-pulse {
   50% {
     transform: translateY(-6px);
-    filter: drop-shadow(0 0 16px rgba(37, 168, 75, 0.6));
+    filter: drop-shadow(0 0 16px rgba(30, 122, 60, 0.6));
   }
 }
 
@@ -2078,13 +2078,13 @@
   background:
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 3px),
     radial-gradient(90% 70% at 50% 40%, #1d4a2f 0%, #08140d 70%);
-  box-shadow: inset 0 0 0 2px rgba(37, 168, 75, 0.75), inset 0 0 0 7px #08140d, inset 0 0 0 8px rgba(37, 168, 75, 0.3), 0 10px 16px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 0 2px rgba(30, 122, 60, 0.75), inset 0 0 0 7px #08140d, inset 0 0 0 8px rgba(30, 122, 60, 0.3), 0 10px 16px rgba(0, 0, 0, 0.5);
 }
 
 .card-back__rings {
   position: absolute;
   inset: 0;
-  background: repeating-radial-gradient(circle at 50% 42%, rgba(37, 168, 75, 0.16) 0 6%, transparent 6% 12%);
+  background: repeating-radial-gradient(circle at 50% 42%, rgba(30, 122, 60, 0.16) 0 6%, transparent 6% 12%);
 }
 
 .card-back__crest {
@@ -2094,7 +2094,7 @@
   place-items: center;
   align-content: center;
   gap: 8px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .card-back__crest svg {
@@ -2103,7 +2103,7 @@
 }
 
 .card-back__crest svg path:first-child {
-  fill: rgba(37, 168, 75, 0.16);
+  fill: rgba(30, 122, 60, 0.16);
   stroke: var(--accent);
   stroke-width: 1.2;
 }
@@ -2447,7 +2447,7 @@
 .team-slot__empty span {
   font-size: 2.2rem;
   line-height: 1;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .synergies {
@@ -2486,7 +2486,7 @@
   float: right;
   font-size: 1.4rem;
   line-height: 1;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .rules[open] summary::after {
@@ -2518,7 +2518,7 @@
 .rules__sports svg {
   width: 20px;
   height: 20px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 @media (min-width: 760px) {
@@ -2604,9 +2604,9 @@
 }
 
 .scoreboard__rounds li.is-current {
-  background: rgba(37, 168, 75, 0.18);
-  color: var(--accent);
-  box-shadow: inset 0 0 0 1px rgba(37, 168, 75, 0.5);
+  background: rgba(30, 122, 60, 0.18);
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 1px rgba(30, 122, 60, 0.5);
 }
 
 .scoreboard__rounds li.is-me {
@@ -2640,9 +2640,9 @@
   padding: 16px 18px;
   border-radius: 16px;
   background:
-    radial-gradient(90% 120% at 0% 0%, rgba(37, 168, 75, 0.2), transparent 60%),
+    radial-gradient(90% 120% at 0% 0%, rgba(30, 122, 60, 0.2), transparent 60%),
     var(--bg-2);
-  border: 1px solid rgba(37, 168, 75, 0.3);
+  border: 1px solid rgba(30, 122, 60, 0.3);
 }
 
 .event-banner h2 {
@@ -2685,7 +2685,7 @@
 }
 
 .hand__card.is-selected .card {
-  filter: drop-shadow(0 0 14px rgba(37, 168, 75, 0.9));
+  filter: drop-shadow(0 0 14px rgba(30, 122, 60, 0.9));
 }
 
 .hand__card.is-used {
@@ -2734,7 +2734,7 @@
   justify-items: center;
   padding: 18px 12px;
   border-radius: 20px;
-  background: radial-gradient(80% 60% at 50% 0%, rgba(37, 168, 75, 0.12), transparent 70%), var(--bg-2);
+  background: radial-gradient(80% 60% at 50% 0%, rgba(30, 122, 60, 0.12), transparent 70%), var(--bg-2);
   border: 1px solid var(--line-2);
 }
 
@@ -3126,7 +3126,7 @@
   background: linear-gradient(90deg, rgba(255, 215, 106, 0.16), rgba(255, 215, 106, 0.04)), #18291f;
 }
 .toast--warn {
-  border-color: rgba(37, 168, 75, 0.5);
+  border-color: rgba(30, 122, 60, 0.5);
 }
 .toast--error {
   border-color: rgba(255, 100, 100, 0.55);

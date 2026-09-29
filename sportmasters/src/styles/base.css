@@ -10,9 +10,11 @@
   --text: #eef1f8;
   --text-dim: #9db3a6;
   --text-faint: #6b8174;
-  --accent: #25a84b;
-  --accent-2: #5fcf7d;
-  --accent-ink: #021a0a;
+  --accent: #1e7a3c;
+  --accent-2: #2f9452;
+  --accent-ink: #ffffff;
+  /* texte et icônes verts sur fond sombre : le vert forêt pur y serait trop peu lisible */
+  --accent-text: #62c283;
   --good: #3fdc8a;
   --bad: #ff6464;
   --info: #62c6ff;
@@ -84,7 +86,7 @@ h3 {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-text);
   outline-offset: 2px;
 }
 
