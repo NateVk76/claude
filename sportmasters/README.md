@@ -125,13 +125,13 @@ Le moteur (`src/engine`) ne dépend pas de l'interface : il prend un état, l'he
 
 ## Photos des athlètes
 
-Les photos viennent de Wikimedia Commons : uniquement des images sous licence libre (CC BY, CC BY-SA, domaine public), avec l'auteur et la licence affichés dans la fiche de chaque carte. Elles sont récupérées et détourées par la GitHub Action `.github/workflows/photos.yml` :
+Les photos viennent de Wikimedia Commons : uniquement des images sous licence libre (CC BY, CC BY-SA, domaine public…), avec l'auteur et la licence affichés dans la fiche de chaque carte. Elles sont récupérées et détourées par la GitHub Action `.github/workflows/photos.yml` :
 
-1. `scripts/photos/telecharger-photos.mjs telecharger` trouve la page Wikipédia de chaque athlète (français puis anglais), vérifie que c'est le bon sport, et télécharge la photo principale si elle est libre.
-2. `scripts/photos/detourer.py` détoure les athlètes avec rembg (effet « joueur qui sort de la carte »).
-3. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` et les crédits dans `src/data/photos.json`.
+1. `scripts/photos/telecharger-photos.mjs telecharger` cherche pour chaque athlète une photo libre : l'image principale de sa page Wikipédia en français (en vérifiant que c'est le bon sport), sinon celle de sa page en anglais, sinon son image Wikidata.
+2. `scripts/photos/detourer.py` détoure les athlètes avec rembg (effet « joueur qui sort de la carte ») et efface ce qui ne tient pas à l'athlète (taches, coéquipiers à côté).
+3. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` et met à jour les crédits dans `src/data/photos.json`.
 
-L'Action se relance à chaque modification de `scripts/photos/`. Si un athlète tombe sur la mauvaise page, ajoute le bon titre Wikipédia dans `scripts/photos/titres.json`. Sans photo libre, la carte affiche une silhouette en buste aux couleurs du sport.
+L'Action se relance à chaque modification de `scripts/photos/`, et ne traite que les athlètes sans photo ou dont la photo a été refusée (`"tout": true` dans `scripts/photos/config.json`, ou l'option « Refaire toutes les photos » au lancement manuel, refait tout). Si un athlète tombe sur la mauvaise page, ajoute le bon titre Wikipédia dans `scripts/photos/titres.json`. Si une photo ne convient pas (plusieurs personnes, athlète de dos…), ajoute son nom de fichier Commons dans `scripts/photos/refus.json` : l'Action prendra la photo suivante. Sans photo libre, la carte affiche une silhouette en buste aux couleurs du sport.
 
 Dans la version en un seul fichier (`npm run build:single`), les photos sont regroupées par paquets de 16 (`artifact/photos/pNN.json`, avec un index `artifact/photos/index.json`) et chargées au fur et à mesure que les cartes s'affichent.
 

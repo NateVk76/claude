@@ -4,6 +4,15 @@ name: Photos des athlètes
 
 on:
   workflow_dispatch:
+    inputs:
+      tout:
+        description: Refaire toutes les photos (sinon seulement les manquantes et les refusées)
+        type: boolean
+        default: false
+      seulement:
+        description: "Athlètes à refaire, séparés par des virgules (ex. : messi,duplantis)"
+        type: string
+        default: ''
   push:
     branches: [claude/laughing-newton-g9nvtx]
     paths:
@@ -39,9 +48,12 @@ jobs:
       - name: Installer les dépendances
         run: |
           npm ci
-          pip install "rembg[cpu]" pillow
+          pip install "rembg[cpu]" pillow scipy
       - name: Trouver et télécharger les photos
         run: node scripts/photos/telecharger-photos.mjs telecharger
+        env:
+          PHOTOS_TOUT: ${{ inputs.tout }}
+          PHOTOS_SEULEMENT: ${{ inputs.seulement }}
       - name: Détourer les athlètes
         run: python scripts/photos/detourer.py
       - name: Préparer les images du jeu
