@@ -925,7 +925,13 @@
   "author": "Erik van Leeuwen, attribution: Erik van Leeuwen (bron: Wikipedia).",
   "license": "GFDL",
   "licenseUrl": "http://www.gnu.org/copyleft/fdl.html",
-  "page": "https://commons.wikimedia.org/wiki/File:Armand_Duplantis_Budapest_2023.jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Armand_Duplantis_Budapest_2023.jpg",
+  "crop": [
+   0.29,
+   0,
+   0.57,
+   1
+  ]
  },
  "dupont": {
   "file": "dupont.webp",
