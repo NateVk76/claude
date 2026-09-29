@@ -183,6 +183,9 @@ export function PackOpening() {
   const openDetail = useUi((s) => s.openDetail);
   const [stage, setStage] = useState<Stage>('pack');
   const [revealed, setRevealed] = useState(0);
+  // carte affichée en grand (une seule à la fois) et sortie en cours vers la suivante
+  const [current, setCurrent] = useState(0);
+  const [leaving, setLeaving] = useState(false);
   const [walkoutIndex, setWalkoutIndex] = useState<number | null>(null);
   const [soldDupes, setSoldDupes] = useState(false);
   const confetti = useRef<ConfettiHandle>(null);
@@ -192,6 +195,8 @@ export function PackOpening() {
     if (opening) {
       setStage('pack');
       setRevealed(0);
+      setCurrent(0);
+      setLeaving(false);
       setWalkoutIndex(null);
       setSoldDupes(false);
     }
@@ -213,6 +218,25 @@ export function PackOpening() {
     setRevealed((r) => r + 1);
   }, [opening, revealed, cards]);
 
+  // un clic : retourne la carte affichée ; clic suivant : elle sort et la suivante entre
+  const advance = useCallback(() => {
+    if (stage !== 'cards' || leaving || !cards.length) return;
+    if (revealed <= current) {
+      revealNext();
+      return;
+    }
+    if (current >= cards.length - 1) {
+      setStage('summary');
+      return;
+    }
+    setLeaving(true);
+    sfx.deal();
+    window.setTimeout(() => {
+      setCurrent((c) => c + 1);
+      setLeaving(false);
+    }, 380);
+  }, [stage, leaving, cards.length, revealed, current, revealNext]);
+
   const revealAll = useCallback(() => {
     // révèle tout jusqu'à la prochaine carte spéciale (qui a droit à sa mise en scène)
     let next = revealed;
@@ -221,39 +245,35 @@ export function PackOpening() {
       sfx.flip();
       sfx.reveal(tierOf(cards[next - 1]));
       setRevealed(next);
+      setCurrent(next - 1);
     }
     if (next < cards.length) {
-      window.setTimeout(() => {
-        setWalkoutIndex(next);
-        setStage('walkout');
-      }, next > revealed ? 500 : 0);
+      window.setTimeout(
+        () => {
+          setCurrent(next);
+          setWalkoutIndex(next);
+          setStage('walkout');
+        },
+        next > revealed ? 600 : 0,
+      );
+    } else {
+      window.setTimeout(() => setStage('summary'), 900);
     }
   }, [revealed, cards]);
-
-  // les cartes sortent du sachet une à une, chacune avec son petit bruit de glisse
-  useEffect(() => {
-    if (stage !== 'cards' || revealed > 0) return;
-    const ids = cards.map((_, i) => window.setTimeout(() => sfx.deal(), 150 + i * 120));
-    return () => ids.forEach((id) => window.clearTimeout(id));
-    // uniquement à l'arrivée des cartes, pas à chaque carte révélée
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage]);
-
-  useEffect(() => {
-    if (stage === 'cards' && cards.length && revealed >= cards.length) {
-      const id = window.setTimeout(() => setStage('summary'), 700);
-      return () => window.clearTimeout(id);
-    }
-  }, [stage, revealed, cards.length]);
 
   useEffect(() => {
     if (!opening) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && stage === 'summary' && !useUi.getState().detail) close();
+      const onButton = event.target instanceof HTMLElement && event.target.closest('button');
+      if (stage === 'cards' && !onButton && (event.key === ' ' || event.key === 'Enter' || event.key === 'ArrowRight')) {
+        event.preventDefault();
+        advance();
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [opening, stage, close]);
+  }, [opening, stage, close, advance]);
 
   if (!opening) return null;
 
@@ -263,7 +283,10 @@ export function PackOpening() {
     sfx.tear();
     setStage('tearing');
     window.setTimeout(() => sfx.burst(), 450);
-    window.setTimeout(() => setStage('cards'), 1100);
+    window.setTimeout(() => {
+      setStage('cards');
+      sfx.deal();
+    }, 1100);
   };
 
   const dupes = cards.filter((c) => !c.isNew);
@@ -291,38 +314,61 @@ export function PackOpening() {
         </div>
       )}
 
-      {(stage === 'cards' || stage === 'walkout') && (
-        <div className="opening__cards">
+      {(stage === 'cards' || stage === 'walkout') && cards[current] && (
+        <div className="opening__cards opening__cards--single">
           <p className="opening__progress">
-            {opening.packName} · carte {Math.min(revealed + 1, cards.length)} sur {cards.length}
+            {opening.packName} · carte {current + 1} sur {cards.length}
           </p>
-          <div className="opening__row">
-            {cards.map((card, i) => {
-              const shown = i < revealed;
-              const next = i === revealed;
+
+          {/* une seule carte, en grand : clic pour la retourner, puis pour passer à la suivante */}
+          <div className="opening__spot">
+            {(() => {
+              const card = cards[current];
+              const flipped = revealed > current;
               return (
                 <div
                   key={card.uid}
-                  className={`flip${shown ? ' is-flipped' : ''}${next ? ' is-next' : ''}${!shown && isSpecial(card) ? ' is-special' : ''}`}
-                  style={{ ['--glow' as string]: glowOf(card), animationDelay: `${i * 120}ms` }}
-                  onClick={next ? revealNext : undefined}
+                  className={`stage-card${flipped ? ' is-flipped' : ''}${leaving ? ' is-leaving' : ''}${!flipped && isSpecial(card) ? ' is-special' : ''}`}
+                  style={{ ['--glow' as string]: glowOf(card) }}
+                  onClick={advance}
+                  role="button"
+                  tabIndex={-1}
+                  aria-label={flipped ? 'Carte suivante' : 'Retourner la carte'}
                 >
                   <div className="flip__inner">
                     <div className="flip__back">
                       <CardBack />
                     </div>
                     <div className="flip__front">
-                      <Card card={card} size="md" />
-                      {shown && <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>}
+                      <Card card={card} size="xl" />
+                      {flipped && <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>}
                     </div>
                   </div>
                 </div>
               );
-            })}
+            })()}
           </div>
+
+          <p className="opening__hint opening__hint--cards">
+            {revealed <= current
+              ? 'Touche la carte pour la retourner'
+              : current < cards.length - 1
+                ? 'Touche pour la carte suivante'
+                : 'Touche pour voir le récapitulatif'}
+          </p>
+
+          {/* les cartes du paquet en miniature : révélées, en cours, à venir */}
+          <div className="opening__tray" aria-hidden="true">
+            {cards.map((card, i) => (
+              <div key={card.uid} className={`tray-slot${i === current ? ' is-current' : ''}${i < revealed ? ' is-revealed' : ''}`}>
+                {i < revealed ? <Card card={card} size="xs" /> : <CardBack />}
+              </div>
+            ))}
+          </div>
+
           <div className="opening__actions">
-            <button type="button" className="btn btn--primary btn--lg" onClick={revealNext} disabled={revealed >= cards.length}>
-              Révéler
+            <button type="button" className="btn btn--primary btn--lg" onClick={advance} disabled={leaving}>
+              {revealed <= current ? 'Retourner' : current < cards.length - 1 ? 'Suivante' : 'Récapitulatif'}
             </button>
             <button type="button" className="btn btn--ghost" onClick={revealAll} disabled={revealed >= cards.length}>
               Tout révéler
@@ -336,6 +382,7 @@ export function PackOpening() {
           card={cards[walkoutIndex]}
           onDone={() => {
             setRevealed(walkoutIndex + 1);
+            setCurrent(walkoutIndex);
             setWalkoutIndex(null);
             setStage('cards');
           }}

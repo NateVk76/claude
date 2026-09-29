@@ -2318,6 +2318,157 @@
   filter: drop-shadow(0 0 14px color-mix(in srgb, var(--glow) 55%, transparent));
 }
 
+/* ───── une carte à la fois, en grand ───── */
+.opening__cards--single {
+  gap: 14px;
+}
+
+.opening__spot {
+  display: grid;
+  place-items: center;
+  min-height: calc(var(--stage-w, 300px) * 1.4 + 24px);
+  --stage-w: 300px;
+}
+
+.stage-card {
+  --stage-w: 300px;
+  position: relative;
+  width: var(--stage-w);
+  aspect-ratio: 100 / 140;
+  perspective: 1400px;
+  cursor: pointer;
+  animation: stage-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (max-width: 520px) {
+  .opening__spot,
+  .stage-card {
+    --stage-w: 240px;
+  }
+}
+
+.stage-card .flip__front .card {
+  --card-w: var(--stage-w) !important;
+}
+
+/* halo de la couleur de la rareté derrière la carte retournée */
+.stage-card::before {
+  content: '';
+  position: absolute;
+  inset: -22%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 62%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stage-card.is-flipped::before {
+  animation: stage-glow 1.6s ease-out forwards;
+}
+
+.stage-card.is-flipped .flip__inner {
+  transform: rotateY(180deg);
+}
+
+.stage-card.is-flipped {
+  animation: flip-lift 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.stage-card.is-flipped .flip__front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 5%;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.3) 50%, transparent 65%) 0 0 / 250% 100% no-repeat;
+  mix-blend-mode: overlay;
+  animation: card-sweep 1.2s 0.5s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* de dos : elle se soulève doucement au survol */
+.stage-card:not(.is-flipped) .flip__back {
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.5s;
+  filter: drop-shadow(0 20px 26px rgba(0, 0, 0, 0.5));
+}
+
+.stage-card:not(.is-flipped):hover .flip__back {
+  transform: translateY(-6px);
+}
+
+.stage-card.is-special:not(.is-flipped) .flip__back {
+  filter: drop-shadow(0 0 22px color-mix(in srgb, var(--glow) 55%, transparent));
+}
+
+.stage-card.is-leaving {
+  animation: stage-out 0.38s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    transform: translateX(60px) rotate(3deg);
+  }
+}
+
+@keyframes stage-out {
+  to {
+    opacity: 0;
+    transform: translateX(-60px) rotate(-3deg) scale(0.96);
+  }
+}
+
+@keyframes stage-glow {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  40% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 0.12;
+    transform: scale(1);
+  }
+}
+
+.opening__hint--cards {
+  animation: none;
+  opacity: 0.8;
+}
+
+/* miniatures du paquet sous la carte */
+.opening__tray {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.tray-slot {
+  width: 46px;
+  aspect-ratio: 100 / 140;
+  opacity: 0.45;
+  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.tray-slot.is-revealed {
+  opacity: 0.85;
+}
+
+.tray-slot.is-current {
+  opacity: 1;
+  transform: translateY(-4px);
+}
+
+.tray-slot .card {
+  --card-w: 46px !important;
+  filter: none;
+}
+
+.tray-slot .card-back {
+  box-shadow: none;
+}
+
 /* Dos des cartes, même langage que les boosters : fond vert tramé, bandes diagonales,
    carte blanche à pois avec ombre décalée. 1 cqw = 1 % de la largeur de la carte. */
 .card-back {
