@@ -48,6 +48,7 @@ export function CardBack({ className = '' }: { className?: string }) {
     <div className={`card-back ${className}`}>
       <div className="card-back__bg" />
       <div className="card-back__streak" />
+      <div className="card-back__holo" />
       <div className="card-back__crest">
         <i className="card-back__mark" />
         <Logo />
@@ -230,6 +231,15 @@ export function PackOpening() {
     }
   }, [revealed, cards]);
 
+  // les cartes sortent du sachet une à une, chacune avec son petit bruit de glisse
+  useEffect(() => {
+    if (stage !== 'cards' || revealed > 0) return;
+    const ids = cards.map((_, i) => window.setTimeout(() => sfx.deal(), 80 + i * 110));
+    return () => ids.forEach((id) => window.clearTimeout(id));
+    // uniquement à l'arrivée des cartes, pas à chaque carte révélée
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage]);
+
   useEffect(() => {
     if (stage === 'cards' && cards.length && revealed >= cards.length) {
       const id = window.setTimeout(() => setStage('summary'), 700);
@@ -250,9 +260,11 @@ export function PackOpening() {
 
   const tear = () => {
     if (stage !== 'pack') return;
+    // le sachet tremble, le haut se déchire et s'envole, éclat de lumière, puis les cartes sortent
     sfx.tear();
     setStage('tearing');
-    window.setTimeout(() => setStage('cards'), 1150);
+    window.setTimeout(() => sfx.burst(), 520);
+    window.setTimeout(() => setStage('cards'), 1400);
   };
 
   const dupes = cards.filter((c) => !c.isNew);
@@ -263,10 +275,17 @@ export function PackOpening() {
   return (
     <div className={`opening opening--${stage}`} style={{ ['--teaser' as string]: best ? glowOf(best) : '#fff' }}>
       <div className="opening__backdrop" aria-hidden="true" />
+      <div className="opening__rays" aria-hidden="true" />
       {(stage === 'pack' || stage === 'tearing') && (
         <div className="opening__stage">
           <button type="button" className="opening__pack" onClick={tear} aria-label={`Ouvrir le ${opening.packName}`}>
-            <PackArt tone={opening.tone} name={opening.packName} />
+            {/* deux copies du sachet : le corps et la bande du haut, qui s'arrache à l'ouverture */}
+            <span className="opening__pack-body">
+              <PackArt tone={opening.tone} name={opening.packName} size={cards.length} />
+            </span>
+            <span className="opening__pack-top" aria-hidden="true">
+              <PackArt tone={opening.tone} name={opening.packName} size={cards.length} />
+            </span>
           </button>
           <div className="opening__flash" aria-hidden="true" />
           <p className="opening__hint">{stage === 'pack' ? 'Touche le pack pour l’ouvrir' : ''}</p>
@@ -286,7 +305,7 @@ export function PackOpening() {
                 <div
                   key={card.uid}
                   className={`flip${shown ? ' is-flipped' : ''}${next ? ' is-next' : ''}${!shown && isSpecial(card) ? ' is-special' : ''}`}
-                  style={{ ['--glow' as string]: glowOf(card), animationDelay: `${i * 90}ms` }}
+                  style={{ ['--glow' as string]: glowOf(card), animationDelay: `${i * 110}ms` }}
                   onClick={next ? revealNext : undefined}
                 >
                   <div className="flip__inner">
