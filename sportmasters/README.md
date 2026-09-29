@@ -23,15 +23,15 @@ npm run build:single # un seul fichier HTML autonome dans artifact/
 
 ### Rareté = célébrité
 
-Chaque athlète a un score de célébrité (0-100), estimé d'après son audience. Plus il est connu, plus sa carte est rare.
+Chaque athlète a un score de célébrité (0-100), estimé d'après son audience. Plus il est connu, plus sa carte est rare. Le jeu compte 1 035 athlètes : 524 dans la base manuelle et 511 ajoutés depuis Wikidata.
 
 | Rareté | Célébrité | Athlètes | Booster gratuit |
 | --- | --- | --- | --- |
-| Légendaire | 90 et plus | 31 | 0,8 % par carte |
-| Épique | 75 à 89 | 42 | 3,2 % |
-| Rare | 60 à 74 | 92 | 10 % |
-| Peu commune | 44 à 59 | 140 | 26 % |
-| Commune | moins de 44 | 218 | 60 % |
+| Légendaire | 90 et plus | 32 | 0,8 % par carte |
+| Épique | 75 à 89 | 50 | 3,2 % |
+| Rare | 60 à 74 | 153 | 10 % |
+| Peu commune | 44 à 59 | 281 | 26 % |
+| Commune | moins de 44 | 519 | 60 % |
 
 À l'intérieur d'une rareté, les plus célèbres sortent encore moins souvent : Messi sort environ 5 fois moins que Duplantis.
 
@@ -115,11 +115,12 @@ Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » 
 
 ```
 src/
-  data/athletes.ts   base des athlètes (523 dont 143 Icônes)
+  data/athletes.ts   base manuelle : 524 athlètes, ultis signatures, versions Prime
+  data/athletes.generated.json   511 athlètes ajoutés depuis Wikidata (1 035 au total, dont 200 Icônes)
   data/sports.ts     sports, particularités, ultis de sport, épreuves
   engine/            moteur pur, sans interface : cartes, boosters, marché, matchs
   store/             état du jeu (sauvegarde locale) et état de l'interface
-  components/        carte, pictogrammes, drapeaux, packs
+  components/        carte, logo, drapeaux, packs
   overlays/          ouverture de booster, fiche carte
   screens/           Boosters, Collection, Mercato, Matchs, Boutique
 ```
@@ -140,20 +141,22 @@ Dans la version en un seul fichier (`npm run build:single`), les photos sont reg
 
 Les photos sont libres de droits d'auteur, mais l'image des personnes reste protégée : pour une sortie commerciale, il faudra des licences officielles (joueurs, clubs, ligues).
 
-## Passer à 10 000 athlètes
+## Ajouter des athlètes depuis Wikidata
 
-La base manuelle (`src/data/athletes.ts`) contient les stars, leurs ultis signatures et leurs versions Prime. Pour le reste, un script va chercher des milliers d'athlètes dans Wikidata et calcule leur célébrité d'après les vues de leur page Wikipédia en français sur 12 mois, comme WikiMasters :
+La base manuelle (`src/data/athletes.ts`) contient les stars, leurs ultis signatures et leurs versions Prime. Le reste vient de Wikidata, par la GitHub Action `.github/workflows/athletes.yml` (lancée à chaque modification de `scripts/wikidata/`, ou à la main avec une taille au choix) :
 
 ```bash
-node scripts/wikidata/generer-athletes.mjs --contact "ton.adresse@exemple.fr" --par-sport 50   # essai
-node scripts/wikidata/generer-athletes.mjs --contact "ton.adresse@exemple.fr" --par-sport 700  # ~10 000 athlètes
+node scripts/wikidata/generer-athletes.mjs --contact "https://github.com/ton-compte/ton-depot"              # ~500 athlètes
+node scripts/wikidata/generer-athletes.mjs --contact "https://github.com/ton-compte/ton-depot" --echelle 20  # ~10 000
+node scripts/wikidata/generer-athletes.mjs --recaler   # sans réseau : recalcule célébrité et note
 ```
 
-- Le résultat va dans `src/data/athletes.generated.json`, fusionné automatiquement avec la base manuelle (qui garde la priorité).
-- La rareté est calculée par percentile : les 0,3 % les plus vus sont Légendaires, les 1,2 % suivants Épiques, puis 6 % Rares, 17,5 % Peu communes, le reste Commune. Sur 10 000 athlètes, ça fait une trentaine de légendaires.
-- Le poste et le profil de stats sont devinés depuis la description Wikidata (« spécialiste du saut à la perche » → perchiste).
-- `--contact` est obligatoire : Wikimedia demande un moyen de contact dans les requêtes.
-- Le script n'a pas pu être lancé là où il a été écrit (pas d'accès réseau à Wikidata) : fais d'abord un essai avec `--par-sport 50` et regarde le fichier produit.
+- **Qui** : pour chaque sport, un quota (120 footballeurs, 45 basketteurs, 40 joueurs de tennis, 40 athlètes, 30 rugbymen, 30 cyclistes…). Parmi les athlètes les plus présents dans les Wikipédias du monde, on garde ceux dont la description confirme le sport, puis les plus consultés sur Wikipédia en français.
+- **Écartés** : les doublons de la base manuelle (même identifiant Wikidata ou même nom), les personnes de `scripts/wikidata/exclus.json` (entraîneurs célèbres surtout comme tels, personnalités connues hors du sport…), avec la raison.
+- **Célébrité** : la popularité (vues Wikipédia en français × nombre de Wikipédias au carré, pour mêler audience en France et notoriété mondiale) est comparée à celle des athlètes de la base manuelle : à popularité égale, même célébrité, donc même rareté. Un ancien joueur devenu entraîneur ne dépasse pas « rare ». `scripts/wikidata/celebrite.json` permet de corriger un cas à la main.
+- **Fiche** : pays sportif (y compris Angleterre, Écosse, pays de Galles), poste ou discipline d'après Wikidata, description comme phrase de la carte, noms d'usage dans `scripts/wikidata/noms.json` (Isco, Bernardinho…). Un décès n'est retenu (carte Icône avec les années) que si l'introduction Wikipédia le confirme.
+- **Recalage hors ligne** : les mesures (vues, nombre de Wikipédias) sont gardées dans le fichier et dans `scripts/wikidata/reperes.json` ; `--recaler` refait le calcul après une retouche, sans réseau.
+- `--contact` est obligatoire : Wikimedia demande un moyen de contact dans les requêtes (l'adresse du dépôt suffit).
 - Le moteur a été testé avec 10 000 athlètes factices : 6 ms par booster, 0,2 s pour rattraper 24 h de marché, et les grilles s'affichent par pages de 120 cartes.
 
 ## Et ensuite

@@ -94,6 +94,8 @@ describe('générateur d’athlètes (Wikidata)', () => {
   it('produit des identifiants et des phrases propres', () => {
     expect(slugify('Armand « Mondo » Duplantis')).toBe('armand-mondo-duplantis');
     expect(slugify('Nikola Karabatić')).toBe('nikola-karabatic');
+    expect(slugify('Tarjei Bø')).toBe('tarjei-bo');
+    expect(slugify('Anita Włodarczyk')).toBe('anita-wlodarczyk');
     expect(factFrom('footballeur international français', 'Football')).toBe('Footballeur international français.');
   });
 });

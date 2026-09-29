@@ -51,6 +51,8 @@ const EXCLUDED = JSON.parse(readFileSync(new URL('./exclus.json', import.meta.ur
 // retouches à la main de la célébrité, par identifiant de carte : { "ferran-torres": 50 }
 const FAME_OVERRIDES = JSON.parse(readFileSync(new URL('./celebrite.json', import.meta.url), 'utf8'));
 const ANCHORS_FILE = new URL('./reperes.json', import.meta.url);
+// noms d'usage quand le libellé Wikidata est l'état civil : { "francisco-roman-alarcon": { "first": "", "last": "Isco" } }
+const NAME_OVERRIDES = JSON.parse(readFileSync(new URL('./noms.json', import.meta.url), 'utf8'));
 const TITLE_OVERRIDES = JSON.parse(readFileSync(path('scripts/photos/titres.json'), 'utf8'));
 
 // Métiers Wikidata (P106) et nombre d'athlètes à ajouter par métier (à l'échelle 1).
@@ -384,7 +386,7 @@ async function main() {
     let id = slugify(person.name) || person.qid.toLowerCase();
     if (usedIds.has(id)) id = `${id}-${person.qid.toLowerCase()}`;
     usedIds.add(id);
-    const { first, last } = splitName(person.name, person.country);
+    const { first, last } = NAME_OVERRIDES[id] ?? splitName(person.name, person.country);
     const text = [person.description, person.positions, person.disciplines].filter(Boolean).join(' | ');
     const { archetype, role } = archetypeFor(person.config.sport, text, person.config.fallback);
     return {

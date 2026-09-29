@@ -1,6 +1,6 @@
 import { ATHLETES } from '../data/athletes';
 import { Card } from '../components/Card';
-import { Flag, COUNTRY_NAMES } from '../components/Flag';
+import { Flag, FLAG_CODES } from '../components/Flag';
 
 // Page de contrôle visuel (#galerie) : un échantillon de cartes et tous les drapeaux.
 const SAMPLE = ['messi', 'mbappe', 'cristiano-ronaldo', 'lebron', 'bolt', 'pele', 'federer', 'zidane', 'maradona', 'djokovic', 'jordan', 'nadal', 'duplantis', 'kante', 'collet', 'gasquet'];
@@ -27,7 +27,7 @@ export function Gallery() {
         ))}
       </section>
       <section style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-        {Object.keys(COUNTRY_NAMES).map((code) => (
+        {[...FLAG_CODES, 'PE', 'GB-XYZ'].map((code) => (
           <figure key={code} style={{ margin: 0, width: 64, textAlign: 'center', fontSize: 10, color: '#9ba5bb' }}>
             <Flag code={code} className="gallery-flag" />
             {code}

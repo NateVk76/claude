@@ -1,9 +1,13 @@
 // Fonctions pures utilisées par le générateur d'athlètes et le script des photos
 // (testées dans src/engine/__tests__/generator.test.ts).
 
-/** Identifiant lisible : « Armand Duplantis » → « armand-duplantis ». */
+// Lettres que la décomposition Unicode ne ramène pas à une lettre simple.
+const LETTERS = { ø: 'o', Ø: 'O', æ: 'ae', Æ: 'AE', œ: 'oe', Œ: 'OE', ß: 'ss', ł: 'l', Ł: 'L', đ: 'd', Đ: 'D', ð: 'd', þ: 'th', ı: 'i', ħ: 'h' };
+
+/** Identifiant lisible : « Armand Duplantis » → « armand-duplantis », « Tarjei Bø » → « tarjei-bo ». */
 export function slugify(text) {
   return text
+    .replace(/[øØæÆœŒßłŁđĐðþıħ]/g, (letter) => LETTERS[letter])
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
@@ -264,7 +268,11 @@ const DEMONYMS = {
   UZ: 'ouzb[èe]k', LR: 'lib[ée]rien', TG: 'togolais', GQ: '[ée]quato-guin[ée]en', ZW: 'zimbabw[ée]en', SY: 'syrien',
   FJ: 'fidjien', CR: 'costaric', DO: 'dominicain', LU: 'luxembourgeois', SD: 'soudanais', UG: 'ougandais',
   CU: 'cubain', MN: 'mongol', KZ: 'kazakh', PH: 'philippin', PR: 'portoricain', PA: 'panam[ée]en', BO: 'bolivien',
+  CG: 'congolais', AE: '[ée]mirien',
+  // pays disparus : on affiche le pays de naissance (une gymnaste soviétique née à Grodno → Biélorussie)
+  SU: 'sovi[ée]tique', YU: 'yougoslave', CS: 'tch[ée]coslovaque',
 };
+const VANISHED = new Set(['SU', 'YU', 'CS']);
 
 // Anciens codes et codes de régions ramenés au pays affiché.
 const CODE_ALIASES = { DD: 'DE', 'GB-UKM': 'GB', 'GB-GBN': 'GB' };
@@ -293,7 +301,9 @@ export function pickCountry(sportCodes = [], citizenCodes = [], description = ''
   const sport = clean(sportCodes);
   const citizen = clean(citizenCodes);
   const birth = clean(birthCodes);
-  const cited = citedCountries(description);
+  const cited = citedCountries(description)
+    .map((c) => (VANISHED.has(c) ? birth[0] : c))
+    .filter(Boolean);
   // « nord-irlandais » vaut pour un Britannique
   const within = (c, pool) => pool.includes(c) || (c.startsWith('GB-') && pool.includes('GB'));
   let code;

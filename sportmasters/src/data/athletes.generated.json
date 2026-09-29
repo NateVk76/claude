@@ -524,7 +524,7 @@
   "liens": 37
  },
  {
-  "id": "anita-w-odarczyk",
+  "id": "anita-wlodarczyk",
   "first": "Anita",
   "last": "Włodarczyk",
   "sport": "athle",
@@ -2860,22 +2860,6 @@
   "liens": 94
  },
  {
-  "id": "ferran-torres",
-  "first": "Ferran",
-  "last": "Torres",
-  "sport": "foot",
-  "archetype": "ailier",
-  "role": "Ailier",
-  "country": "ES",
-  "fame": 78,
-  "level": 90,
-  "fact": "Footballeur espagnol.",
-  "wikidata": "Q44297797",
-  "wiki": "Ferran Torres",
-  "vues": 500705,
-  "liens": 66
- },
- {
   "id": "gerard-pique",
   "first": "Gerard",
   "last": "Piqué",
@@ -4311,6 +4295,22 @@
   "liens": 71
  },
  {
+  "id": "ferran-torres",
+  "first": "Ferran",
+  "last": "Torres",
+  "sport": "foot",
+  "archetype": "ailier",
+  "role": "Ailier",
+  "country": "ES",
+  "fame": 56,
+  "level": 90,
+  "fact": "Footballeur espagnol.",
+  "wikidata": "Q44297797",
+  "wiki": "Ferran Torres",
+  "vues": 500705,
+  "liens": 66
+ },
+ {
   "id": "kai-havertz",
   "first": "Kai",
   "last": "Havertz",
@@ -4619,8 +4619,8 @@
  },
  {
   "id": "francisco-roman-alarcon",
-  "first": "Francisco",
-  "last": "Román Alarcón",
+  "first": "",
+  "last": "Isco",
   "sport": "foot",
   "archetype": "milieu",
   "role": "Milieu",
@@ -4975,7 +4975,7 @@
  {
   "id": "sergio-garcia-fernandez",
   "first": "Sergio",
-  "last": "García Fernández",
+  "last": "García",
   "sport": "golf",
   "archetype": "golfeur",
   "role": "Golf",
@@ -5161,7 +5161,7 @@
   "sport": "gym",
   "archetype": "gymnaste",
   "role": "Gymnastique artistique",
-  "country": "US",
+  "country": "BY",
   "fame": 34,
   "level": 85,
   "fact": "Gymnaste soviétique.",
@@ -5745,7 +5745,7 @@
   "liens": 50
  },
  {
-  "id": "ole-einar-bj-rndalen",
+  "id": "ole-einar-bjorndalen",
   "first": "Ole",
   "last": "Einar Bjørndalen",
   "sport": "hiver",
@@ -5956,7 +5956,7 @@
   "liens": 35
  },
  {
-  "id": "tarjei-b",
+  "id": "tarjei-bo",
   "first": "Tarjei",
   "last": "Bø",
   "sport": "hiver",
@@ -5972,7 +5972,7 @@
   "liens": 36
  },
  {
-  "id": "marte-olsbu-r-iseland",
+  "id": "marte-olsbu-roiseland",
   "first": "Marte",
   "last": "Olsbu Røiseland",
   "sport": "hiver",
@@ -7501,7 +7501,7 @@
  {
   "id": "margaret-smith-court",
   "first": "Margaret",
-  "last": "Smith Court",
+  "last": "Court",
   "sport": "tennis",
   "archetype": "tennis-complet",
   "role": "Tennis",
@@ -8128,22 +8128,6 @@
   "liens": 42
  },
  {
-  "id": "wilfredo-leon-venero",
-  "first": "Wilfredo",
-  "last": "León Venero",
-  "sport": "volley",
-  "archetype": "volley-attaquant",
-  "role": "Attaquant",
-  "country": "PL",
-  "fame": 18,
-  "level": 73,
-  "fact": "Volleyeur cubain.",
-  "wikidata": "Q2634633",
-  "wiki": "Wilfredo León Venero",
-  "vues": 5533,
-  "liens": 28
- },
- {
   "id": "andrea-giani",
   "first": "Andrea",
   "last": "Giani",
@@ -8178,8 +8162,8 @@
  },
  {
   "id": "gabriela-guimaraes",
-  "first": "Gabriela",
-  "last": "Guimarães",
+  "first": "",
+  "last": "Gabi",
   "sport": "volley",
   "archetype": "volley-attaquant",
   "role": "Attaquant",
@@ -8226,8 +8210,8 @@
  },
  {
   "id": "bernardo-rocha-de-rezende",
-  "first": "Bernardo",
-  "last": "Rocha de Rezende",
+  "first": "",
+  "last": "Bernardinho",
   "sport": "volley",
   "archetype": "volley-passeur",
   "role": "Passeur",
@@ -8340,8 +8324,8 @@
  },
  {
   "id": "thaisa-menezes",
-  "first": "Thaísa",
-  "last": "Menezes",
+  "first": "",
+  "last": "Thaísa",
   "sport": "volley",
   "archetype": "volley-attaquant",
   "role": "Attaquant",

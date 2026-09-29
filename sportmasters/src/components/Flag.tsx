@@ -470,7 +470,209 @@ const FLAGS: Record<string, () => ReactNode> = {
       <rect y={8.2} width={30} height={3.6} fill="#1a1a1a" />
     </>
   ),
+  // pays ajoutés avec les athlètes générés depuis Wikidata (emblèmes simplifiés)
+  TR: () => (
+    <>
+      <rect width={30} height={20} fill="#E30A17" />
+      <circle cx={11} cy={10} r={5} fill="#fff" />
+      <circle cx={12.3} cy={10} r={4} fill="#E30A17" />
+      <polygon points={starPoints(17.2, 10, 2.3, 180)} fill="#fff" />
+    </>
+  ),
+  'GB-WLS': () => (
+    <>
+      {hStripes(['#ffffff', '#00B140'])}
+      <path
+        d="M7,12.5 L5.2,10.6 L6.6,10.4 L6.2,9 L8.3,10.3 C10,9.3 12.5,9.4 14.5,10 L16.5,6.2 L18.6,7.4 L21.4,5.8 L20.4,8.6 L18.4,10.2 C20.6,10.6 22.4,11.6 22.8,13 L25,12.2 L24.2,14.6 L22.6,14.5 L21.4,16.6 L20.4,14.8 L17.4,15.1 L16.6,17 L15.6,15.2 L12.6,15 L11.6,16.8 L10.8,14.8 C9,14.6 7.6,13.8 7,12.5 Z"
+        fill="#D30731"
+      />
+    </>
+  ),
+  'GB-NIR': () => (
+    <>
+      <rect width={30} height={20} fill="#ffffff" />
+      <rect x={12.5} width={5} height={20} fill="#CE1124" />
+      <rect y={7.5} width={30} height={5} fill="#CE1124" />
+      <polygon points={starPoints(15, 10, 3.4)} fill="#fff" />
+      <circle cx={15} cy={10.4} r={1.2} fill="#CE1124" />
+    </>
+  ),
+  LV: () => hStripes(['#9E3039', '#ffffff', '#9E3039'], [2, 1, 2]),
+  LU: () => hStripes(['#ED2939', '#ffffff', '#00A1DE']),
+  GA: () => hStripes(['#009E60', '#FCD116', '#3A75C4']),
+  BG: () => hStripes(['#ffffff', '#00966E', '#D62612']),
+  AM: () => hStripes(['#D90012', '#0033A0', '#F2A800']),
+  CR: () => hStripes(['#002B7F', '#ffffff', '#CE1126', '#ffffff', '#002B7F'], [1, 1, 2, 1, 1]),
+  EC: () => (
+    <>
+      {hStripes(['#FFDD00', '#034EA2', '#ED1C24'], [2, 1, 1])}
+      <ellipse cx={15} cy={10} rx={2.2} ry={2.8} fill="#6E8B3D" stroke="#FFDD00" strokeWidth={0.5} />
+    </>
+  ),
+  VE: () => (
+    <>
+      {hStripes(['#FFCC00', '#00247D', '#CF142B'])}
+      {Array.from({ length: 8 }, (_, i) => {
+        const angle = Math.PI * (1.15 + (i * 0.7) / 7);
+        return <Star key={i} cx={15 + 5 * Math.cos(angle)} cy={12.4 + 5 * Math.sin(angle)} r={0.75} fill="#fff" />;
+      })}
+    </>
+  ),
+  CL: () => (
+    <>
+      <rect width={30} height={20} fill="#ffffff" />
+      <rect y={10} width={30} height={10} fill="#D52B1E" />
+      <rect width={10} height={10} fill="#0039A6" />
+      <Star cx={5} cy={5} r={2.6} fill="#fff" />
+    </>
+  ),
+  DO: () => (
+    <>
+      <rect width={30} height={20} fill="#ffffff" />
+      <rect width={13} height={8.5} fill="#002D62" />
+      <rect x={17} width={13} height={8.5} fill="#CE1126" />
+      <rect y={11.5} width={13} height={8.5} fill="#CE1126" />
+      <rect x={17} y={11.5} width={13} height={8.5} fill="#002D62" />
+      <circle cx={15} cy={10} r={1.3} fill="#2E7D32" />
+    </>
+  ),
+  CU: () => (
+    <>
+      {hStripes(['#002A8F', '#ffffff', '#002A8F', '#ffffff', '#002A8F'])}
+      <polygon points="0,0 13,10 0,20" fill="#CF142B" />
+      <Star cx={4.6} cy={10} r={2.3} fill="#fff" />
+    </>
+  ),
+  UG: () => (
+    <>
+      {hStripes(['#000000', '#FCDC04', '#D90000', '#000000', '#FCDC04', '#D90000'])}
+      <circle cx={15} cy={10} r={3.4} fill="#fff" />
+      <circle cx={15} cy={10} r={1.2} fill="#9CA3AF" />
+    </>
+  ),
+  CD: () => (
+    <>
+      <rect width={30} height={20} fill="#007FFF" />
+      <path d="M0,20 L30,0" stroke="#F7D618" strokeWidth={7} />
+      <path d="M0,20 L30,0" stroke="#CE1021" strokeWidth={4.6} />
+      <Star cx={5.4} cy={4.4} r={3} fill="#F7D618" />
+    </>
+  ),
+  SD: () => (
+    <>
+      {hStripes(['#D21034', '#ffffff', '#000000'])}
+      <polygon points="0,0 11,10 0,20" fill="#007229" />
+    </>
+  ),
+  SK: () => (
+    <>
+      {hStripes(['#ffffff', '#0B4EA2', '#EE1C25'])}
+      <path d="M6,4.5 H13 V11 C13,13.6 11,15 9.5,15.8 C8,15 6,13.6 6,11 Z" fill="#EE1C25" stroke="#fff" strokeWidth={0.6} />
+      <path d="M9.5,6.2 V13.2 M7.9,8 H11.1 M7.4,10 H11.6" stroke="#fff" strokeWidth={0.9} />
+      <path d="M6.8,13.4 C8,12.2 11,12.2 12.2,13.4" fill="#0B4EA2" />
+    </>
+  ),
+  LR: () => (
+    <>
+      {hStripes(Array.from({ length: 11 }, (_, i) => (i % 2 ? '#ffffff' : '#BF0A30')))}
+      <rect width={9.1} height={9.1} fill="#002868" />
+      <Star cx={4.55} cy={4.55} r={2.6} fill="#fff" />
+    </>
+  ),
+  BA: () => (
+    <>
+      <rect width={30} height={20} fill="#002395" />
+      <polygon points="8,0 22,0 22,20" fill="#FECB00" />
+      {Array.from({ length: 7 }, (_, i) => (
+        <Star key={i} cx={6.4 + i * 2.1} cy={1.2 + i * 2.9} r={0.9} fill="#fff" />
+      ))}
+    </>
+  ),
+  TG: () => (
+    <>
+      {hStripes(['#006A4E', '#FFCE00', '#006A4E', '#FFCE00', '#006A4E'])}
+      <rect width={12} height={12} fill="#D21034" />
+      <Star cx={6} cy={6} r={3} fill="#fff" />
+    </>
+  ),
+  AL: () => (
+    <>
+      <rect width={30} height={20} fill="#E41E20" />
+      <path
+        d="M15,4.5 L16.2,6.5 L19.5,4.8 L18.6,7.4 L22.5,6.8 L20.4,9.4 L23,10.6 L19.6,11.6 L20.2,14.2 L16.8,13 L15,16 L13.2,13 L9.8,14.2 L10.4,11.6 L7,10.6 L9.6,9.4 L7.5,6.8 L11.4,7.4 L10.5,4.8 L13.8,6.5 Z"
+        fill="#1a1a1a"
+      />
+    </>
+  ),
+  ZW: () => (
+    <>
+      {hStripes(['#006400', '#FFD200', '#D40000', '#000000', '#D40000', '#FFD200', '#006400'])}
+      <polygon points="0,0 11,10 0,20" fill="#fff" stroke="#000" strokeWidth={0.6} />
+      <Star cx={3.8} cy={10} r={2.2} fill="#D40000" />
+    </>
+  ),
+  SY: () => (
+    <>
+      {hStripes(['#007A3D', '#ffffff', '#000000'])}
+      <Star cx={10} cy={10} r={1.7} fill="#CE1126" />
+      <Star cx={15} cy={10} r={1.7} fill="#CE1126" />
+      <Star cx={20} cy={10} r={1.7} fill="#CE1126" />
+    </>
+  ),
+  GQ: () => (
+    <>
+      {hStripes(['#3E9A00', '#ffffff', '#E32118'])}
+      <polygon points="0,0 8,10 0,20" fill="#0073CE" />
+      <rect x={14} y={8} width={3} height={4} rx={0.6} fill="#9CA3AF" />
+    </>
+  ),
+  FJ: () => (
+    <>
+      <rect width={30} height={20} fill="#68BFE5" />
+      <svg x={0} y={0} width={15} height={10} viewBox="0 0 30 20">
+        {unionJack()}
+      </svg>
+      <path d="M19,5.5 H26 V11 C26,13.6 24,15.2 22.5,16 C21,15.2 19,13.6 19,11 Z" fill="#fff" stroke="#CE1126" strokeWidth={0.5} />
+      <path d="M22.5,5.5 V16 M19,9 H26" stroke="#CE1126" strokeWidth={0.9} />
+    </>
+  ),
+  CG: () => (
+    <>
+      <polygon points="0,0 20,0 0,20" fill="#009543" />
+      <polygon points="30,0 30,20 10,20" fill="#DC241F" />
+      <path d="M0,20 L20,0 H30 L10,20 Z" fill="#FBDE4A" />
+    </>
+  ),
+  AE: () => (
+    <>
+      {hStripes(['#00732F', '#ffffff', '#000000'])}
+      <rect width={8} height={20} fill="#FF0000" />
+    </>
+  ),
+  UZ: () => (
+    <>
+      {hStripes(['#0099B5', '#CE1126', '#ffffff', '#CE1126', '#1EB53A'], [6.2, 0.4, 6.2, 0.4, 6.2])}
+      <circle cx={5} cy={3.4} r={2.2} fill="#fff" />
+      <circle cx={5.9} cy={3.4} r={2} fill="#0099B5" />
+      {[0, 1, 2].map((i) => (
+        <Star key={i} cx={9 + i * 2} cy={2.4} r={0.55} fill="#fff" />
+      ))}
+    </>
+  ),
+  BY: () => (
+    <>
+      <rect width={30} height={13.3} fill="#C8313E" />
+      <rect y={13.3} width={30} height={6.7} fill="#4AA657" />
+      <rect width={3.6} height={20} fill="#fff" />
+      {Array.from({ length: 5 }, (_, i) => (
+        <polygon key={i} points={`1.8,${1 + i * 4} 3,${3 + i * 4} 1.8,${5 + i * 4} 0.6,${3 + i * 4}`} fill="#C8313E" />
+      ))}
+    </>
+  ),
 };
+
+/** Pays dont le drapeau est dessiné (planche de contrôle #galerie). */
+export const FLAG_CODES = Object.keys(FLAGS);
 
 interface FlagProps {
   code: string;
