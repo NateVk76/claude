@@ -15,7 +15,7 @@ npm run build        # version de production dans dist/
 npm run build:single # un seul fichier HTML autonome dans artifact/
 ```
 
-`#galerie` à la fin de l'adresse affiche une planche de contrôle visuel : toutes les poses, tous les drapeaux et les matières de cartes.
+`#galerie` à la fin de l'adresse affiche une planche de contrôle visuel : les matières de cartes et tous les drapeaux.
 
 ## Les règles du jeu
 
@@ -131,7 +131,9 @@ Les photos viennent de Wikimedia Commons : uniquement des images sous licence li
 2. `scripts/photos/detourer.py` détoure les athlètes avec rembg (effet « joueur qui sort de la carte »).
 3. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` et les crédits dans `src/data/photos.json`.
 
-L'Action se relance à chaque modification de `scripts/photos/`. Si un athlète tombe sur la mauvaise page, ajoute le bon titre Wikipédia dans `scripts/photos/titres.json`. Sans photo, la carte affiche un pictogramme du sport.
+L'Action se relance à chaque modification de `scripts/photos/`. Si un athlète tombe sur la mauvaise page, ajoute le bon titre Wikipédia dans `scripts/photos/titres.json`. Sans photo libre, la carte affiche une silhouette en buste aux couleurs du sport.
+
+Dans la version en un seul fichier (`npm run build:single`), les photos sont regroupées par paquets de 16 (`artifact/photos/pNN.json`, avec un index `artifact/photos/index.json`) et chargées au fur et à mesure que les cartes s'affichent.
 
 Les photos sont libres de droits d'auteur, mais l'image des personnes reste protégée : pour une sortie commerciale, il faudra des licences officielles (joueurs, clubs, ligues).
 

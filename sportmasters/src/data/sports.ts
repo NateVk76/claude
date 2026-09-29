@@ -19,7 +19,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Football',
     short: 'FOOT',
     color: '#2fbf71',
-    pose: 'foot-frappe',
     passive: { name: 'Collectif', desc: '+2 de puissance par autre footballeur dans l’équipe (max +8).' },
     ultis: [
       { name: 'Frappe de mule', desc: 'Une frappe qui déchire les filets. +{v} de puissance.', effect: { kind: 'boost', value: 0 } },
@@ -33,7 +32,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Basketball',
     short: 'BASKET',
     color: '#f28c28',
-    pose: 'basket-dunk',
     passive: { name: 'Main chaude', desc: 'Après une manche gagnée, le basketteur suivant gagne +6.' },
     ultis: [
       { name: 'Poster dunk', desc: 'Smash sur la tête du défenseur. +{v} de puissance.', effect: { kind: 'boost', value: 0 } },
@@ -47,7 +45,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Tennis',
     short: 'TENNIS',
     color: '#d4e157',
-    pose: 'tennis-service',
     passive: { name: 'Duelliste', desc: '+5 dans les épreuves Face-à-face et Money time.' },
     ultis: [
       { name: 'Ace', desc: 'Service imparable. +{v} de puissance.', effect: { kind: 'boost', value: 0 } },
@@ -61,7 +58,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Athlétisme',
     short: 'ATHLÉ',
     color: '#ef5350',
-    pose: 'athle-sprint',
     passive: { name: 'Explosivité', desc: '+6 à la première manche et dans l’épreuve Sprint.' },
     ultis: [
       { name: 'Départ canon', desc: 'Sorti des starting-blocks avant tout le monde. +{v}.', effect: { kind: 'boost', value: 0 } },
@@ -74,7 +70,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Natation',
     short: 'NAT',
     color: '#29b6f6',
-    pose: 'natation',
     passive: { name: 'Fluidité', desc: 'Insensible aux malus adverses.' },
     ultis: [
       { name: 'Coulée de dauphin', desc: 'Quinze mètres sous l’eau. +{v} de puissance.', effect: { kind: 'boost', value: 0 } },
@@ -87,7 +82,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Cyclisme',
     short: 'VÉLO',
     color: '#ffca28',
-    pose: 'cyclisme',
     passive: { name: 'Diesel', desc: '+2 de puissance par numéro de manche (+10 à la 5e).' },
     ultis: [
       { name: 'Attaque en danseuse', desc: 'Il se lève sur les pédales. +{v}.', effect: { kind: 'boost', value: 0 } },
@@ -100,7 +94,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Sports mécaniques',
     short: 'MOTEUR',
     color: '#e53935',
-    pose: 'auto',
     passive: { name: 'Aspiration', desc: '+7 quand son équipe est menée au score.' },
     ultis: [
       { name: 'Undercut', desc: 'Arrêt au stand parfait. +{v}.', effect: { kind: 'boost', value: 0 } },
@@ -113,7 +106,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Sports de combat',
     short: 'COMBAT',
     color: '#8d6e63',
-    pose: 'combat-boxe',
     passive: { name: 'Instinct du tueur', desc: 'Une manche gagnée de 10 points ou plus rapporte +1 énergie.' },
     ultis: [
       { name: 'Uppercut', desc: 'Direct au menton. +{v} de puissance.', effect: { kind: 'boost', value: 0 } },
@@ -126,7 +118,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Rugby',
     short: 'RUGBY',
     color: '#7cb342',
-    pose: 'rugby',
     passive: { name: 'Rouleau compresseur', desc: '+6 dans les épreuves Bras de fer et Décathlon.' },
     ultis: [
       { name: 'Raffut', desc: 'Écarte le défenseur d’une main. +{v}.', effect: { kind: 'boost', value: 0 } },
@@ -139,7 +130,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Handball',
     short: 'HAND',
     color: '#26a69a',
-    pose: 'hand',
     passive: { name: 'Combinaison', desc: '+5 si son équipe a gagné la manche précédente.' },
     ultis: [
       { name: 'Kung-fu', desc: 'Passe en l’air, tir en suspension. +{v}.', effect: { kind: 'boost', value: 0 } },
@@ -152,7 +142,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Volley-ball',
     short: 'VOLLEY',
     color: '#ffb74d',
-    pose: 'volley',
     passive: { name: 'Contre', desc: 'L’adversaire perd 4 de puissance.' },
     ultis: [
       { name: 'Attaque en pipe', desc: 'Frappe du fond du terrain. +{v}.', effect: { kind: 'boost', value: 0 } },
@@ -165,7 +154,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Sports d’hiver',
     short: 'HIVER',
     color: '#90caf9',
-    pose: 'hiver-ski',
     passive: { name: 'Sang-froid', desc: '+5 dans les épreuves Money time et Marathon.' },
     ultis: [
       { name: 'Schuss', desc: 'Tout droit dans la pente. +{v}.', effect: { kind: 'boost', value: 0 } },
@@ -178,7 +166,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Gymnastique',
     short: 'GYM',
     color: '#f06292',
-    pose: 'gym',
     passive: { name: 'Perfection', desc: '+6 dans l’épreuve Geste technique. Résultats très réguliers.' },
     ultis: [
       { name: 'Double salto', desc: '+{v} de puissance.', effect: { kind: 'boost', value: 0 } },
@@ -190,7 +177,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Golf',
     short: 'GOLF',
     color: '#66bb6a',
-    pose: 'golf',
     passive: { name: 'Concentration', desc: 'Presque aucune part de hasard dans ses résultats.' },
     ultis: [
       { name: 'Trou en un', desc: '+{v} de puissance.', effect: { kind: 'boost', value: 0 } },
@@ -203,7 +189,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Glisse & urbain',
     short: 'GLISSE',
     color: '#4dd0e1',
-    pose: 'glisse-surf',
     passive: { name: 'Style', desc: '+6 dans les épreuves Geste technique et Bain de foule.' },
     ultis: [
       { name: 'Tube parfait', desc: '+{v} de puissance.', effect: { kind: 'boost', value: 0 } },
@@ -215,7 +200,6 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Sports US',
     short: 'US',
     color: '#5c6bc0',
-    pose: 'us-football',
     passive: { name: 'Showtime', desc: '+5 dans les épreuves Bain de foule et Face-à-face.' },
     ultis: [
       { name: 'Hail Mary', desc: '+{v}, +8 à la dernière manche.', effect: { kind: 'last-round', value: 0, bonus: 8 } },

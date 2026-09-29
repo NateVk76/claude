@@ -26,39 +26,48 @@ export function photoCount(): number {
 }
 
 // Version « un seul fichier » : les images ne peuvent pas être de simples fichiers liés,
-// elles arrivent par paquets (un par sport) chargés à la demande.
+// elles arrivent par paquets d'une quinzaine de photos (photos/pNN.json), chargés à la demande
+// d'après un index id → paquet (photos/index.json). Voir scripts/make-artifact.mjs.
 const SINGLE_FILE = import.meta.env.MODE === 'single';
 const cache = new Map<string, string>();
-const requested = new Set<string>();
+const requestedIds = new Set<string>();
+const requestedChunks = new Set<string>();
 const listeners = new Set<() => void>();
-let version = 0;
+let index: Promise<Record<string, string>> | undefined;
 
 function subscribe(listener: () => void) {
   listeners.add(listener);
   return () => listeners.delete(listener);
 }
 
-function loadChunk(sport: string) {
-  if (requested.has(sport)) return;
-  requested.add(sport);
-  fetch(`photos/${sport}.json`)
-    .then((response) => (response.ok ? response.json() : {}))
-    .then((map: Record<string, string>) => {
+function fetchJson<T>(url: string, fallback: T): Promise<T> {
+  return fetch(url)
+    .then((response) => (response.ok ? (response.json() as Promise<T>) : fallback))
+    .catch(() => fallback);
+}
+
+function loadPhoto(athleteId: string) {
+  if (requestedIds.has(athleteId)) return;
+  requestedIds.add(athleteId);
+  index ??= fetchJson<Record<string, string>>('photos/index.json', {});
+  void index.then((chunks) => {
+    const chunk = chunks[athleteId];
+    if (!chunk || requestedChunks.has(chunk)) return;
+    requestedChunks.add(chunk);
+    return fetchJson<Record<string, string>>(`photos/${chunk}.json`, {}).then((map) => {
       for (const [id, src] of Object.entries(map)) cache.set(id, src);
-      version += 1;
       listeners.forEach((listener) => listener());
-    })
-    .catch(() => {
-      /* sans photos, la carte garde son pictogramme */
     });
+  });
+  // sans photo, la carte garde sa silhouette
 }
 
 export function usePhoto(athlete: Athlete): { src?: string; cutout: boolean } {
-  useSyncExternalStore(subscribe, () => version);
+  // seule la carte dont la photo vient d'arriver se redessine
+  const loaded = useSyncExternalStore(subscribe, () => cache.get(athlete.id));
   const credit = CREDITS[athlete.id];
   if (!credit) return { cutout: false };
   if (!SINGLE_FILE) return { src: `${import.meta.env.BASE_URL}photos/${credit.file}`, cutout: credit.cutout };
-  const src = cache.get(athlete.id);
-  if (!src) loadChunk(athlete.sport);
-  return { src, cutout: credit.cutout };
+  if (!loaded) loadPhoto(athlete.id);
+  return { src: loaded, cutout: credit.cutout };
 }
