@@ -1,6 +1,6 @@
 import type { Athlete, CardFace, RarityId, SportId, Variant } from './types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
-import { PRIME_CHANCE, RARITY_ORDER, dropWeight, primeRecordStart, rarityOf } from './cards';
+import { PRIME_CHANCE, RARITY_ORDER, canBePrime, dropWeight, primeRecordStart, rarityOf } from './cards';
 import { weightedPick, type Rng } from './random';
 
 export type Odds = Record<RarityId, number>;
@@ -13,7 +13,7 @@ export interface PackDef {
   size: number;
   odds: Odds;
   primeChance: number;
-  /** rareté minimale garantie sur la dernière carte */
+  /** dernière carte : rareté minimale garantie, ou version Prime garantie (une des grandes légendes) */
   guaranteed?: { min: RarityId; odds?: Partial<Odds>; prime?: boolean };
   filter?: (athlete: Athlete) => boolean;
   /** couleur dominante de l'emballage */
@@ -30,7 +30,7 @@ export const FREE_PACK: PackDef = {
   price: 0,
   size: 5,
   odds: FREE_ODDS,
-  primeChance: PRIME_CHANCE * 0.75,
+  primeChance: PRIME_CHANCE,
   tone: 'bronze',
 };
 
@@ -42,7 +42,7 @@ export const SHOP_PACKS: PackDef[] = [
     price: 600,
     size: 5,
     odds: FREE_ODDS,
-    primeChance: PRIME_CHANCE * 0.75,
+    primeChance: PRIME_CHANCE,
     tone: 'silver',
   },
   {
@@ -63,7 +63,7 @@ export const SHOP_PACKS: PackDef[] = [
     price: 10_000,
     size: 5,
     odds: { commune: 10, 'peu-commune': 35, rare: 38, epique: 13, legendaire: 4 },
-    primeChance: PRIME_CHANCE * 1.5,
+    primeChance: PRIME_CHANCE * 1.25,
     guaranteed: { min: 'epique', odds: { epique: 84, legendaire: 16 } },
     tone: 'violet',
   },
@@ -74,7 +74,7 @@ export const SHOP_PACKS: PackDef[] = [
     price: 15_000,
     size: 3,
     odds: { commune: 25, 'peu-commune': 35, rare: 27, epique: 10, legendaire: 3 },
-    primeChance: PRIME_CHANCE * 1.5,
+    primeChance: PRIME_CHANCE * 1.25,
     guaranteed: { min: 'rare', odds: { rare: 60, epique: 30, legendaire: 10 } },
     filter: (athlete) => !!athlete.retired,
     tone: 'icon',
@@ -82,12 +82,12 @@ export const SHOP_PACKS: PackDef[] = [
   {
     id: 'prime',
     name: 'Pack Prime',
-    tagline: '3 cartes dont 1 version Prime garantie (Rare ou mieux)',
-    price: 45_000,
+    tagline: '3 cartes dont 1 version Prime garantie : la meilleure saison d’une très grande légende',
+    price: 250_000,
     size: 3,
     odds: { commune: 10, 'peu-commune': 35, rare: 40, epique: 12, legendaire: 3 },
     primeChance: PRIME_CHANCE,
-    guaranteed: { min: 'rare', odds: { rare: 62, epique: 28, legendaire: 10 }, prime: true },
+    guaranteed: { min: 'rare', prime: true },
     tone: 'prime',
   },
   {
@@ -97,7 +97,7 @@ export const SHOP_PACKS: PackDef[] = [
     price: 90_000,
     size: 3,
     odds: { commune: 0, 'peu-commune': 30, rare: 50, epique: 17, legendaire: 3 },
-    primeChance: PRIME_CHANCE * 1.5,
+    primeChance: PRIME_CHANCE,
     guaranteed: { min: 'legendaire', odds: { legendaire: 100 } },
     tone: 'black',
   },
@@ -140,12 +140,39 @@ function rollRarity(rng: Rng, odds: Partial<Odds>, pool: Record<RarityId, Athlet
   return weightedPick(rng, available, (id) => odds[id] ?? 0);
 }
 
-function drawCard(rng: Rng, pack: PackDef, odds: Partial<Odds>, forcePrime: boolean, pool: Record<RarityId, Athlete[]>): CardFace {
-  const rarity = rollRarity(rng, odds, pool);
-  const athlete = weightedPick(rng, pool[rarity], dropWeight);
-  const variant: Variant = forcePrime || rng() < pack.primeChance ? 'prime' : 'base';
+function cardOf(athlete: Athlete, variant: Variant): CardFace {
   const record = primeRecordStart(athlete);
   return { athleteId: athlete.id, variant, ...(record ? { record: variant === 'prime' ? record + 4 : record } : {}) };
+}
+
+function drawCard(rng: Rng, pack: PackDef, odds: Partial<Odds>, pool: Record<RarityId, Athlete[]>): CardFace {
+  const rarity = rollRarity(rng, odds, pool);
+  const athlete = weightedPick(rng, pool[rarity], dropWeight);
+  return cardOf(athlete, canBePrime(athlete) && rng() < pack.primeChance ? 'prime' : 'base');
+}
+
+/** Légendes qui peuvent sortir en Prime dans ce booster. */
+export function primePool(pack: PackDef): Athlete[] {
+  return ATHLETES.filter((athlete) => canBePrime(athlete) && (!pack.filter || pack.filter(athlete)));
+}
+
+/** Poids de tirage de la Prime garantie : Messi ou Ronaldo sortent plus rarement que Lomu. */
+export function primeWeight(athlete: Athlete): number {
+  return Math.exp(-(athlete.fame - 60) / 20);
+}
+
+/** Probabilité qu'une carte ordinaire du booster sorte en version Prime (affichée en boutique). */
+export function primeOdds(pack: PackDef): number {
+  const pool = poolFor(pack);
+  const available = RARITY_ORDER.filter((id) => pack.odds[id] > 0 && pool[id].length > 0);
+  const total = available.reduce((sum, id) => sum + pack.odds[id], 0);
+  let share = 0;
+  for (const id of available) {
+    const all = pool[id].reduce((sum, athlete) => sum + dropWeight(athlete), 0);
+    const eligible = pool[id].filter(canBePrime).reduce((sum, athlete) => sum + dropWeight(athlete), 0);
+    share += (pack.odds[id] / total) * (eligible / all);
+  }
+  return share * pack.primeChance;
 }
 
 /** Ouvre un booster. Les cartes sont renvoyées de la moins rare à la plus rare (suspense garanti). */
@@ -154,10 +181,12 @@ export function openPack(pack: PackDef, rng: Rng): CardFace[] {
   const cards: CardFace[] = [];
   for (let i = 0; i < pack.size; i++) {
     const isLast = i === pack.size - 1;
-    if (isLast && pack.guaranteed) {
-      cards.push(drawCard(rng, pack, pack.guaranteed.odds ?? { [pack.guaranteed.min]: 1 }, !!pack.guaranteed.prime, pool));
+    if (isLast && pack.guaranteed?.prime) {
+      cards.push(cardOf(weightedPick(rng, primePool(pack), primeWeight), 'prime'));
+    } else if (isLast && pack.guaranteed) {
+      cards.push(drawCard(rng, pack, pack.guaranteed.odds ?? { [pack.guaranteed.min]: 1 }, pool));
     } else {
-      cards.push(drawCard(rng, pack, pack.odds, false, pool));
+      cards.push(drawCard(rng, pack, pack.odds, pool));
     }
   }
   return sortByRarity(cards);

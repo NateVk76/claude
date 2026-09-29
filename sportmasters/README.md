@@ -50,7 +50,7 @@ Dans une même rareté, le niveau sportif réel de l'athlète et sa célébrité
 ### Versions spéciales
 
 - **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or, années de vie pour les disparus.
-- **Prime** : la meilleure saison d'un athlète (LeBron 2016, Messi 2012, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Environ 1 % de chances par carte (une Prime de légendaire : environ 1 carte sur 14 000), valeur ×6 au marché.
+- **Prime** : la meilleure saison d'une très grande légende, et seulement d'elles : 36 athlètes (Messi 2012, Cristiano Ronaldo 2014, Ronaldo Nazário 2002, LeBron 2016, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Une de ces légendes tirée dans un booster a 8 % de chances d'être en Prime, soit environ 1 carte sur 1 200 dans le booster gratuit, dix fois plus rare qu'une Légendaire. Valeur ×6 au marché.
 
 ### La carte
 
@@ -89,7 +89,7 @@ Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » 
 ### Boosters et boutique
 
 - Un booster gratuit toutes les 10 minutes, jusqu'à 10 en réserve.
-- Boutique : Découverte, Pro (1 Rare garantie), Élite (1 Épique garantie), Icônes, Prime (1 Prime garantie), Légende (1 Légendaire garantie) et un pack par sport. Les chances sont affichées sur chaque pack.
+- Boutique : Découverte, Pro (1 Rare garantie), Élite (1 Épique garantie), Icônes, Prime (1 Prime de légende garantie, 250 000 Balles), Légende (1 Légendaire garantie) et un pack par sport. Les chances sont affichées sur chaque pack.
 - Les Épiques, Légendaires et Prime ont droit à leur « walkout » : drapeau, puis sport, puis note, puis la carte avec confettis et fanfare.
 
 ### Mercato (marché des transferts)

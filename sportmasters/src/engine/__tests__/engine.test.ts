@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { ATHLETES_BY_ID } from '../../data/athletes';
-import { rarityOf, primeRecordStart } from '../cards';
-import { FREE_PACK, SHOP_PACKS, openPack } from '../packs';
-import { advanceMarket, createMarket, createMyListing, marketPrice, netAfterTax, TARGET_LISTINGS, type MarketState } from '../market';
+import { ATHLETES, ATHLETES_BY_ID } from '../../data/athletes';
+import { canBePrime, rarityOf, primeRecordStart } from '../cards';
+import { FREE_ODDS, FREE_PACK, SHOP_PACKS, openPack, primeOdds } from '../packs';
+import { advanceMarket, createAiListing, createMarket, createMyListing, marketPrice, netAfterTax, TARGET_LISTINGS, type MarketState } from '../market';
 import { createMatch, matchResult, playRound, ROUNDS, type MatchCard } from '../match';
 import { mulberry32 } from '../random';
 
@@ -31,6 +31,19 @@ describe('boosters', () => {
       expect(rarityOf(ATHLETES_BY_ID[legend.athleteId]).id).toBe('legendaire');
       expect(openPack(prime, rng).some((c) => c.variant === 'prime')).toBe(true);
     }
+  });
+
+  it('ne donne une version Prime qu’aux très grandes légendes', () => {
+    const rng = mulberry32(99);
+    const legends = ATHLETES.filter(canBePrime).map((a) => a.id);
+    expect(legends).toEqual(expect.arrayContaining(['messi', 'cristiano-ronaldo', 'ronaldo-nazario', 'lebron', 'duplantis']));
+    expect(legends).not.toContain('lamine-yamal');
+    const isLegendPrime = (card: { athleteId: string; variant: string }) => card.variant !== 'prime' || canBePrime(ATHLETES_BY_ID[card.athleteId]);
+    const packs = [FREE_PACK, ...SHOP_PACKS];
+    for (let i = 0; i < 3000; i++) expect(openPack(packs[i % packs.length], rng).every(isLegendPrime)).toBe(true);
+    for (let i = 0; i < 2000; i++) expect(isLegendPrime(createAiListing(rng, 0, []).card)).toBe(true);
+    // une Prime est bien plus rare qu'une Légendaire
+    expect(primeOdds(FREE_PACK)).toBeLessThan(FREE_ODDS.legendaire / 100 / 5);
   });
 
   it('rend les légendaires vraiment rares dans le booster gratuit', () => {

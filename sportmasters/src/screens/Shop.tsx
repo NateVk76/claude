@@ -2,15 +2,21 @@ import { useState } from 'react';
 import { useGame } from '../store/game';
 import { SPORTS, SPORT_ORDER } from '../data/sports';
 import { RARITIES, RARITY_ORDER } from '../engine/cards';
-import { SHOP_PACKS, sportPack, type PackDef } from '../engine/packs';
+import { SHOP_PACKS, primeOdds, primePool, sportPack, type PackDef } from '../engine/packs';
 import type { SportId } from '../engine/types';
 import { PackArt } from '../components/PackArt';
 import { Balles } from '../components/Balles';
 import { SportIcon } from '../components/SportIcon';
 import { sfx } from '../audio/sfx';
 
+function percent(value: number): string {
+  if (value > 0 && value < 0.0001) return '< 0,01 %';
+  return `${(value * 100).toLocaleString('fr-FR', { maximumFractionDigits: value < 0.01 ? 2 : 1 })} %`;
+}
+
 function Odds({ pack }: { pack: PackDef }) {
   const total = RARITY_ORDER.reduce((sum, id) => sum + pack.odds[id], 0);
+  const prime = primeOdds(pack);
   return (
     <details className="odds">
       <summary>Chances par carte</summary>
@@ -22,20 +28,25 @@ function Odds({ pack }: { pack: PackDef }) {
             <li key={id} className={`rarity-row rarity-row--${id}`}>
               <span className="rarity-dot" />
               <span>{RARITIES[id].name}</span>
-              <b>{((pack.odds[id] / total) * 100).toLocaleString('fr-FR', { maximumFractionDigits: 1 })} %</b>
+              <b>{percent(pack.odds[id] / total)}</b>
             </li>
           ))}
-        <li className="rarity-row rarity-row--prime">
-          <span className="rarity-dot" />
-          <span>Version Prime</span>
-          <b>{(pack.primeChance * 100).toLocaleString('fr-FR', { maximumFractionDigits: 1 })} %</b>
-        </li>
+        {prime > 0 && (
+          <li className="rarity-row rarity-row--prime">
+            <span className="rarity-dot" />
+            <span>Version Prime</span>
+            <b>{percent(prime)}</b>
+          </li>
+        )}
       </ul>
       {pack.guaranteed && (
         <p className="small muted">
-          Dernière carte : {RARITIES[pack.guaranteed.min].name} ou mieux garantie{pack.guaranteed.prime ? ', en version Prime' : ''}.
+          {pack.guaranteed.prime
+            ? `Dernière carte : une version Prime garantie, parmi les ${primePool(pack).length} plus grandes légendes.`
+            : `Dernière carte : ${RARITIES[pack.guaranteed.min].name} ou mieux garantie.`}
         </p>
       )}
+      <p className="small muted">Seules les très grandes légendes existent en version Prime.</p>
     </details>
   );
 }
