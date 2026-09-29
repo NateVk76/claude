@@ -88,7 +88,7 @@ function Walkout({ card, onDone }: { card: CardFace; onDone: () => void }) {
 
   useEffect(() => {
     if (!shadow) return;
-    sfx.whoosh();
+    sfx.burst();
     const id = window.setTimeout(() => setStep(3), 1100);
     return () => window.clearTimeout(id);
   }, [shadow]);
@@ -96,9 +96,9 @@ function Walkout({ card, onDone }: { card: CardFace; onDone: () => void }) {
   useEffect(() => {
     if (step === 3) {
       sfx.fanfare();
-      confetti.current?.burst(confettiColors(card), rarity.order === 4 || prime ? 220 : 140);
+      confetti.current?.burst(confettiColors(card), rarity.order === 4 || prime ? 70 : 40);
     } else if (step > 0) {
-      sfx.hit();
+      sfx.pulse();
     }
   }, [step, card, prime, rarity.order]);
 
@@ -209,8 +209,7 @@ export function PackOpening() {
       return;
     }
     sfx.flip();
-    window.setTimeout(() => sfx.reveal(tierOf(card)), 120);
-    if (tierOf(card) === 2) confetti.current?.burst(['#f2c94c', '#fff3c4', '#ffffff'], 60);
+    window.setTimeout(() => sfx.reveal(tierOf(card)), 250);
     setRevealed((r) => r + 1);
   }, [opening, revealed, cards]);
 
@@ -234,7 +233,7 @@ export function PackOpening() {
   // les cartes sortent du sachet une à une, chacune avec son petit bruit de glisse
   useEffect(() => {
     if (stage !== 'cards' || revealed > 0) return;
-    const ids = cards.map((_, i) => window.setTimeout(() => sfx.deal(), 80 + i * 110));
+    const ids = cards.map((_, i) => window.setTimeout(() => sfx.deal(), 150 + i * 120));
     return () => ids.forEach((id) => window.clearTimeout(id));
     // uniquement à l'arrivée des cartes, pas à chaque carte révélée
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -260,11 +259,11 @@ export function PackOpening() {
 
   const tear = () => {
     if (stage !== 'pack') return;
-    // le sachet tremble, le haut se déchire et s'envole, éclat de lumière, puis les cartes sortent
+    // la bande du haut glisse et s'efface, le sachet descend en fondu, puis les cartes apparaissent
     sfx.tear();
     setStage('tearing');
-    window.setTimeout(() => sfx.burst(), 520);
-    window.setTimeout(() => setStage('cards'), 1400);
+    window.setTimeout(() => sfx.burst(), 450);
+    window.setTimeout(() => setStage('cards'), 1100);
   };
 
   const dupes = cards.filter((c) => !c.isNew);
@@ -305,7 +304,7 @@ export function PackOpening() {
                 <div
                   key={card.uid}
                   className={`flip${shown ? ' is-flipped' : ''}${next ? ' is-next' : ''}${!shown && isSpecial(card) ? ' is-special' : ''}`}
-                  style={{ ['--glow' as string]: glowOf(card), animationDelay: `${i * 110}ms` }}
+                  style={{ ['--glow' as string]: glowOf(card), animationDelay: `${i * 120}ms` }}
                   onClick={next ? revealNext : undefined}
                 >
                   <div className="flip__inner">
