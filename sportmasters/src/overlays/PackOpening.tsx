@@ -51,7 +51,7 @@ export function CardBack({ className = '' }: { className?: string }) {
           <path d="M12,1 L22,5 V13 C22,20 17,24.5 12,27 C7,24.5 2,20 2,13 V5 Z" />
           <path d="M7,15 L10.5,11 L13,13.5 L17,8.5" />
         </svg>
-        <span>SportMasters</span>
+        <span>Athletica</span>
       </div>
     </div>
   );

@@ -53,7 +53,7 @@ function Topbar() {
 
   return (
     <header className="topbar">
-      <button type="button" className="brand" onClick={() => setTab('boosters')} aria-label="SportMasters, retour aux boosters">
+      <button type="button" className="brand" onClick={() => setTab('boosters')} aria-label="Athletica, retour aux boosters">
         <span className="brand__crest" aria-hidden="true">
           <svg viewBox="0 0 24 28">
             <path d="M12,1 L22,5 V13 C22,20 17,24.5 12,27 C7,24.5 2,20 2,13 V5 Z" />
@@ -61,7 +61,7 @@ function Topbar() {
           </svg>
         </span>
         <span className="brand__name">
-          Sport<b>Masters</b>
+          Athle<b>tica</b>
         </span>
       </button>
       <div className="topbar__right">
