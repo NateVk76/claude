@@ -88,8 +88,11 @@ export interface SportUltiTemplate {
   effect: UltiEffect;
 }
 
-/** Version d'une carte : classique, ou Prime (meilleure saison de l'athlète, plus rare et plus forte). */
-export type Variant = 'base' | 'prime';
+/**
+ * Version d'une carte : classique, Prime (meilleure saison de l'athlète, plus rare et plus forte)
+ * ou Reverse (même carte que la classique, en finition holographique : plus rare, plus chère).
+ */
+export type Variant = 'base' | 'prime' | 'reverse';
 
 export interface Athlete {
   id: string;

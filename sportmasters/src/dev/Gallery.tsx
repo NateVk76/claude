@@ -21,6 +21,11 @@ export function Gallery() {
       <div style={{ width: 210, aspectRatio: '100 / 140' }}>
         <CardBack />
       </div>
+      <section id="reverse" style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+        {['duplantis', 'zaire-emery', 'keyonte-george', 'clevenot', 'monar'].map((id) => (
+          <Card key={id} card={{ athleteId: id, variant: 'reverse' }} size="lg" />
+        ))}
+      </section>
       <section id="nouveaux" style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
         {['keyonte-george', 'zaire-emery', 'duplantis', 'van-assche', 'le-garrec', 'doohan', 'jack-shore', 'rozner', 'monar', 'clevenot'].map((id) => (
           <Card key={id} card={{ athleteId: id, variant: 'base' }} size="md" />

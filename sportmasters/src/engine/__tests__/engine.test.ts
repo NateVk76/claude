@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ATHLETES, ATHLETES_BY_ID } from '../../data/athletes';
-import { canBePrime, rarityOf, primeRecordStart } from '../cards';
+import { baseValueOf, canBePrime, overallOf, rarityOf, primeRecordStart } from '../cards';
 import { FREE_ODDS, FREE_PACK, SHOP_PACKS, openPack, primeOdds } from '../packs';
 import { advanceMarket, createAiListing, createMarket, createMyListing, marketPrice, netAfterTax, TARGET_LISTINGS, type MarketState } from '../market';
 import { createMatch, matchResult, playRound, ROUNDS, type MatchCard } from '../match';
@@ -31,6 +31,23 @@ describe('boosters', () => {
       expect(rarityOf(ATHLETES_BY_ID[legend.athleteId]).id).toBe('legendaire');
       expect(openPack(prime, rng).some((c) => c.variant === 'prime')).toBe(true);
     }
+  });
+
+  it('sort environ une carte sur 20 en version Reverse, plus chère que la classique', () => {
+    const rng = mulberry32(2026);
+    let reverse = 0;
+    let total = 0;
+    for (let i = 0; i < 4000; i++) {
+      for (const card of openPack(FREE_PACK, rng)) {
+        total += 1;
+        if (card.variant === 'reverse') reverse += 1;
+      }
+    }
+    expect(reverse / total).toBeGreaterThan(0.04);
+    expect(reverse / total).toBeLessThan(0.06);
+    const kante = ATHLETES_BY_ID.kante;
+    expect(baseValueOf(kante, 'reverse')).toBeGreaterThan(baseValueOf(kante));
+    expect(overallOf(kante, 'reverse')).toBe(overallOf(kante));
   });
 
   it('ne donne une version Prime qu’aux très grandes légendes', () => {

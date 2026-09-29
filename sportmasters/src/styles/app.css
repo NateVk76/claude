@@ -764,6 +764,10 @@
   --dot: linear-gradient(90deg, #ff9ad5, #ffe27a, #8dffcf, #8fd3ff);
 }
 
+.rarity-row--reverse {
+  --dot: linear-gradient(135deg, #ff2f8f, #2b4dff 40%, #ffc93a 70%, #10c6ff);
+}
+
 .rarity-row .meter__fill {
   background: var(--dot);
 }
@@ -1565,6 +1569,11 @@
 }
 .chip-rarity--prime {
   background: linear-gradient(90deg, #ff9ad5, #ffe27a, #8dffcf, #8fd3ff, #d9a2ff);
+}
+.chip-rarity--reverse {
+  background: linear-gradient(115deg, #ff2f8f, #2b4dff 35%, #ffc93a 65%, #10c6ff);
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
 }
 .chip-rarity--icon {
   background: #f5eedd;
@@ -2583,6 +2592,12 @@
   background: var(--bg-4);
   color: var(--text-dim);
   border: 1px solid var(--line-2);
+}
+
+.tag--reverse {
+  background: linear-gradient(115deg, #ff2f8f, #2b4dff 35%, #ffc93a 65%, #10c6ff);
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
 }
 
 .opening__actions {

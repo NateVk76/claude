@@ -218,7 +218,7 @@ export const useGame = create<GameState>()(
           if (face.variant === 'prime') primesFound[face.athleteId] = (primesFound[face.athleteId] ?? 0) + 1;
           owned.push({ ...face, uid: card.uid, isNew });
           newCards.push(card);
-          const rank = (c: CardFace) => rarityOf(ATHLETES_BY_ID[c.athleteId]).order * 100 + (c.variant === 'prime' ? 50 : 0) + ATHLETES_BY_ID[c.athleteId].fame;
+          const rank = (c: CardFace) => rarityOf(ATHLETES_BY_ID[c.athleteId]).order * 100 + (c.variant === 'prime' ? 50 : c.variant === 'reverse' ? 20 : 0) + ATHLETES_BY_ID[c.athleteId].fame;
           if (!best || rank(face) > rank(best)) best = face;
         }
         set((s) => ({

@@ -104,6 +104,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
   const rarity = rarityOf(athlete);
   const icon = isIcon(athlete);
   const prime = variant === 'prime';
+  const reverse = variant === 'reverse';
   const sport = SPORTS[athlete.sport];
   const width = WIDTHS[size];
   const tiny = size === 'xs';
@@ -113,7 +114,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
   const showPhoto = !!photo.src && !photoFailed;
   const fullName = athlete.first && !compact ? `${athlete.first} ${athlete.last}` : athlete.last;
   const overall = overallOf(athlete, variant);
-  const tier = prime ? 'Prime' : icon ? 'Icône' : TIERS[rarity.id];
+  const tier = prime ? 'Prime' : reverse ? 'Reverse' : icon ? 'Icône' : TIERS[rarity.id];
   const subtitle = [
     athlete.role,
     record ? `Record ${formatRecord(record)}` : '',
@@ -158,6 +159,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     `s-${athlete.sport}`,
     icon ? 'is-icon' : '',
     prime ? 'is-prime' : '',
+    reverse ? 'is-reverse' : '',
     compact ? 'is-compact' : '',
     tiny ? 'is-tiny' : '',
     locked ? 'is-locked' : '',
@@ -169,7 +171,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     .filter(Boolean)
     .join(' ');
 
-  const ariaLabel = `${athlete.first} ${athlete.last}, ${rarity.name}${prime ? ' Prime' : ''}${icon ? ', Icône' : ''}, note ${overall}`;
+  const ariaLabel = `${athlete.first} ${athlete.last}, ${rarity.name}${prime ? ' Prime' : ''}${reverse ? ' Reverse' : ''}${icon ? ', Icône' : ''}, note ${overall}`;
 
   return (
     <div

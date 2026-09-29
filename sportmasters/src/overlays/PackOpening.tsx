@@ -34,6 +34,7 @@ function isSpecial(card: CardFace): boolean {
 
 function glowOf(card: CardFace): string {
   if (card.variant === 'prime') return '#ff9ad5';
+  if (card.variant === 'reverse') return '#7fd6ff';
   return RARITY_GLOW[rarityOf(ATHLETES_BY_ID[card.athleteId]).id];
 }
 
@@ -41,6 +42,12 @@ function confettiColors(card: CardFace): string[] {
   if (card.variant === 'prime') return ['#ff9ad5', '#ffe27a', '#8dffcf', '#8fd3ff', '#d9a2ff', '#ffffff'];
   if (tierOf(card) === 4) return ['#ffd76a', '#fff3c4', '#e0a93a', '#ffffff', '#ff9ad5', '#8fd3ff'];
   return ['#b98cff', '#e3d2ff', '#ffd66b', '#ffffff'];
+}
+
+/** Étiquette sous une carte révélée : Reverse, sinon Nouveau ou Doublon. */
+function CardTag({ card }: { card: CardFace & { isNew?: boolean } }) {
+  if (card.variant === 'reverse') return <span className="tag tag--reverse">Reverse</span>;
+  return <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>;
 }
 
 export function CardBack({ className = '' }: { className?: string }) {
@@ -289,7 +296,8 @@ export function PackOpening() {
     }, 1100);
   };
 
-  const dupes = cards.filter((c) => !c.isNew);
+  // une Reverse n'est jamais comptée comme doublon à revendre
+  const dupes = cards.filter((c) => !c.isNew && c.variant !== 'reverse');
   const ownedDupes = dupes.filter((c) => collection.some((o) => o.uid === c.uid && !o.locked));
   const dupesValue = ownedDupes.reduce((sum, c) => sum + quickSellValue(ATHLETES_BY_ID[c.athleteId], c.variant), 0);
   const isFree = opening.packName === 'Booster gratuit';
@@ -341,7 +349,7 @@ export function PackOpening() {
                     </div>
                     <div className="flip__front">
                       <Card card={card} size="xl" />
-                      {flipped && <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>}
+                      {flipped && <CardTag card={card} />}
                     </div>
                   </div>
                 </div>
@@ -407,7 +415,7 @@ export function PackOpening() {
                     if (owned) openDetail({ card: owned });
                   }}
                 />
-                <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>
+                <CardTag card={card} />
               </div>
             ))}
           </div>

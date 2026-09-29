@@ -1,6 +1,6 @@
 import type { Athlete, CardFace, RarityId, SportId, Variant } from './types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
-import { PRIME_CHANCE, RARITY_ORDER, canBePrime, dropWeight, primeRecordStart, rarityOf } from './cards';
+import { PRIME_CHANCE, RARITY_ORDER, REVERSE_CHANCE, canBePrime, dropWeight, primeRecordStart, rarityOf } from './cards';
 import { weightedPick, type Rng } from './random';
 
 export type Odds = Record<RarityId, number>;
@@ -148,7 +148,13 @@ function cardOf(athlete: Athlete, variant: Variant): CardFace {
 function drawCard(rng: Rng, pack: PackDef, odds: Partial<Odds>, pool: Record<RarityId, Athlete[]>): CardFace {
   const rarity = rollRarity(rng, odds, pool);
   const athlete = weightedPick(rng, pool[rarity], dropWeight);
-  return cardOf(athlete, canBePrime(athlete) && rng() < pack.primeChance ? 'prime' : 'base');
+  if (canBePrime(athlete) && rng() < pack.primeChance) return cardOf(athlete, 'prime');
+  return cardOf(athlete, rng() < REVERSE_CHANCE ? 'reverse' : 'base');
+}
+
+/** Probabilité qu'une carte ordinaire du booster sorte en version Reverse (affichée en boutique). */
+export function reverseOdds(pack: PackDef): number {
+  return (1 - primeOdds(pack)) * REVERSE_CHANCE;
 }
 
 /** Légendes qui peuvent sortir en Prime dans ce booster. */
@@ -194,7 +200,7 @@ export function openPack(pack: PackDef, rng: Rng): CardFace[] {
 
 export function cardRank(card: CardFace): number {
   const athlete = ATHLETES_BY_ID[card.athleteId];
-  return rarityOf(athlete).order * 10 + (card.variant === 'prime' ? 5 : 0) + athlete.fame / 100;
+  return rarityOf(athlete).order * 10 + (card.variant === 'prime' ? 5 : card.variant === 'reverse' ? 2 : 0) + athlete.fame / 100;
 }
 
 export function sortByRarity(cards: CardFace[]): CardFace[] {

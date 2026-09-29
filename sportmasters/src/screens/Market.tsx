@@ -40,6 +40,7 @@ function ListingRow({ listing, now }: { listing: Listing; now: number }) {
             {athlete.first} {athlete.last}
           </b>
           {listing.card.variant === 'prime' && <span className="chip-rarity chip-rarity--prime">Prime</span>}
+          {listing.card.variant === 'reverse' && <span className="chip-rarity chip-rarity--reverse">Reverse</span>}
         </p>
         <p className="listing__meta">
           <span className={`chip-rarity chip-rarity--${rarity.id}`}>{rarity.name}</span> {overallOf(athlete, listing.card.variant)} · {SPORTS[athlete.sport].name} ·{' '}

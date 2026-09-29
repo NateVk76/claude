@@ -239,6 +239,7 @@ export function CardDetail() {
           <div className="detail__chips">
             <span className={`chip-rarity chip-rarity--${rarity.id}`}>{rarity.name}</span>
             {face.variant === 'prime' && <span className="chip-rarity chip-rarity--prime">Prime{athlete.prime ? ` ${athlete.prime.year}` : ''}</span>}
+            {face.variant === 'reverse' && <span className="chip-rarity chip-rarity--reverse">Reverse</span>}
             {isIcon(athlete) && <span className="chip-rarity chip-rarity--icon">Icône</span>}
           </div>
           <h2 id="detail-title">
@@ -258,6 +259,11 @@ export function CardDetail() {
           {face.variant === 'prime' && !athlete.prime && (
             <p className="detail__prime">
               <b>Version Prime</b> : l’athlète à son meilleur niveau, +{overallOf(athlete, 'prime') - overallOf(athlete)} de note et des stats boostées.
+            </p>
+          )}
+          {face.variant === 'reverse' && (
+            <p className="detail__prime">
+              <b>Version Reverse</b> : finition holographique, environ 1 carte sur 20. Mêmes stats que la version classique, mais une cote bien plus élevée au mercato.
             </p>
           )}
 
