@@ -25,6 +25,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "playwright": "1.56",
+    "sharp": "^0.35.5",
     "typescript": "^7.0.2",
     "vite": "^8.3.1",
     "vite-plugin-singlefile": "^2.3.3",

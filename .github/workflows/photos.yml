@@ -1,0 +1,60 @@
+# Récupère les photos des athlètes sur Wikimedia Commons (licences libres, auteurs crédités),
+# les détoure, puis enregistre le résultat dans le dépôt.
+name: Photos des athlètes
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/laughing-newton-g9nvtx]
+    paths:
+      - 'sportmasters/scripts/photos/**'
+      - '.github/workflows/photos.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: photos-athletes
+  cancel-in-progress: true
+
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: sportmasters
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: sportmasters/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Installer les dépendances
+        run: |
+          npm ci
+          pip install "rembg[cpu]" pillow
+      - name: Trouver et télécharger les photos
+        run: node scripts/photos/telecharger-photos.mjs telecharger
+      - name: Détourer les athlètes
+        run: python scripts/photos/detourer.py
+      - name: Préparer les images du jeu
+        run: node scripts/photos/telecharger-photos.mjs finaliser
+      - name: Enregistrer dans le dépôt
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/photos src/data/photos.json
+          if git diff --cached --quiet; then
+            echo "Aucune nouvelle photo"
+            exit 0
+          fi
+          git commit -m "Ajoute les photos des athlètes (Wikimedia Commons)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
