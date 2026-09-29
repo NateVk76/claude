@@ -485,9 +485,8 @@
   border-width: 0.16em;
   border-color: transparent;
   background: linear-gradient(120deg, #ff7ac8, #ffe27a, #7dffc9, #7cc8ff, #d38bff, #ff7ac8) border-box;
+  /* seule la syntaxe standard : le build ajoute la version -webkit- correcte (mélanger les deux la casse) */
   mask: linear-gradient(#000 0 0) padding-box exclude, linear-gradient(#000 0 0) border-box;
-  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
-  -webkit-mask-composite: xor;
   opacity: 1;
 }
 
