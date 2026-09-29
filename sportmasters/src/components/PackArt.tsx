@@ -75,9 +75,9 @@ export function PackArt({ tone, name, sport, className = '' }: PackArtProps) {
         <circle cx={60} cy={70} r={20} fill={palette.ink} opacity={0.12} />
       </svg>
       <div className="pack-art__emblem">
-        {sport ? <SportIcon sport={sport} /> : <span className="pack-art__monogram">A</span>}
+        {sport ? <SportIcon sport={sport} /> : <span className="pack-art__monogram">AC</span>}
       </div>
-      <div className="pack-art__brand">ATHLETICA</div>
+      <div className="pack-art__brand">ATHLETICARDS</div>
       <div className="pack-art__name">{words}</div>
     </div>
   );

@@ -13,7 +13,7 @@ const LARGEUR = 420;
 const QUALITE = 74;
 
 const html = readFileSync('dist-single/index.html', 'utf8');
-const title = html.match(/<title>[\s\S]*?<\/title>/)?.[0] ?? '<title>Athletica</title>';
+const title = html.match(/<title>[\s\S]*?<\/title>/)?.[0] ?? '<title>AthletiCards</title>';
 const styles = [...html.matchAll(/<style[^>]*>[\s\S]*?<\/style>/g)].map((m) => m[0].replace(/<style[^>]*>/, '<style>'));
 const scripts = [...html.matchAll(/<script[^>]*>[\s\S]*?<\/script>/g)].map((m) => m[0].replace(/<script[^>]*>/, '<script type="module">'));
 if (!scripts.length) throw new Error('Aucun script trouvé dans le build');

@@ -1,4 +1,4 @@
-# Athletica
+# AthletiCards
 
 Jeu de cartes à collectionner de sportifs, jouable dans le navigateur. On ouvre des boosters, on collectionne des athlètes réels (des stars mondiales aux pépites méconnues), on les revend au marché des transferts et on les fait jouer en match.
 
@@ -161,4 +161,4 @@ node scripts/wikidata/generer-athletes.mjs --contact "ton.adresse@exemple.fr" --
 - **Multijoueur** : un vrai marché entre joueurs demande un serveur qui fait autorité sur les soldes, l'ouverture des boosters et les ventes (sinon on peut tricher). Piste simple : Supabase (PostgreSQL, comptes, temps réel), puis Node + PostgreSQL + Redis si le nombre de joueurs explose.
 - **Matchs entre joueurs**, classement, saisons, événements (cartes « Équipe de la semaine »).
 
-Les notes et stats sont une interprétation de jeu. Les noms des athlètes appartiennent à leurs titulaires ; Athletica est un projet de fan non officiel.
+Les notes et stats sont une interprétation de jeu. Les noms des athlètes appartiennent à leurs titulaires ; AthletiCards est un projet de fan non officiel.
