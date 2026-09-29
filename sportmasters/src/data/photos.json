@@ -922,10 +922,10 @@
  "duplantis": {
   "file": "duplantis.webp",
   "cutout": true,
-  "author": "Frankie Fouganthin",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Armand_Duplantis_after_his_6.0_m_jump-1.jpg"
+  "author": "Erik van Leeuwen, attribution: Erik van Leeuwen (bron: Wikipedia).",
+  "license": "GFDL",
+  "licenseUrl": "http://www.gnu.org/copyleft/fdl.html",
+  "page": "https://commons.wikimedia.org/wiki/File:Armand_Duplantis_Budapest_2023.jpg"
  },
  "dupont": {
   "file": "dupont.webp",
