@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import type { CardFace } from '../engine/types';
 import { useGame, OBJECTIVES, MAX_FREE_PACKS, FREE_PACK_INTERVAL } from '../store/game';
 import { useUi } from '../store/ui';
 import { useNow, formatDuration, timeAgo } from '../hooks/useNow';
@@ -9,6 +10,29 @@ import { PackArt } from '../components/PackArt';
 import { Card } from '../components/Card';
 import { Balles } from '../components/Balles';
 import { sfx } from '../audio/sfx';
+
+// Ce qu'on peut décrocher : une légende en activité, une Icône du ballon rond, une version Prime.
+const SHOWCASE: CardFace[] = [
+  { athleteId: 'duplantis', variant: 'base', record: 630 },
+  { athleteId: 'messi', variant: 'base' },
+  { athleteId: 'lebron', variant: 'prime' },
+];
+
+function Showcase() {
+  const openDetail = useUi((s) => s.openDetail);
+  return (
+    <figure className="showcase">
+      <div className="showcase__fan">
+        {SHOWCASE.map((card) => (
+          <div key={card.athleteId} className="showcase__slot">
+            <Card card={card} size="sm" tilt onClick={() => openDetail({ card })} />
+          </div>
+        ))}
+      </div>
+      <figcaption>À décrocher : légendaires, Icônes et versions Prime</figcaption>
+    </figure>
+  );
+}
 
 function FreePackHero() {
   const freePacks = useGame((s) => s.freePacks);
@@ -56,6 +80,7 @@ function FreePackHero() {
           Ouvrir un booster
         </button>
       </div>
+      <Showcase />
     </section>
   );
 }

@@ -29,7 +29,7 @@
   "author": "Presidential Press and Information Office",
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Clarisse_Agbegnenou.jpeg"
+  "page": "https://commons.wikimedia.org/wiki/File:Clarisse_Agbegnenou_(cropped).jpeg"
  },
  "ait-said": {
   "file": "ait-said.jpg",
@@ -95,6 +95,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Gr%C3%A9goryAlldritt2022.png"
  },
+ "alonso": {
+  "file": "alonso.jpg",
+  "cutout": false,
+  "author": "Box Repsol | Flickr",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Alonso_2016.jpg"
+ },
  "andrade": {
   "file": "andrade.jpg",
   "cutout": false,
@@ -102,6 +110,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Rebeca_Andrade_in_2023.jpg"
+ },
+ "anquetil": {
+  "file": "anquetil.jpg",
+  "cutout": false,
+  "author": "Nationaal Archief",
+  "license": "No restrictions",
+  "licenseUrl": "https://www.flickr.com/commons/usage/",
+  "page": "https://commons.wikimedia.org/wiki/File:Jacques_Anquetil_1963.jpg"
  },
  "antonelli": {
   "file": "antonelli.jpg",
@@ -263,6 +279,14 @@
   "licenseUrl": "http://www.gnu.org/copyleft/fdl.html",
   "page": "https://commons.wikimedia.org/wiki/File:Belocian_De_Bont_Rieti_2013_(cropped).jpg"
  },
+ "bennacer": {
+  "file": "bennacer.jpg",
+  "cutout": false,
+  "author": "Werner100359",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:BennacerLeB2022.jpg"
+ },
  "benzema": {
   "file": "benzema.jpg",
   "cutout": false,
@@ -295,14 +319,6 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Bernardo_Silva_Croatia_v_Portugal_2_July_2026-238.jpg"
  },
- "bielle-biarrey": {
-  "file": "bielle-biarrey.jpg",
-  "cutout": false,
-  "author": "JohnNewton8",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Louis_Bielle_Biarrey_2022.jpg"
- },
  "bikila": {
   "file": "bikila.jpg",
   "cutout": false,
@@ -314,10 +330,10 @@
  "biles": {
   "file": "biles.jpg",
   "cutout": false,
-  "author": "Ocoudis",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Simone_Biles_National_Team_2024.jpg"
+  "author": "File:Simone Biles at the 2016 Olympics all-around gold medal podium (28262782114).jpg : Ag",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Simone_Biles_-_2016_Olympics_podium_(cropped_01).jpg"
  },
  "bill-russell": {
   "file": "bill-russell.jpg",
@@ -350,6 +366,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Johannes_Thingnes_B%C3%B8_2019.jpg"
+ },
+ "bol": {
+  "file": "bol.jpg",
+  "cutout": false,
+  "author": "Erik van Leeuwen, attribution: Erik van Leeuwen (bron: Wikipedia).",
+  "license": "GFDL",
+  "licenseUrl": "http://www.gnu.org/copyleft/fdl.html",
+  "page": "https://commons.wikimedia.org/wiki/File:Femke_Bol_240823_Budapest_2023.jpg"
  },
  "bolt": {
   "file": "bolt.jpg",
@@ -423,6 +447,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Sergey_Bubka_2013.jpg"
  },
+ "buchard": {
+  "file": "buchard.jpg",
+  "cutout": false,
+  "author": "AwkwardChester",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Live_des_Jeux_at_the_Trocadero_20_(cropped).jpg"
+ },
  "buffon": {
   "file": "buffon.jpg",
   "cutout": false,
@@ -486,6 +518,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Dan_Carter_ONZM_(cropped).jpg"
+ },
+ "cascarino": {
+  "file": "cascarino.jpg",
+  "cutout": false,
+  "author": "crop by Benj90",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Delphine_Cascarino_WCL_2019.jpg"
  },
  "casemiro": {
   "file": "casemiro.jpg",
@@ -574,6 +614,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Barth%C3%A9l%C3%A9my_Chinenyeze_2_Fenerbah%C3%A7e_MV_TMVL_20260426_(1)_(cropped).jpg"
+ },
+ "chloe-kim": {
+  "file": "chloe-kim.jpg",
+  "cutout": false,
+  "author": "President's Council on Sports, Fitness, and Nutrition",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Chloe_Kim_PCSFN_Headshot_2023.jpg"
  },
  "chopra": {
   "file": "chopra.jpg",
@@ -719,14 +767,6 @@
   "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
   "page": "https://commons.wikimedia.org/wiki/File:Arnaud_De_Lie_(2023).jpg"
  },
- "defay": {
-  "file": "defay.jpg",
-  "cutout": false,
-  "author": "troy_williams",
-  "license": "CC BY 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Defay_(28592452346).jpg"
- },
  "del-piero": {
   "file": "del-piero.jpg",
   "cutout": false,
@@ -790,6 +830,22 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Emiliano_Martinez_Argentina_v_Egypt_7_July_2026-093_(cropped).jpg"
+ },
+ "dicko": {
+  "file": "dicko.jpg",
+  "cutout": false,
+  "author": "AwkwardChester",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Live_des_Jeux_at_the_Trocadero_44_(cropped).jpg"
+ },
+ "diogo-costa": {
+  "file": "diogo-costa.jpg",
+  "cutout": false,
+  "author": "Bryan Berlin",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Diogo_Costa_Croatia_v_Portugal_2_July_2026-188_(cropped).jpg"
  },
  "djokovic": {
   "file": "djokovic.jpg",
@@ -866,10 +922,10 @@
  "duplantis": {
   "file": "duplantis.jpg",
   "cutout": false,
-  "author": "Peter Arnold",
+  "author": "Frankie Fouganthin",
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Armand_Duplantis_DSC02363.jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Armand_Duplantis_after_his_6.0_m_jump-1.jpg"
  },
  "dupont": {
   "file": "dupont.jpg",
@@ -994,10 +1050,10 @@
  "federer": {
   "file": "federer.jpg",
   "cutout": false,
-  "author": "Squeaky Knees from Cornwall, UK",
-  "license": "CC BY 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Roger_Federer_(26_June_2009,_Wimbledon)_2.jpg"
+  "author": "si.robi",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Federer_WM16_(37)_(28136155830).jpg"
  },
  "fekir": {
   "file": "fekir.jpg",
@@ -1111,6 +1167,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Martin_Fourcade_octobre_2017.jpg"
  },
+ "fournier": {
+  "file": "fournier.jpg",
+  "cutout": false,
+  "author": "Zafer",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Evan_Fournier_94_Olympiacos_BC_Euroleague_20260106_(5)_(cropped).jpg"
+ },
  "fraser-pryce": {
   "file": "fraser-pryce.jpg",
   "cutout": false,
@@ -1223,6 +1287,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Haile_Gebrselassie_at_Vienna_City_Marathon_2011.jpg"
  },
+ "gerd-muller": {
+  "file": "gerd-muller.jpg",
+  "cutout": false,
+  "author": "Bert Verhoeff for Anefo",
+  "license": "CC BY-SA 3.0 nl",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/nl/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Muller_1974.jpg"
+ },
  "geyoro": {
   "file": "geyoro.jpg",
   "cutout": false,
@@ -1327,14 +1399,6 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Antoine_Griezmann_World_Cup_Trophy.jpg"
  },
- "grousset": {
-  "file": "grousset.jpg",
-  "cutout": false,
-  "author": "AlSepPhoenix",
-  "license": "CC BY 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Maxime_Grousset.jpg"
- },
  "gsp": {
   "file": "gsp.jpg",
   "cutout": false,
@@ -1390,6 +1454,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Achraf_Hakimi_vs_Niger_(cropped).jpg"
+ },
+ "hamilton": {
+  "file": "hamilton.jpg",
+  "cutout": false,
+  "author": "Governo do Estado de São Paulo",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Lewis_Hamilton_2022_S%C3%A3o_Paulo_Grand_Prix_(52498120773)_(cropped).jpg"
  },
  "hanyu": {
   "file": "hanyu.jpg",
@@ -1450,10 +1522,10 @@
  "hinault": {
   "file": "hinault.jpg",
   "cutout": false,
-  "author": "Marcel Antonisse / Anefo",
-  "license": "CC0",
-  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-  "page": "https://commons.wikimedia.org/wiki/File:Profronde_van_Tiel_Bernard_Hinault_wordt_begroet_door_rondemiss_Vanessa,_Bestanddeelnr_932-2817.jpg"
+  "author": "English : This photo has been taken by Matthieu Riegler ( User:Kyro ) and released under t",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bernard_Hinault_-_Crit%C3%A9rium_du_Dauphin%C3%A9_2012_-_Prologue_(2).jpg"
  },
  "honnold": {
   "file": "honnold.jpg",
@@ -1502,6 +1574,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:UEFA_EURO_qualifiers_Sweden_vs_Spain_20191015_Alexander_Isak_56.jpg"
+ },
+ "jabeur": {
+  "file": "jabeur.jpg",
+  "cutout": false,
+  "author": "Peter Menzel",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ons_Jabeur_(51314432345).jpg"
  },
  "jacobs": {
   "file": "jacobs.jpg",
@@ -1594,10 +1674,10 @@
  "julien-marchand": {
   "file": "julien-marchand.jpg",
   "cutout": false,
-  "author": "Stefano Delfrate",
-  "license": "CC BY-SA 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:European_Rugby_Champions_Cup_24-25-_RC_Toulonnais_vs_Stade_Toulousain-61-Migliorato-NR_(54468571137)_(cropped).jpg"
+  "author": "Helene Brasseur",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:JulienMarchand2018(cropped).jpg"
  },
  "kaka": {
   "file": "kaka.jpg",
@@ -1711,6 +1791,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Wahbi_Khazri.jpg"
  },
+ "khephren-thuram": {
+  "file": "khephren-thuram.jpg",
+  "cutout": false,
+  "author": "Supporterhéninois",
+  "license": "CC0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:RC_Lens_-_OGC_Nice_(10-04-2022)_6_(cropped).jpg"
+ },
  "killy": {
   "file": "killy.jpg",
   "cutout": false,
@@ -1742,6 +1830,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Eliud_Kipchoge_in_Berlin_-_2015_(cropped).jpg"
+ },
+ "kipyegon": {
+  "file": "kipyegon.jpg",
+  "cutout": false,
+  "author": "Erik van Leeuwen, attribution: Erik van Leeuwen (bron: Wikipedia).",
+  "license": "GFDL",
+  "licenseUrl": "http://www.gnu.org/copyleft/fdl.html",
+  "page": "https://commons.wikimedia.org/wiki/File:Faith_Kipyegon_(cropped)_Budapest_2023.jpg"
  },
  "kishane-thompson": {
   "file": "kishane-thompson.jpg",
@@ -1903,6 +1999,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Lamine_Yamal_France_v_Spain_7.24.26-142.jpg"
  },
+ "landin": {
+  "file": "landin.jpg",
+  "cutout": false,
+  "author": "Wenflou",
+  "license": "CC0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Niklas_Landin_2_20180304.jpg"
+ },
  "lauda": {
   "file": "lauda.jpg",
   "cutout": false,
@@ -1958,6 +2062,14 @@
   "license": "CC BY 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Lebron_James_2022small.jpg"
+ },
+ "leclerc": {
+  "file": "leclerc.jpg",
+  "cutout": false,
+  "author": "Yu Chu Chin",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Charles_Leclerc_at_the_Melbourne_Walk_during_the_2026_Australian_Grand_Prix_(028A8638)_(cropped).jpg"
  },
  "ledecky": {
   "file": "ledecky.jpg",
@@ -2087,6 +2199,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Magic_Johnson_Mercedes-Benz_Carousel_of_Hope_Gala_2014_(15333080200).jpg"
  },
+ "mahomes": {
+  "file": "mahomes.jpg",
+  "cutout": false,
+  "author": "All-Pro Reels from District of Columbia, USA",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Patrick_Mahomes_(51615475056).jpg"
+ },
  "mahrez": {
   "file": "mahrez.jpg",
   "cutout": false,
@@ -2149,7 +2269,7 @@
   "author": "Unknown author Unknown author",
   "license": "Public domain",
   "licenseUrl": "",
-  "page": "https://commons.wikimedia.org/wiki/File:Argentina_celebrando_copa_(cropped).jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Maradona-Mundial_86_con_la_copa.JPG"
  },
  "marchand": {
   "file": "marchand.jpg",
@@ -2198,14 +2318,6 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Marquinhos_Brazil_V_Morocco_13_June_2026-153_(cropped).jpg"
- },
- "marschall": {
-  "file": "marschall.jpg",
-  "cutout": false,
-  "author": "Quejaytee",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Kurtis_Marschall_at_the_2026_Wanda_Diamond_League_Athletissima_athletics_competition._04.jpg"
  },
  "martinot-lagarde": {
   "file": "martinot-lagarde.jpg",
@@ -2263,6 +2375,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Connor_McDavid_2-FEB-2022.jpg"
  },
+ "mcintosh": {
+  "file": "mcintosh.jpg",
+  "cutout": false,
+  "author": "Unknown author Unknown author",
+  "license": "CC0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Summer_McIntosh_at_the_2024_Summer_Olympic_Games.webp"
+ },
  "mclaughlin": {
   "file": "mclaughlin.jpg",
   "cutout": false,
@@ -2287,6 +2407,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Dika_Mem_Championship_2018.jpg"
  },
+ "merckx": {
+  "file": "merckx.jpg",
+  "cutout": false,
+  "author": "Nationaal Archief",
+  "license": "No restrictions",
+  "licenseUrl": "https://www.flickr.com/commons/usage/",
+  "page": "https://commons.wikimedia.org/wiki/File:Eddy_Merckx_Molteni_1973.jpg"
+ },
  "messi": {
   "file": "messi.jpg",
   "cutout": false,
@@ -2294,14 +2422,6 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg"
- },
- "metella": {
-  "file": "metella.jpg",
-  "cutout": false,
-  "author": "Voltmetro",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Kazan_2015_-_Mehdy_Metella_100m_butterfly_semi.JPG"
  },
  "michael-johnson": {
   "file": "michael-johnson.jpg",
@@ -2410,10 +2530,10 @@
  "nadal": {
   "file": "nadal.jpg",
   "cutout": false,
-  "author": "y.caradec",
+  "author": "Tatiana from Moscow, Russia",
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Rafael_Nadal_2011_Roland_Garros_2011.jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Rafael_Nadal_(16207904747).jpg"
  },
  "nadeem": {
   "file": "nadeem.jpg",
@@ -2631,6 +2751,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Match_legends_2017_CC_(5).jpg"
  },
+ "olise": {
+  "file": "olise.jpg",
+  "cutout": false,
+  "author": "Bryan Berlin",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Michael_Olise_France_v_Senegal_16_June_2026-307_(cropped).jpg"
+ },
  "ollivon": {
   "file": "ollivon.jpg",
   "cutout": false,
@@ -2750,6 +2878,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Tony_Parker_France_20260628_(5).jpg"
+ },
+ "patry": {
+  "file": "patry.jpg",
+  "cutout": false,
+  "author": "Zafer",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Jean_Patry_9_Galatasaray_MV_TMVL_20260424_(4)_(cropped).jpg"
  },
  "pau-gasol": {
   "file": "pau-gasol.jpg",
@@ -2935,6 +3071,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Christian_Pulisic_Australia_v_USA_19_June_2026-186.jpg"
  },
+ "puskas": {
+  "file": "puskas.jpg",
+  "cutout": false,
+  "author": "Panini",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Ferenc_Puskas_en_1965.jpg"
+ },
  "putellas": {
   "file": "putellas.jpg",
   "cutout": false,
@@ -2978,10 +3122,10 @@
  "rahm": {
   "file": "rahm.jpg",
   "cutout": false,
-  "author": "FOX Sports",
-  "license": "CC BY 3.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Jon_Rahm_2019_U.S._Open.png"
+  "author": "Bryan Berlin",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Jon_Rahm_Ryder_Cup_2025-130_(cropped).jpg"
  },
  "ramos": {
   "file": "ramos.jpg",
@@ -3053,7 +3197,7 @@
   "author": "Georges Biard",
   "license": "CC BY-SA 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Teddy_Riner_Cannes_2016.jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Teddy_Riner_JO_2012.jpg"
  },
  "risacher": {
   "file": "risacher.jpg",
@@ -3126,6 +3270,14 @@
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Wayne_Rooney_(50121495731)_(cropped).jpg"
+ },
+ "rossi": {
+  "file": "rossi.jpg",
+  "cutout": false,
+  "author": "Morio",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Valentino_Rossi_2024_WEC_Fuji_2.jpg"
  },
  "rovanpera": {
   "file": "rovanpera.jpg",
@@ -3270,6 +3422,14 @@
   "license": "CC BY 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Ardie_Savea_thumb17.jpg"
+ },
+ "schalck": {
+  "file": "schalck.jpg",
+  "cutout": false,
+  "author": "AgatheLune",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mejdi_Schalck_portrait.png"
  },
  "scheffler": {
   "file": "scheffler.jpg",
@@ -3543,6 +3703,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Ian_Thorpe_2012.jpg"
  },
+ "thuram": {
+  "file": "thuram.jpg",
+  "cutout": false,
+  "author": "English : This photo has been taken by Matthieu Riegler ( User:Kyro ) and released under t",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Lilian_Thuram_-_F%C3%A9vrier_2013.jpg"
+ },
  "tiger": {
   "file": "tiger.jpg",
   "cutout": false,
@@ -3687,14 +3855,6 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Vin%C3%ADcius_J%C3%BAnior_Brazil_V_Morocco_13_June_2026-207_(cropped).jpg"
  },
- "vitinha": {
-  "file": "vitinha.jpg",
-  "cutout": false,
-  "author": "Bryan Berlin",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Vitinha_USMNT_v_Portugal_Mar_31_2026-50.jpg"
- },
  "vlahovic": {
   "file": "vlahovic.jpg",
   "cutout": false,
@@ -3802,10 +3962,10 @@
  "yabusele": {
   "file": "yabusele.jpg",
   "cutout": false,
-  "author": "https://commons.wikimedia.org/wiki/User:Like_tears_in_rain",
-  "license": "CC BY 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:France_vs._Spain_(basketball)_-_August_16,_2025_(1059)_(cropped).jpg"
+  "author": "Fabien Zaghini",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Guerschon_Yabusele_Roanne.jpg"
  },
  "yachine": {
   "file": "yachine.jpg",
@@ -3886,14 +4046,6 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Zheng_Qinwen_(2023_US_Open)_01_(cropped).jpg"
- },
- "zhoya": {
-  "file": "zhoya.jpg",
-  "cutout": false,
-  "author": "Erik van Leeuwen, attribution: Erik van Leeuwen (bron: Wikipedia).",
-  "license": "GFDL",
-  "licenseUrl": "http://www.gnu.org/copyleft/fdl.html",
-  "page": "https://commons.wikimedia.org/wiki/File:110m_hurdles_semi_final_Budapest_2023.jpg"
  },
  "zidane": {
   "file": "zidane.jpg",

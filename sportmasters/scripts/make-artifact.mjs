@@ -1,9 +1,16 @@
 // Transforme le build « un seul fichier » en page publiable :
 // on retire doctype / html / head / body (la plateforme les ajoute) et on garde
 // <title>, les styles, la racine React et le script, dans cet ordre.
-// Les photos partent à côté, regroupées par sport (artifact/photos/<sport>.json),
-// car la page publiée ne peut charger que ses propres fichiers.
+// Les photos partent à côté, car la page publiée ne peut charger que ses propres fichiers :
+// des paquets de PAR_PAQUET photos (artifact/photos/pNN.json, id → data URI), groupés par sport
+// puis par célébrité, et un index id → paquet (artifact/photos/index.json).
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import sharp from 'sharp';
+
+const PAR_PAQUET = 16;
+// Un peu plus légères que public/photos (480 × 640) : c'est tout le jeu qui se télécharge.
+const LARGEUR = 420;
+const QUALITE = 74;
 
 const html = readFileSync('dist-single/index.html', 'utf8');
 const title = html.match(/<title>[\s\S]*?<\/title>/)?.[0] ?? '<title>SportMasters</title>';
@@ -19,18 +26,32 @@ console.log(`artifact/sportmasters.html : ${(page.length / 1024 / 1024).toFixed(
 
 const credits = JSON.parse(readFileSync('src/data/photos.json', 'utf8'));
 const source = readFileSync('src/data/athletes.ts', 'utf8');
-const sportOf = Object.fromEntries([...source.matchAll(/^\s*a\('([^']+)', '[^']*', '[^']*', '([a-z]+)'/gm)].map((m) => [m[1], m[2]]));
-const chunks = {};
-for (const [id, credit] of Object.entries(credits)) {
-  const file = `public/photos/${credit.file}`;
-  const sport = sportOf[id];
-  if (!sport || !existsSync(file)) continue;
-  chunks[sport] ??= {};
-  const type = credit.file.endsWith('.jpg') ? 'jpeg' : 'webp';
-  chunks[sport][id] = `data:image/${type};base64,${readFileSync(file).toString('base64')}`;
+const info = Object.fromEntries(
+  [...source.matchAll(/^\s*a\('([^']+)', '[^']*', '[^']*', '([a-z]+)', '[^']*', '[^']*', '[A-Z-]+', (\d+)/gm)].map((m) => [m[1], { sport: m[2], fame: Number(m[3]) }]),
+);
+const ids = Object.keys(credits)
+  .filter((id) => existsSync(`public/photos/${credits[id].file}`))
+  .sort((a, b) => {
+    const [x, y] = [info[a] ?? { sport: '~', fame: 0 }, info[b] ?? { sport: '~', fame: 0 }];
+    return x.sport < y.sport ? -1 : x.sport > y.sport ? 1 : y.fame - x.fame || (a < b ? -1 : 1);
+  });
+
+const index = {};
+let total = 0;
+for (let start = 0; start < ids.length; start += PAR_PAQUET) {
+  const name = `p${String(start / PAR_PAQUET + 1).padStart(2, '0')}`;
+  const chunk = {};
+  for (const id of ids.slice(start, start + PAR_PAQUET)) {
+    const image = await sharp(`public/photos/${credits[id].file}`)
+      .resize({ width: LARGEUR, withoutEnlargement: true })
+      .webp({ quality: QUALITE, alphaQuality: 90 })
+      .toBuffer();
+    chunk[id] = `data:image/webp;base64,${image.toString('base64')}`;
+    index[id] = name;
+  }
+  const text = JSON.stringify(chunk);
+  total += text.length;
+  writeFileSync(`artifact/photos/${name}.json`, text);
 }
-for (const [sport, map] of Object.entries(chunks)) {
-  const text = JSON.stringify(map);
-  writeFileSync(`artifact/photos/${sport}.json`, text);
-  console.log(`artifact/photos/${sport}.json : ${Object.keys(map).length} photos, ${(text.length / 1024 / 1024).toFixed(2)} Mo`);
-}
+writeFileSync('artifact/photos/index.json', JSON.stringify(index));
+console.log(`artifact/photos : ${ids.length} photos en ${Math.ceil(ids.length / PAR_PAQUET)} paquets, ${(total / 1024 / 1024).toFixed(2)} Mo`);

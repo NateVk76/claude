@@ -39,8 +39,14 @@ export function dropWeight(athlete: Athlete): number {
 }
 
 // ───────────── Prime ─────────────
-/** Chance qu'une carte tirée dans un booster standard soit en version Prime. */
-export const PRIME_CHANCE = 0.012;
+// Seules les très grandes légendes ont une version Prime : celles dont la meilleure saison est
+// renseignée dans la base (Messi 2012, Cristiano Ronaldo 2014, Ronaldo Nazário 2002…).
+export function canBePrime(athlete: Athlete): boolean {
+  return !!athlete.prime;
+}
+
+/** Chance qu'une de ces légendes, tirée dans un booster, sorte en version Prime. */
+export const PRIME_CHANCE = 0.08;
 export const PRIME_LEVEL_BOOST = 3;
 export const PRIME_STAT_BOOST = 4;
 export const PRIME_ULTI_BOOST = 4;

@@ -1,10 +1,9 @@
 import { ATHLETES } from '../data/athletes';
 import { Card } from '../components/Card';
 import { isIcon, rarityOf } from '../engine/cards';
-import { Pictogram, ALL_POSES } from '../components/Pictogram';
 import { Flag, COUNTRY_NAMES } from '../components/Flag';
 
-// Page de contrôle visuel (#galerie) : toutes les poses, tous les drapeaux, un échantillon de cartes.
+// Page de contrôle visuel (#galerie) : un échantillon de cartes et tous les drapeaux.
 const SAMPLE = ['messi', 'mbappe', 'cristiano-ronaldo', 'lebron', 'bolt', 'pele', 'federer', 'zidane', 'maradona', 'djokovic', 'jordan', 'nadal', 'duplantis', 'kante', 'collet', 'gasquet'];
 
 export function Gallery() {
@@ -35,16 +34,6 @@ export function Gallery() {
       <section style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
         {sample.map((a) => (
           <Card key={a.id} card={{ athleteId: a.id, variant: 'base' }} size="sm" />
-        ))}
-      </section>
-      <section style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-        {ALL_POSES.map((pose) => (
-          <figure key={pose} style={{ margin: 0, width: 120, textAlign: 'center', fontSize: 11, color: '#9ba5bb' }}>
-            <div style={{ background: '#e4b746', color: '#2a1d03', borderRadius: 8, ['--pic-accent' as string]: '#fff' }}>
-              <Pictogram pose={pose} />
-            </div>
-            {pose}
-          </figure>
         ))}
       </section>
       <section style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>

@@ -3,7 +3,7 @@ import { createJSONStorage, persist, type StateStorage } from 'zustand/middlewar
 import type { CardFace, OwnedCard } from '../engine/types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS, SPORT_ORDER } from '../data/sports';
-import { overallOf, quickSellValue, rarityOf } from '../engine/cards';
+import { canBePrime, overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import { FREE_PACK, SHOP_PACKS, openPack, sportPack, type PackDef } from '../engine/packs';
 import {
   MAX_MY_LISTINGS,
@@ -548,8 +548,30 @@ export const useGame = create<GameState>()(
     },
     {
       name: 'sportmasters-save',
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => safeStorage),
+      migrate: (persisted, version) => {
+        const state = persisted as GameState;
+        if (version < 2) {
+          // avant la version 2, n'importe quelle carte pouvait sortir en Prime :
+          // seules les très grandes légendes gardent la leur
+          const fix = <T extends CardFace>(card: T): T => {
+            const athlete = ATHLETES_BY_ID[card.athleteId];
+            return card.variant === 'prime' && athlete && !canBePrime(athlete) ? { ...card, variant: 'base' } : card;
+          };
+          state.collection = state.collection.map(fix);
+          state.market = {
+            ...state.market,
+            listings: state.market.listings.map((listing) => ({ ...listing, card: fix(listing.card) })),
+            myListings: state.market.myListings.map((listing) => ({ ...listing, card: fix(listing.card) })),
+          };
+          state.primesFound = Object.fromEntries(
+            Object.entries(state.primesFound ?? {}).filter(([id]) => ATHLETES_BY_ID[id] && canBePrime(ATHLETES_BY_ID[id])),
+          );
+          if (state.stats.bestPull) state.stats = { ...state.stats, bestPull: fix(state.stats.bestPull) };
+        }
+        return state;
+      },
       partialize: (state) => {
         // les notifications et l'ouverture en cours ne sont pas sauvegardées
         const { toasts: _toasts, opening: _opening, ...rest } = state;

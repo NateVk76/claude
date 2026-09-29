@@ -1,7 +1,7 @@
 import type { CardFace, EventId, StatKey, UltiEffect } from './types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { EVENTS, EVENT_ORDER, SPORTS } from '../data/sports';
-import { overallOf, popularityOf, primeRecordStart, rarityOf, statsOf, ultiOf } from './cards';
+import { canBePrime, overallOf, popularityOf, primeRecordStart, rarityOf, statsOf, ultiOf } from './cards';
 import { makeUid, pick, shuffle, type Rng } from './random';
 
 // Matchs : 5 manches, chacune est une épreuve (Sprint, Bras de fer, Money time…).
@@ -81,7 +81,7 @@ export function createOpponent(division: number, rng: Rng): { name: string; card
   if (pool.length < TEAM_SIZE) pool = ATHLETES.slice().sort((a, b) => Math.abs(overallOf(a) - target) - Math.abs(overallOf(b) - target)).slice(0, 20);
   const chosen = shuffle(rng, pool).slice(0, TEAM_SIZE);
   const cards = chosen.map((athlete) => {
-    const variant = division <= 3 && rng() < 0.15 ? ('prime' as const) : ('base' as const);
+    const variant = division <= 3 && canBePrime(athlete) && rng() < 0.15 ? ('prime' as const) : ('base' as const);
     const record = primeRecordStart(athlete);
     return { uid: makeUid('o'), athleteId: athlete.id, variant, ...(record ? { record } : {}) };
   });

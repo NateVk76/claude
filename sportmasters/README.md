@@ -15,7 +15,7 @@ npm run build        # version de production dans dist/
 npm run build:single # un seul fichier HTML autonome dans artifact/
 ```
 
-`#galerie` à la fin de l'adresse affiche une planche de contrôle visuel : toutes les poses, tous les drapeaux et les matières de cartes.
+`#galerie` à la fin de l'adresse affiche une planche de contrôle visuel : les matières de cartes et tous les drapeaux.
 
 ## Les règles du jeu
 
@@ -50,7 +50,7 @@ Dans une même rareté, le niveau sportif réel de l'athlète et sa célébrité
 ### Versions spéciales
 
 - **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or, années de vie pour les disparus.
-- **Prime** : la meilleure saison d'un athlète (LeBron 2016, Messi 2012, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Environ 1 % de chances par carte (une Prime de légendaire : environ 1 carte sur 14 000), valeur ×6 au marché.
+- **Prime** : la meilleure saison d'une très grande légende, et seulement d'elles : 36 athlètes (Messi 2012, Cristiano Ronaldo 2014, Ronaldo Nazário 2002, LeBron 2016, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Une de ces légendes tirée dans un booster a 8 % de chances d'être en Prime, soit environ 1 carte sur 1 200 dans le booster gratuit, dix fois plus rare qu'une Légendaire. Valeur ×6 au marché.
 
 ### La carte
 
@@ -89,7 +89,7 @@ Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » 
 ### Boosters et boutique
 
 - Un booster gratuit toutes les 10 minutes, jusqu'à 10 en réserve.
-- Boutique : Découverte, Pro (1 Rare garantie), Élite (1 Épique garantie), Icônes, Prime (1 Prime garantie), Légende (1 Légendaire garantie) et un pack par sport. Les chances sont affichées sur chaque pack.
+- Boutique : Découverte, Pro (1 Rare garantie), Élite (1 Épique garantie), Icônes, Prime (1 Prime de légende garantie, 250 000 Balles), Légende (1 Légendaire garantie) et un pack par sport. Les chances sont affichées sur chaque pack.
 - Les Épiques, Légendaires et Prime ont droit à leur « walkout » : drapeau, puis sport, puis note, puis la carte avec confettis et fanfare.
 
 ### Mercato (marché des transferts)
@@ -125,16 +125,18 @@ Le moteur (`src/engine`) ne dépend pas de l'interface : il prend un état, l'he
 
 ## Photos des athlètes
 
-Les photos viennent de Wikimedia Commons : uniquement des images sous licence libre (CC BY, CC BY-SA, domaine public), avec l'auteur et la licence affichés dans la fiche de chaque carte. Elles sont récupérées et détourées par la GitHub Action `.github/workflows/photos.yml` :
+Les photos viennent de Wikimedia Commons : uniquement des images sous licence libre (CC BY, CC BY-SA, domaine public…), avec l'auteur et la licence affichés dans la fiche de chaque carte. Elles sont récupérées par la GitHub Action `.github/workflows/photos.yml` :
 
-1. `scripts/photos/telecharger-photos.mjs telecharger` trouve la page Wikipédia de chaque athlète (français puis anglais), vérifie que c'est le bon sport, et télécharge la photo principale si elle est libre.
-2. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` (la photo entière, avec son décor, cadrée au format 3:4 de la fenêtre des cartes) et les crédits dans `src/data/photos.json`.
+1. `scripts/photos/telecharger-photos.mjs telecharger` cherche pour chaque athlète une photo libre : l'image principale de sa page Wikipédia en français (en vérifiant que c'est le bon sport), sinon celle de sa page en anglais, sinon son image Wikidata.
+2. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` (la photo entière, avec son décor, cadrée au format 3:4 de la fenêtre des cartes) et met à jour les crédits dans `src/data/photos.json`.
 
 Les photos ne sont plus détourées. Pour y revenir : `"detourage": true` dans `scripts/photos/config.json` et lancer `scripts/photos/detourer.py` (rembg) avant « finaliser ».
 
-Sous Windows, si le module `sharp` est bloqué par la politique de sécurité du système, le script garde les images de Commons telles quelles ; lance alors `powershell -ExecutionPolicy Bypass -File scripts/photos/recadrer.ps1` entre les deux étapes pour les recadrer en 540 × 720 (JPEG).
+Sous Windows, si le module `sharp` est bloqué par la politique de sécurité du système, le script garde les images de Commons telles quelles ; lance alors `powershell -ExecutionPolicy Bypass -File scripts/photos/recadrer.ps1` entre les deux étapes pour les recadrer en 540 × 720 (JPEG). Les planches d'exploration demandent sharp : elles ne sont produites que par l'Action.
 
-L'Action se relance à chaque modification de `scripts/photos/`. Si un athlète tombe sur la mauvaise page, ajoute le bon titre Wikipédia dans `scripts/photos/titres.json`. Sans photo, la carte affiche un pictogramme du sport.
+L'Action se relance à chaque modification de `scripts/photos/`, et ne traite que les athlètes sans photo ou dont la photo a été refusée (`"tout": true` dans `scripts/photos/config.json`, ou l'option « Refaire toutes les photos » au lancement manuel, refait tout). Si un athlète tombe sur la mauvaise page, ajoute le bon titre Wikipédia dans `scripts/photos/titres.json`. Si une photo ne convient pas (plusieurs personnes, athlète de dos…), ajoute son nom de fichier Commons dans `scripts/photos/refus.json` : l'Action prendra la photo suivante. Pour choisir soi-même la photo d'une star, ajoute son identifiant à `"explorer"` dans `config.json` (ou `{ "duplantis": ["Duplantis medal"] }` pour chercher des photos précises) : l'Action enregistre une planche numérotée de ses photos Commons dans `scripts/photos/explorer/`, et il suffit de mettre le nom du fichier retenu dans `scripts/photos/choix.json`. Sans photo libre, la carte affiche une silhouette en buste aux couleurs du sport.
+
+Dans la version en un seul fichier (`npm run build:single`), les photos sont regroupées par paquets de 16 (`artifact/photos/pNN.json`, avec un index `artifact/photos/index.json`) et chargées au fur et à mesure que les cartes s'affichent.
 
 Les photos sont libres de droits d'auteur, mais l'image des personnes reste protégée : pour une sortie commerciale, il faudra des licences officielles (joueurs, clubs, ligues).
 

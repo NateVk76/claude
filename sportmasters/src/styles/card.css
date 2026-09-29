@@ -342,6 +342,13 @@
   height: 100%;
   object-fit: contain;
   object-position: 50% 100%;
+  animation: photo-in 0.35s ease-out;
+}
+
+@keyframes photo-in {
+  from {
+    opacity: 0;
+  }
 }
 
 .has-cutout .card__photo {

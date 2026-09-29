@@ -58,26 +58,6 @@ export type ArchetypeId =
   // sports US
   | 'quarterback' | 'receveur' | 'baseball' | 'hockey';
 
-export type PoseId =
-  | 'foot-frappe' | 'foot-gardien'
-  | 'basket-dunk' | 'basket-tir'
-  | 'tennis-service' | 'tennis-coup-droit'
-  | 'athle-sprint' | 'athle-perche' | 'athle-saut' | 'athle-lancer' | 'athle-haies'
-  | 'natation'
-  | 'cyclisme'
-  | 'auto' | 'auto-moto'
-  | 'combat-boxe' | 'combat-judo'
-  | 'rugby'
-  | 'hand'
-  | 'volley'
-  | 'hiver-ski' | 'hiver-patin'
-  | 'gym'
-  | 'golf'
-  | 'glisse-surf' | 'glisse-skate' | 'glisse-escalade'
-  | 'us-football' | 'us-baseball' | 'us-hockey'
-  // poses signatures des légendes
-  | 'sig-bolt' | 'sig-siuu' | 'sig-perche-record' | 'sig-bras-croises' | 'sig-night-night' | 'sig-doigts-ciel';
-
 /** Effet d'un ulti pendant une manche de match. */
 export type UltiEffect =
   | { kind: 'boost'; value: number } // + puissance
@@ -136,7 +116,6 @@ export interface Athlete {
   num?: number;
   stats?: Partial<Stats>;
   ulti?: Ulti;
-  pose?: PoseId;
   /** identifiant Wikidata (athlètes générés automatiquement) */
   wikidata?: string;
 }
@@ -181,7 +160,6 @@ export interface SportDef {
   short: string;
   color: string;
   passive: { name: string; desc: string };
-  pose: PoseId;
   ultis: SportUltiTemplate[];
 }
 

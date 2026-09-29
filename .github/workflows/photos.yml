@@ -1,11 +1,20 @@
 # Récupère les photos des athlètes sur Wikimedia Commons (licences libres, auteurs crédités),
 # les cadre au format des cartes (photo entière, sans détourage), puis enregistre le résultat dans le dépôt.
-# Pour revenir au détourage : « detourage »: true dans scripts/photos/config.json et remettre l'étape rembg
-# (pip install "rembg[cpu]" pillow puis python scripts/photos/detourer.py) avant « finaliser ».
+# Pour revenir au détourage : "detourage": true dans scripts/photos/config.json et remettre les étapes
+# Python (setup-python, pip install "rembg[cpu]" pillow scipy, python scripts/photos/detourer.py) avant « finaliser ».
 name: Photos des athlètes
 
 on:
   workflow_dispatch:
+    inputs:
+      tout:
+        description: Refaire toutes les photos (sinon seulement les manquantes et les refusées)
+        type: boolean
+        default: false
+      seulement:
+        description: "Athlètes à refaire, séparés par des virgules (ex. : messi,duplantis)"
+        type: string
+        default: ''
   push:
     branches: [claude/laughing-newton-g9nvtx]
     paths:
@@ -39,6 +48,9 @@ jobs:
         run: npm ci
       - name: Trouver et télécharger les photos
         run: node scripts/photos/telecharger-photos.mjs telecharger
+        env:
+          PHOTOS_TOUT: ${{ inputs.tout }}
+          PHOTOS_SEULEMENT: ${{ inputs.seulement }}
       - name: Préparer les images du jeu
         run: node scripts/photos/telecharger-photos.mjs finaliser
       - name: Enregistrer dans le dépôt
@@ -46,6 +58,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/photos src/data/photos.json
+          if [ -d scripts/photos/explorer ]; then git add scripts/photos/explorer; fi
           if git diff --cached --quiet; then
             echo "Aucune nouvelle photo"
             exit 0
