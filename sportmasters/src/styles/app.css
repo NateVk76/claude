@@ -138,35 +138,51 @@
   background: none;
 }
 
-.brand__crest svg {
-  width: 26px;
-  height: 30px;
-  display: block;
+.brand__logo {
+  font-size: 1.6rem;
+  color: var(--text);
 }
 
-.brand__crest path:first-child {
-  fill: var(--accent);
+.brand .brand__mark {
+  display: none;
+  font-size: 1.9rem;
 }
 
-.brand__line {
-  fill: none;
-  stroke: var(--accent-ink);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.brand__name {
-  font-family: var(--font-display);
+/* ───────────── Logo ───────────── */
+.logo {
+  --logo-card: var(--accent-text);
+  display: inline-block;
+  font-family: 'Outfit', var(--font-body);
   font-weight: 800;
-  font-size: 1.35rem;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
 }
 
-.brand__name b {
-  color: var(--accent-text);
-  font-weight: 900;
+.logo__i {
+  position: relative;
+  display: inline-block;
+}
+
+/* le point du i : une petite carte inclinée */
+.logo__card {
+  position: absolute;
+  left: 50%;
+  top: 0.095em;
+  width: 0.16em;
+  height: 0.215em;
+  border-radius: 0.035em;
+  background: var(--logo-card);
+  transform: translateX(-46%) rotate(14deg);
+}
+
+.logo-mark {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.88em;
+  border-radius: 0.12em;
+  background: var(--accent-text);
+  transform: rotate(14deg);
 }
 
 .topbar__right {
@@ -261,8 +277,8 @@
 }
 
 @media (max-width: 520px) {
-  .brand__name {
-    font-size: 1.1rem;
+  .brand__logo {
+    font-size: 1.35rem;
   }
   .chip__timer {
     display: none;
@@ -273,8 +289,11 @@
 }
 
 @media (max-width: 380px) {
-  .brand__name {
+  .brand__logo {
     display: none;
+  }
+  .brand .brand__mark {
+    display: inline-block;
   }
 }
 
@@ -907,33 +926,11 @@
   z-index: 3;
 }
 
-.pack-art__logo span {
+.pack-art__logo .logo {
+  --logo-card: #1e7a3c;
   display: block;
-  font-family: var(--font-data);
-  font-style: italic;
-  font-weight: 900;
-  font-size: 8.4cqw;
-  line-height: 1;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  color: #111;
-}
-
-.pack-art__logo b {
-  color: var(--pk-ribbon);
-}
-
-.pack-art--silver .pack-art__logo b,
-.pack-art--bronze .pack-art__logo b {
-  color: var(--accent);
-}
-
-.pack-art--sport .pack-art__logo {
-  border-color: #0d1422;
-}
-
-.pack-art--sport .pack-art__logo b {
-  color: #0d1422;
+  font-size: 9cqw;
+  color: #0c1a12;
 }
 
 .pack-art__series {
@@ -2244,30 +2241,14 @@
   color: var(--accent-text);
 }
 
-.card-back__crest svg {
-  width: 34%;
-  height: auto;
+.card-back__crest .logo-mark {
+  font-size: 3.4rem;
+  margin-bottom: 6px;
 }
 
-.card-back__crest svg path:first-child {
-  fill: rgba(30, 122, 60, 0.16);
-  stroke: var(--accent);
-  stroke-width: 1.2;
-}
-
-.card-back__crest svg path:last-child {
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-}
-
-.card-back__crest span {
-  font-family: var(--font-display);
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  font-size: 0.8rem;
-  text-transform: uppercase;
+.card-back__crest .logo {
+  font-size: 1.05rem;
+  color: var(--text);
 }
 
 .tag {

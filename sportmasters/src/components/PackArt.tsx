@@ -6,6 +6,7 @@ import { ATHLETES } from '../data/athletes';
 import { getAthlete } from '../engine/cards';
 import { photoCredit, usePhoto } from '../photos';
 import { SportIcon } from './SportIcon';
+import { Logo } from './Logo';
 
 // Booster façon paquet de cartes Topps : sachet en feuille métallisée froissée, soudures crantées
 // en haut et en bas, cartouche du logo, star du pack dans un cadre blanc incliné sur des rayons,
@@ -269,9 +270,7 @@ export function PackArt({ tone, name, sport, size = 5, guarantee, className = ''
       </svg>
 
       <div className="pack-art__logo">
-        <span>
-          Athleti<b>Cards</b>
-        </span>
+        <Logo />
       </div>
       <div className="pack-art__series">Série 1 · 2026</div>
 
