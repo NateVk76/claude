@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 // @ts-expect-error module JavaScript sans types (script Node)
-import { archetypeFor, factFrom, fameFromRank, levelFromSitelinksRank, slugify } from '../../../scripts/wikidata/helpers.mjs';
+import { archetypeFor, describesAthlete, factFrom, fameFromAnchors, fameFromRank, levelFromSitelinksRank, pickCountry, slugify, splitName } from '../../../scripts/wikidata/helpers.mjs';
 
 describe('générateur d’athlètes (Wikidata)', () => {
   it('garde très peu de légendaires même sur 10 000 athlètes', () => {
@@ -25,12 +25,59 @@ describe('générateur d’athlètes (Wikidata)', () => {
     expect(levelFromSitelinksRank(999, 1000)).toBe(72);
   });
 
+  it('cale la célébrité des nouveaux athlètes sur celle de la base manuelle', () => {
+    const anchors = [
+      { views: 2_000, fame: 10 },
+      { views: 20_000, fame: 35 },
+      { views: 200_000, fame: 60 },
+      { views: 2_000_000, fame: 92 },
+    ];
+    // autant de vues qu'un athlète manuel : la même célébrité
+    expect(fameFromAnchors(20_000, anchors)).toBe(35);
+    expect(fameFromAnchors(2_000_000, anchors)).toBe(92);
+    // plus de vues, jamais moins de célébrité
+    let previous = 0;
+    for (const views of [0, 10, 500, 2_000, 9_000, 50_000, 700_000, 5_000_000]) {
+      const fame = fameFromAnchors(views, anchors);
+      expect(fame).toBeGreaterThanOrEqual(previous);
+      previous = fame;
+    }
+    // très peu vu : bien en dessous, sans descendre sous 3
+    expect(fameFromAnchors(20, anchors)).toBeLessThan(10);
+    expect(fameFromAnchors(0, anchors)).toBeGreaterThanOrEqual(3);
+  });
+
+  it('ne garde que les joueurs du bon sport', () => {
+    expect(describesAthlete('foot', 'footballeur international français')).toBe(true);
+    expect(describesAthlete('foot', 'footballeur puis entraîneur français')).toBe(true);
+    expect(describesAthlete('foot', 'entraîneur de football portugais')).toBe(false);
+    expect(describesAthlete('foot', 'joueur de football américain')).toBe(false);
+    expect(describesAthlete('us', 'joueur de football américain')).toBe(true);
+    expect(describesAthlete('tennis', '')).toBe(false);
+  });
+
+  it('choisit le pays sportif et écrit le nom comme la base manuelle', () => {
+    expect(pickCountry(['GB-ENG'], ['GB'], 'footballeur anglais')).toBe('GB-ENG');
+    expect(pickCountry([], ['GB'], 'footballeur international écossais')).toBe('GB-SCT');
+    expect(pickCountry([], ['FR', 'DZ'], 'footballeur international algérien')).toBe('DZ');
+    expect(pickCountry([], ['FR', 'DZ'], 'footballeur international français')).toBe('FR');
+    expect(pickCountry([], [], 'judoka')).toBeNull();
+    expect(splitName('Son Heung-min', 'KR')).toEqual({ first: 'Heung-min', last: 'Son' });
+    expect(splitName('Marc-André ter Stegen (footballeur)', 'DE')).toEqual({ first: 'Marc-André', last: 'ter Stegen' });
+    expect(splitName('Kaká', 'BR')).toEqual({ first: '', last: 'Kaká' });
+  });
+
   it('devine le profil et le poste depuis la description', () => {
     expect(archetypeFor('athle', 'athlète suédois spécialiste du saut à la perche').archetype).toBe('perchiste');
     expect(archetypeFor('foot', 'gardien de but international français').archetype).toBe('gardien');
     expect(archetypeFor('rugby', 'joueur de rugby, demi de mêlée').archetype).toBe('demi');
     expect(archetypeFor('tennis', 'joueuse de tennis').archetype).toBe('tennis-complet');
     expect(archetypeFor('auto', '', { archetype: 'pilote-moto', role: 'Moto' }).archetype).toBe('pilote-moto');
+    expect(archetypeFor('athle', 'athlète kényan | 800 mètres').archetype).toBe('demi-fond');
+    expect(archetypeFor('athle', 'athlète spécialiste du demi-fond').archetype).toBe('demi-fond');
+    expect(archetypeFor('athle', 'marathonien éthiopien').archetype).toBe('fond');
+    expect(archetypeFor('basket', 'joueur de basket-ball | ailier fort').archetype).toBe('pivot');
+    expect(archetypeFor('hand', 'handballeur | ailier gauche').archetype).toBe('hand-ailier');
   });
 
   it('produit des identifiants et des phrases propres', () => {

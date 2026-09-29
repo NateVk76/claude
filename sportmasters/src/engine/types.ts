@@ -118,6 +118,8 @@ export interface Athlete {
   ulti?: Ulti;
   /** identifiant Wikidata (athlètes générés automatiquement) */
   wikidata?: string;
+  /** titre de la page Wikipédia en français (athlètes générés automatiquement) */
+  wiki?: string;
 }
 
 export interface Rarity {
