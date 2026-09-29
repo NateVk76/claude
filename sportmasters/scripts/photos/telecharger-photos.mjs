@@ -7,7 +7,7 @@
 //
 // Étape « telecharger » : pour chaque athlète, prend la première photo libre de Commons parmi
 // l'image principale de sa page Wikipédia en français, celle de sa page en anglais, puis son
-// image Wikidata. Une photo choisie à la main dans choix.json passe avant tout ; celles listées
+// image Wikidata. Une photo choisie à la main dans choix.json (éventuellement recadrée) passe avant tout ; celles listées
 // dans refus.json sont ignorées (plusieurs personnes, athlète de dos…). Par défaut, seuls les
 // athlètes sans photo, ou dont la photo est refusée ou n'est plus celle choisie, sont traités ;
 // --tout (ou "tout": true dans config.json) les refait tous. Pour les athlètes listés dans
@@ -35,6 +35,12 @@ const CONFIG = readJson('./config.json');
 const OVERRIDES = readJson('./titres.json');
 const REFUS = readJson('./refus.json');
 const CHOIX = readJson('./choix.json');
+/** Photo choisie à la main : un nom de fichier, ou { fichier, recadrage: [x, y, largeur, hauteur] } en fractions de l'image. */
+const choiceOf = (id) => {
+  const choice = CHOIX[id];
+  if (!choice) return null;
+  return typeof choice === 'string' ? { file: choice } : { file: choice.fichier, crop: choice.recadrage };
+};
 const EXPLORE_DIR = path('scripts/photos/explorer');
 const REPO = process.env.GITHUB_REPOSITORY ?? 'NateVk76/claude';
 const USER_AGENT = `SportMastersPhotos/1.0 (https://github.com/${REPO}; jeu de fan non commercial)`;
@@ -193,9 +199,10 @@ async function wikidataImages(item) {
 /** Photos possibles, dans l'ordre : page française, page anglaise, Wikidata. */
 async function* candidates(athlete, log) {
   const seen = new Set();
-  if (CHOIX[athlete.id]) {
-    seen.add(CHOIX[athlete.id]);
-    yield { file: CHOIX[athlete.id], source: 'choix' };
+  const choice = choiceOf(athlete.id);
+  if (choice) {
+    seen.add(choice.file);
+    yield { file: choice.file, source: 'choix', crop: choice.crop };
   }
   let item = null;
   let enTitle = null;
@@ -314,7 +321,12 @@ async function download() {
   const current = existsSync(CREDITS_FILE) ? JSON.parse(readFileSync(CREDITS_FILE, 'utf8')) : {};
   const refused = (id, file) => (REFUS[id] ?? []).includes(file);
   const currentFile = (id) => fileOfPage(current[id]?.page);
-  const outdated = (a) => !current[a.id] || refused(a.id, currentFile(a.id)) || (CHOIX[a.id] && CHOIX[a.id] !== currentFile(a.id));
+  const sameCrop = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+  const outdated = (a) => {
+    const choice = choiceOf(a.id);
+    if (!current[a.id] || refused(a.id, currentFile(a.id))) return true;
+    return !!choice && (choice.file !== currentFile(a.id) || !sameCrop(choice.crop, current[a.id].crop));
+  };
   let athletes = readAthletes();
   // "explorer" : une liste d'identifiants, ou { "identifiant": ["recherche", …] } pour chercher autre chose que le nom
   const explorer = Array.isArray(CONFIG.explorer) ? Object.fromEntries(CONFIG.explorer.map((id) => [id, []])) : (CONFIG.explorer ?? {});
@@ -338,7 +350,7 @@ async function download() {
       const athlete = athletes[next++];
       const log = [];
       try {
-        for await (const { file, source } of candidates(athlete, log)) {
+        for await (const { file, source, crop } of candidates(athlete, log)) {
           if (refused(athlete.id, file)) {
             log.push(`« ${file} » refusée`);
             continue;
@@ -353,10 +365,18 @@ async function download() {
             log.push(`« ${file} » introuvable au téléchargement`);
             continue;
           }
-          const buffer = Buffer.from(await response.arrayBuffer());
+          const upright = await sharp(Buffer.from(await response.arrayBuffer())).rotate().toBuffer();
+          let image = sharp(upright);
+          if (crop) {
+            // recadrage choisi à la main : on ne garde que l'athlète (sans caméra ni voisin)
+            const { width, height } = await image.metadata();
+            const left = Math.round(crop[0] * width);
+            const top = Math.round(crop[1] * height);
+            image = image.extract({ left, top, width: Math.min(width - left, Math.round(crop[2] * width)), height: Math.min(height - top, Math.round(crop[3] * height)) });
+          }
           // assez grand pour que les athlètes pris de loin restent nets une fois détourés
-          await sharp(buffer).rotate().resize({ width: 1200, withoutEnlargement: true }).jpeg({ quality: 90 }).toFile(join(RAW_DIR, `${athlete.id}.jpg`));
-          photos[athlete.id] = { file, source, ...info };
+          await image.resize({ width: 1200, withoutEnlargement: true }).jpeg({ quality: 90 }).toFile(join(RAW_DIR, `${athlete.id}.jpg`));
+          photos[athlete.id] = { file, source, ...(crop ? { crop } : {}), ...info };
           break;
         }
         if (!photos[athlete.id]) {
@@ -411,7 +431,15 @@ async function finalize() {
     if (!cutout) {
       await sharp(raw).resize(480, 640, { fit: 'cover', position: sharp.strategy.attention }).webp({ quality: 78 }).toFile(target);
     }
-    credits[id] = { file: `${id}.webp`, cutout, author: info.author, license: info.license, licenseUrl: info.licenseUrl, page: info.page };
+    credits[id] = {
+      file: `${id}.webp`,
+      cutout,
+      author: info.author,
+      license: info.license,
+      licenseUrl: info.licenseUrl,
+      page: info.page,
+      ...(info.crop ? { crop: info.crop } : {}),
+    };
   }
   // images qui n'ont plus d'athlète
   const used = new Set(Object.values(credits).map((credit) => credit.file));

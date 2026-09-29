@@ -1,5 +1,13 @@
 {
-  "duplantis": "Armand Duplantis Budapest 2023.jpg",
+  "duplantis": {
+    "fichier": "Armand Duplantis Budapest 2023.jpg",
+    "recadrage": [
+      0.29,
+      0,
+      0.57,
+      1
+    ]
+  },
   "federer": "Federer WM16 (37) (28136155830).jpg",
   "nadal": "Rafael Nadal (16207904747).jpg",
   "biles": "Simone Biles - 2016 Olympics podium (cropped 01).jpg",
