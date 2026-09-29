@@ -247,6 +247,7 @@ const CURATED: Athlete[] = [
   a('yaya-toure', 'Yaya', 'Touré', 'foot', 'milieu', 'Milieu', 'CI', 56, 87, 'Quatre Ballons d’Or africains consécutifs (2011-2014).', { ...R, num: 42 }),
 
   // ───────────────────────── BASKETBALL ─────────────────────────
+  a('keyonte-george', 'Keyonte', 'George', 'basket', 'meneur', 'Meneur', 'US', 38, 72, 'Choisi en 16e position de la draft NBA 2023 par le Utah Jazz.', { num: 3 }),
   a('jordan', 'Michael', 'Jordan', 'basket', 'ailier-bk', 'Arrière', 'US', 97, 99, 'Six titres NBA, six fois MVP des Finales.', { ...P('1996', '72 victoires pour 10 défaites avec les Bulls.'),
     ...R, nick: 'His Airness', num: 23, stats: { aur: 99 },
     ulti: sig('jordan', 'The Last Shot', '+16 de puissance, +10 de plus si son équipe est menée.', { kind: 'comeback', value: 16, bonus: 10 }),
@@ -295,6 +296,7 @@ const CURATED: Athlete[] = [
   a('schroder', 'Dennis', 'Schröder', 'basket', 'meneur', 'Meneur', 'DE', 40, 82, 'Champion du monde 2023 avec l’Allemagne, élu MVP du tournoi.', { num: 17 }),
 
   // ───────────────────────── TENNIS ─────────────────────────
+  a('van-assche', 'Luca', 'Van Assche', 'tennis', 'tennis-complet', 'Simple', 'FR', 46, 72, 'Vainqueur du tournoi junior de Roland-Garros en 2021.'),
   a('federer', 'Roger', 'Federer', 'tennis', 'tennis-complet', 'Simple messieurs', 'CH', 95, 97, '20 titres du Grand Chelem dont 8 Wimbledon.', { ...P('2006', 'Trois Grands Chelems et 92 victoires dans la saison.'),
     ...R, nick: 'RF', stats: { tec: 99, aur: 98 },
     ulti: sig('federer', 'Ballet sur gazon', 'Le revers à une main parfait : TEC devient la stat principale, +18.', { kind: 'stat-swap', stat: 'tec', value: 18 }),
@@ -467,6 +469,7 @@ const CURATED: Athlete[] = [
   a('quintana', 'Nairo', 'Quintana', 'cyclisme', 'grimpeur', 'Grimpeur', 'CO', 36, 88, 'Vainqueur du Giro 2014 et de la Vuelta 2016.', {}),
 
   // ───────────────────────── SPORTS MÉCANIQUES ─────────────────────────
+  a('doohan', 'Jack', 'Doohan', 'auto', 'pilote-f1', 'Pilote', 'AU', 50, 72, 'Fils de la légende de la moto Mick Doohan, titulaire chez Alpine en Formule 1 en 2025.'),
   a('hamilton', 'Lewis', 'Hamilton', 'auto', 'pilote-f1', 'Formule 1', 'GB', 93, 96, 'Sept titres de champion du monde de F1, record partagé.', { ...P('2020', 'Septième titre mondial, record égalé.'),
     num: 44, stats: { aur: 97 },
     ulti: sig('hamilton', 'Hammer Time', 'Le message radio qui change tout : +16, +10 de plus à la dernière manche.', { kind: 'last-round', value: 16, bonus: 10 }),
@@ -494,6 +497,7 @@ const CURATED: Athlete[] = [
   a('rovanpera', 'Kalle', 'Rovanperä', 'auto', 'pilote-rallye', 'Rallye (WRC)', 'FI', 22, 92, 'Plus jeune champion du monde des rallyes de l’histoire (2022).', {}),
 
   // ───────────────────────── SPORTS DE COMBAT ─────────────────────────
+  a('jack-shore', 'Jack', 'Shore', 'combat', 'mma', 'Poids coq', 'GB', 34, 72, 'Combattant gallois de l’UFC, dans la catégorie des poids coq.'),
   a('riner', 'Teddy', 'Riner', 'combat', 'judoka', 'Judo +100 kg', 'FR', 90, 98, 'Triple champion olympique individuel et plus de dix titres mondiaux.', { ...P('2024', 'Double or olympique à Paris, en individuel et par équipes.'),
     num: 1, stats: { for: 99, aur: 98 },
     ulti: sig('riner', 'Ippon', 'Le mouvement parfait : +16 et la manche compte double.', [{ kind: 'boost', value: 16 }, { kind: 'double', value: 0 }]),
@@ -520,6 +524,7 @@ const CURATED: Athlete[] = [
   a('dicko', 'Romane', 'Dicko', 'combat', 'judoka', 'Judo +78 kg', 'FR', 16, 88, 'Poids lourd du judo français.', {}),
 
   // ───────────────────────── RUGBY ─────────────────────────
+  a('le-garrec', 'Nolann', 'Le Garrec', 'rugby', 'demi', 'Demi de mêlée', 'FR', 40, 80, 'Demi de mêlée du Racing 92, international français depuis 2024.'),
   a('dupont', 'Antoine', 'Dupont', 'rugby', 'demi', 'Demi de mêlée', 'FR', 90, 98, 'Champion olympique de rugby à 7 en 2024, élu meilleur joueur du monde.', { ...P('2021', 'Élu meilleur joueur du monde.'),
     num: 9, stats: { int: 98, vit: 92, aur: 95 },
     ulti: sig('dupont', 'Petit Général', 'Il organise tout : +12 maintenant, puis +5 pour toute l’équipe jusqu’à la fin du match.', { kind: 'team-buff', value: 12, boost: 5 }),
@@ -547,6 +552,7 @@ const CURATED: Athlete[] = [
   a('russell', 'Finn', 'Russell', 'rugby', 'demi', 'Ouvreur', 'GB-SCT', 26, 88, 'Ouvreur écossais au jeu de passes inventif.', { num: 10, stats: { int: 94 } }),
 
   // ───────────────────────── HANDBALL ─────────────────────────
+  a('monar', 'Théo', 'Monar', 'hand', 'hand-arriere', 'Arrière droit', 'FR', 38, 76, 'Arrière droit du HBC Nantes.', { num: 17 }),
   a('karabatic', 'Nikola', 'Karabatić', 'hand', 'hand-arriere', 'Demi-centre', 'FR', 60, 97, 'Triple champion olympique et quatre fois champion du monde.', { ...R, num: 44, stats: { int: 97, aur: 97 } }),
   a('omeyer', 'Thierry', 'Omeyer', 'hand', 'hand-gardien', 'Gardien', 'FR', 36, 95, 'Gardien de légende, cinq titres mondiaux.', { ...R, num: 16 }),
   a('mem', 'Dika', 'Mem', 'hand', 'hand-arriere', 'Arrière droit', 'FR', 22, 91, 'Arrière droit gaucher, champion olympique 2021.', { num: 10 }),
@@ -558,6 +564,7 @@ const CURATED: Athlete[] = [
   a('nze-minko', 'Estelle', 'Nze Minko', 'hand', 'hand-arriere', 'Demi-centre', 'FR', 18, 88, 'Championne olympique 2021 avec les Bleues.', { num: 27 }),
 
   // ───────────────────────── VOLLEY ─────────────────────────
+  a('clevenot', 'Trévor', 'Clévenot', 'volley', 'volley-attaquant', 'Réceptionneur-attaquant', 'FR', 52, 86, 'Double champion olympique avec l’équipe de France, en 2021 et 2024.', { num: 11 }),
   a('ngapeth', 'Earvin', 'Ngapeth', 'volley', 'volley-attaquant', 'Réceptionneur-attaquant', 'FR', 44, 93, 'Double champion olympique (2021, 2024), roi des gestes impossibles.', { num: 9, stats: { tec: 96, aur: 92 } }),
   a('patry', 'Jean', 'Patry', 'volley', 'volley-attaquant', 'Pointu', 'FR', 16, 88, 'Pointu des Bleus, double champion olympique.', { num: 17 }),
   a('brizard', 'Antoine', 'Brizard', 'volley', 'volley-passeur', 'Passeur', 'FR', 14, 88, 'Passeur des Bleus, double champion olympique.', { num: 6 }),
@@ -603,6 +610,7 @@ const CURATED: Athlete[] = [
   a('de-jesus', 'Mélanie', 'de Jesus dos Santos', 'gym', 'gymnaste', 'Gymnastique artistique', 'FR', 16, 88, 'Multiple championne d’Europe.', {}),
 
   // ───────────────────────── GOLF ─────────────────────────
+  a('rozner', 'Antoine', 'Rozner', 'golf', 'golfeur', 'Circuit européen', 'FR', 44, 72, 'Vainqueur de plusieurs tournois du circuit européen, dont le Qatar Masters 2021.'),
   a('tiger', 'Tiger', 'Woods', 'golf', 'golfeur', 'Golf', 'US', 93, 98, '15 titres du Grand Chelem et 82 victoires sur le PGA Tour.', { ...P('2000', 'Le « Tiger Slam » : quatre majeurs d’affilée.'),
     stats: { aur: 99 },
     ulti: sig('tiger', 'Sunday Red', 'Le polo rouge du dimanche : +16, +12 de plus à la dernière manche.', { kind: 'last-round', value: 16, bonus: 12 }),

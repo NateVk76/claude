@@ -647,6 +647,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Caitlin_Clark_Fever_2026_(cropped).jpg"
  },
+ "clevenot": {
+  "file": "clevenot.webp",
+  "cutout": false,
+  "author": "Zafer",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tr%C3%A9vor_Cl%C3%A9venot_17_Ziraat_Bankas%C4%B1_SK_MV_TMVL_20260424_(5)_(cropped).jpg"
+ },
  "cole-palmer": {
   "file": "cole-palmer.jpg",
   "cutout": false,
@@ -878,6 +886,14 @@
   "license": "CC0",
   "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
   "page": "https://commons.wikimedia.org/wiki/File:Donnarumma_asse_psg_2425.png"
+ },
+ "doohan": {
+  "file": "doohan.webp",
+  "cutout": false,
+  "author": "Byxelized",
+  "license": "CC0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Jack_Doohan_2023.jpg"
  },
  "doue": {
   "file": "doue.jpg",
@@ -1583,6 +1599,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Ons_Jabeur_(51314432345).jpg"
  },
+ "jack-shore": {
+  "file": "jack-shore.webp",
+  "cutout": false,
+  "author": "MMAnytt",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Jack_Shore_at_CAGE_Warrior_100.jpg"
+ },
  "jacobs": {
   "file": "jacobs.jpg",
   "cutout": false,
@@ -1774,6 +1798,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Franck_Kessie_Cote_D%27Ivoire_v_Ecuador_14_June_2026-15_(cropped).jpg"
+ },
+ "keyonte-george": {
+  "file": "keyonte-george.webp",
+  "cutout": false,
+  "author": "Brady Saylor",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Keyonte_George_Jan_14_2026.jpg"
  },
  "khabib": {
   "file": "khabib.jpg",
@@ -2038,6 +2070,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Renaud_Lavillenie_at_the_2026_Wanda_Diamond_League_Athletissima_athletics_competition._06.jpg"
+ },
+ "le-garrec": {
+  "file": "le-garrec.webp",
+  "cutout": false,
+  "author": "Helene Brasseur",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Nolann_Le_Garrec_2020.jpg"
  },
  "le-sommer": {
   "file": "le-sommer.jpg",
@@ -3287,6 +3327,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:2023_Central_European_Rally_-_Rovanper%C3%A4_01.jpg"
  },
+ "rozner": {
+  "file": "rozner.webp",
+  "cutout": false,
+  "author": "Journal du golf",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Antoine_Rozner_-_2023.jpg"
+ },
  "ruben-dias": {
   "file": "ruben-dias.jpg",
   "cutout": false,
@@ -3782,6 +3830,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:WVA_Paris-Roubaix_2022.jpg"
+ },
+ "van-assche": {
+  "file": "van-assche.webp",
+  "cutout": false,
+  "author": "si.robi",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Van_Assche_BOR22_(52084459020).jpg"
  },
  "van-der-poel": {
   "file": "van-der-poel.jpg",
