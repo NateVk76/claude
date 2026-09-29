@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import type { CardFace } from '../engine/types';
 import { getAthlete, isIcon, overallOf, rarityOf, statsOf, ultiOf } from '../engine/cards';
 import { SPORTS, STAT_LABELS } from '../data/sports';
-import { Flag, COUNTRY_NAMES } from './Flag';
+import { Flag, countryName } from './Flag';
 import { topStats } from './Card';
 
 // Fiche express d'une carte : nom, pays, sport, note, ses trois meilleures stats et l'ulti.
@@ -44,7 +44,7 @@ export function CardStats({ card, children, className = '' }: CardStatsProps) {
           <p className="card-stats__meta">
             <Flag code={athlete.country} className="card-stats__flag" />
             <span>
-              {COUNTRY_NAMES[athlete.country]} · {SPORTS[athlete.sport].name} · {athlete.role}
+              {countryName(athlete.country)} · {SPORTS[athlete.sport].name} · {athlete.role}
             </span>
           </p>
         </div>

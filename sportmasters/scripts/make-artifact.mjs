@@ -26,9 +26,11 @@ console.log(`artifact/athleticards.html : ${(page.length / 1024 / 1024).toFixed(
 
 const credits = JSON.parse(readFileSync('src/data/photos.json', 'utf8'));
 const source = readFileSync('src/data/athletes.ts', 'utf8');
-const info = Object.fromEntries(
-  [...source.matchAll(/^\s*a\('([^']+)', '[^']*', '[^']*', '([a-z]+)', '[^']*', '[^']*', '[A-Z-]+', (\d+)/gm)].map((m) => [m[1], { sport: m[2], fame: Number(m[3]) }]),
-);
+const info = Object.fromEntries([
+  ...JSON.parse(readFileSync('src/data/athletes.generated.json', 'utf8')).map((a) => [a.id, { sport: a.sport, fame: a.fame }]),
+  // la base manuelle l'emporte en cas d'identifiant commun
+  ...[...source.matchAll(/^\s*a\('([^']+)', '[^']*', '[^']*', '([a-z]+)', '[^']*', '[^']*', '[A-Z-]+', (\d+)/gm)].map((m) => [m[1], { sport: m[2], fame: Number(m[3]) }]),
+]);
 const ids = Object.keys(credits)
   .filter((id) => existsSync(`public/photos/${credits[id].file}`))
   .sort((a, b) => {

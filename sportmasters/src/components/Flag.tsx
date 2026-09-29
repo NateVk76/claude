@@ -14,7 +14,22 @@ export const COUNTRY_NAMES: Record<string, string> = {
   PK: 'Pakistan', PH: 'Philippines', MC: 'Monaco', LT: 'Lituanie', LC: 'Sainte-Lucie', KZ: 'Kazakhstan',
   IN: 'Inde', IE: 'Irlande', GN: 'Guinée', GH: 'Ghana', GE: 'Géorgie', FI: 'Finlande', ER: 'Érythrée',
   CZ: 'Tchéquie', BW: 'Botswana', BF: 'Burkina Faso', AT: 'Autriche',
+  'GB-WLS': 'Pays de Galles', 'GB-NIR': 'Irlande du Nord', XK: 'Kosovo',
 };
+
+let regionNames: Intl.DisplayNames | null | undefined;
+
+/** Nom du pays en français : la liste ci-dessus, sinon celui que connaît le navigateur. */
+export function countryName(code: string): string {
+  if (COUNTRY_NAMES[code]) return COUNTRY_NAMES[code];
+  try {
+    regionNames ??= new Intl.DisplayNames(['fr'], { type: 'region' });
+    return regionNames.of(code) ?? code;
+  } catch {
+    regionNames = null;
+    return code;
+  }
+}
 
 function starPoints(cx: number, cy: number, r: number, rotation = -90): string {
   const points: string[] = [];
@@ -463,12 +478,27 @@ interface FlagProps {
   title?: boolean;
 }
 
+/** Drapeau pas encore dessiné : un fanion sobre avec le code du pays. */
+function FallbackFlag({ code }: { code: string }) {
+  const label = code.includes('-') ? code.split('-')[1] : code;
+  return (
+    <>
+      <rect width={30} height={20} fill="#2b3346" />
+      <rect y={15.5} width={30} height={4.5} fill="#3a4560" />
+      <text x={15} y={12.2} textAnchor="middle" fontFamily="var(--font-data)" fontWeight={800} fontSize={label.length > 2 ? 7.4 : 8.6} fill="#e8ecf5" letterSpacing={0.4}>
+        {label}
+      </text>
+    </>
+  );
+}
+
 export function Flag({ code, className, title = true }: FlagProps) {
   const draw = FLAGS[code];
+  const name = countryName(code);
   return (
-    <svg className={className} viewBox="0 0 30 20" role="img" aria-label={COUNTRY_NAMES[code] ?? code} preserveAspectRatio="xMidYMid slice">
-      {title && <title>{COUNTRY_NAMES[code] ?? code}</title>}
-      {draw ? draw() : <rect width={30} height={20} fill="#777" />}
+    <svg className={className} viewBox="0 0 30 20" role="img" aria-label={name} preserveAspectRatio="xMidYMid slice">
+      {title && <title>{name}</title>}
+      {draw ? draw() : <FallbackFlag code={code} />}
       <rect width={30} height={20} fill="none" stroke="rgba(0,0,0,.25)" strokeWidth={0.8} />
     </svg>
   );

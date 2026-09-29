@@ -103,6 +103,11 @@ export const SPORT_KEYWORDS = {
 /** Descriptions de personnes connues d'abord pour autre chose (entraîneurs, dirigeants…). */
 const NOT_A_PLAYER = /^(ancien |ex-)?(entra[iî]neu|s[ée]lectionneu|dirigeant|pr[ée]sident|arbitre|homme politique|femme politique|politicien|journaliste|consultant|commentateur|acteur|actrice|chanteu|agent|homme d.affaires|femme d.affaires|m[ée]decin|avocat|militaire|aviat|soldat|[ée]crivain|juge)/i;
 
+/** Entraîneur ou sélectionneur : une partie de sa célébrité ne vient pas de sa carrière de joueur. */
+export function isCoach(description = '') {
+  return /entra[iî]neu|s[ée]lectionneu/i.test(description);
+}
+
 /** La description (Wikidata, en français) correspond-elle bien à un joueur de ce sport ? */
 export function describesAthlete(sport, description = '') {
   const text = description.trim();
@@ -154,7 +159,34 @@ const RULES = {
     [/pivot/, 'hand-pivot', 'Pivot'],
   ],
   volley: [[/passeu/, 'volley-passeur', 'Passeur']],
-  us: [[/quarterback/, 'quarterback', 'Quarterback (NFL)']],
+  // plusieurs disciplines par sport : la description tranche (un combattant de MMA a parfois aussi boxé)
+  combat: [
+    [/arts martiaux mixtes|mma\b/, 'mma', 'MMA'],
+    [/judo/, 'judoka', 'Judo'],
+    [/box/, 'boxeur', 'Boxe'],
+  ],
+  auto: [
+    [/rallye/, 'pilote-rallye', 'Rallye'],
+    [/automobile|formule|f1\b/, 'pilote-f1', 'Formule 1'],
+    [/moto/, 'pilote-moto', 'Moto'],
+  ],
+  hiver: [
+    [/biathl/, 'biathlete', 'Biathlon'],
+    [/patin/, 'patineur', 'Patinage artistique'],
+    [/snowboard/, 'skieur', 'Snowboard'],
+    [/ski/, 'skieur', 'Ski alpin'],
+  ],
+  glisse: [
+    [/skate/, 'skateur', 'Skateboard'],
+    [/escalad|grimp/, 'grimpeur-esc', 'Escalade'],
+    [/surf/, 'surfeur', 'Surf'],
+  ],
+  us: [
+    [/quarterback/, 'quarterback', 'Quarterback (NFL)'],
+    [/football am[ée]ricain/, 'receveur', 'Football américain (NFL)'],
+    [/baseball/, 'baseball', 'Baseball (MLB)'],
+    [/hockey/, 'hockey', 'Hockey (NHL)'],
+  ],
 };
 
 const DEFAULTS = {
@@ -176,13 +208,16 @@ const DEFAULTS = {
   us: ['receveur', 'Football américain'],
 };
 
-/** Profil de stats et libellé de poste à partir du sport et d'un texte (description, postes, disciplines). */
-export function archetypeFor(sport, description = '', forced) {
-  if (forced) return forced;
+/**
+ * Profil de stats et libellé de poste à partir du sport et d'un texte (description, postes, disciplines).
+ * fallback : profil par défaut du métier Wikidata quand le texte ne dit rien (ex. pilote de moto).
+ */
+export function archetypeFor(sport, description = '', fallback) {
   const text = description.toLowerCase();
   for (const [pattern, archetype, role] of RULES[sport] ?? []) {
     if (pattern.test(text)) return { archetype, role };
   }
+  if (fallback) return fallback;
   const [archetype, role] = DEFAULTS[sport] ?? ['milieu', 'Sportif'];
   return { archetype, role };
 }
@@ -226,20 +261,46 @@ const DEMONYMS = {
   SE: 'su[ée]dois', NO: 'norv[ée]gien', DK: 'danois', FI: 'finlandais', IS: 'islandais', EG: '[ée]gyptien',
   JP: 'japonais', KR: 'cor[ée]en', CN: 'chinois', AU: 'australien', NZ: 'n[ée]o-z[ée]landais', ZA: 'sud-africain',
   KE: 'k[ée]nyan', ET: '[ée]thiopien', IL: 'isra[ée]lien', IR: 'iranien', GE: 'g[ée]orgien', AM: 'arm[ée]nien',
+  UZ: 'ouzb[èe]k', LR: 'lib[ée]rien', TG: 'togolais', GQ: '[ée]quato-guin[ée]en', ZW: 'zimbabw[ée]en', SY: 'syrien',
+  FJ: 'fidjien', CR: 'costaric', DO: 'dominicain', LU: 'luxembourgeois', SD: 'soudanais', UG: 'ougandais',
+  CU: 'cubain', MN: 'mongol', KZ: 'kazakh', PH: 'philippin', PR: 'portoricain', PA: 'panam[ée]en', BO: 'bolivien',
 };
 
+// Anciens codes et codes de régions ramenés au pays affiché.
+const CODE_ALIASES = { DD: 'DE', 'GB-UKM': 'GB', 'GB-GBN': 'GB' };
+
+/** Pays cités par la description (gentilés), dans l'ordre où ils apparaissent. */
+function citedCountries(description) {
+  const found = [];
+  for (const [code, stem] of Object.entries(DEMONYMS)) {
+    // début de mot, accents compris (\b ne connaît que les lettres sans accent)
+    const match = new RegExp(`(?<!\\p{L})(${stem})`, 'iu').exec(description);
+    if (match) found.push({ code, index: match.index });
+  }
+  return found.sort((a, b) => a.index - b.index).map((entry) => entry.code);
+}
+
 /**
- * Pays affiché sur la carte : la nationalité sportive (P1532) d'abord, sinon la citoyenneté (P27).
- * S'il y en a plusieurs, celle que cite la description ; l'Angleterre, l'Écosse et le pays de Galles
- * remplacent le Royaume-Uni quand la description les nomme.
+ * Pays affiché sur la carte :
+ * 1. la nationalité sportive (P1532) si elle est unique, sinon celle d'entre elles que cite la description ;
+ * 2. sans nationalité sportive, le pays que cite la description (« joueur de rugby irlandais »),
+ *    de préférence parmi les nationalités (P27) ;
+ * 3. sinon la nationalité, en départageant par le pays de naissance.
+ * L'Angleterre, l'Écosse, le pays de Galles et l'Irlande du Nord remplacent le Royaume-Uni quand la description les nomme.
  */
-export function pickCountry(sportCodes = [], citizenCodes = [], description = '') {
-  const text = description.toLowerCase();
-  // début de mot, accents compris (\b ne connaît que les lettres sans accent)
-  const cites = (code) => DEMONYMS[code] && new RegExp(`(?<!\\p{L})(${DEMONYMS[code]})`, 'iu').test(text);
-  const pool = sportCodes.length ? sportCodes : citizenCodes;
-  if (!pool.length) return null;
-  let code = pool.find(cites) ?? pool[0];
-  if (code === 'GB') code = ['GB-ENG', 'GB-SCT', 'GB-WLS', 'GB-NIR'].find(cites) ?? 'GB';
+export function pickCountry(sportCodes = [], citizenCodes = [], description = '', birthCodes = []) {
+  const clean = (codes) => [...new Set(codes.map((code) => CODE_ALIASES[code] ?? code))];
+  const sport = clean(sportCodes);
+  const citizen = clean(citizenCodes);
+  const birth = clean(birthCodes);
+  const cited = citedCountries(description);
+  // « nord-irlandais » vaut pour un Britannique
+  const within = (c, pool) => pool.includes(c) || (c.startsWith('GB-') && pool.includes('GB'));
+  let code;
+  if (sport.length === 1) code = sport[0];
+  else if (sport.length > 1) code = cited.find((c) => within(c, sport)) ?? sport[0];
+  else code = cited.find((c) => within(c, citizen)) ?? cited[0] ?? birth.find((c) => citizen.includes(c)) ?? citizen[0] ?? birth[0];
+  if (!code) return null;
+  if (code === 'GB') code = cited.find((c) => c.startsWith('GB-')) ?? 'GB';
   return code;
 }

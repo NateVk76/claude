@@ -1,7 +1,7 @@
 import type { Athlete, CardFace, RarityId, SportId, Variant } from './types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { PRIME_CHANCE, RARITY_ORDER, canBePrime, dropWeight, primeRecordStart, rarityOf } from './cards';
-import { weightedPick, type Rng } from './random';
+import { weightedPick, weightedPickCached, type Rng } from './random';
 
 export type Odds = Record<RarityId, number>;
 
@@ -147,13 +147,20 @@ function cardOf(athlete: Athlete, variant: Variant): CardFace {
 
 function drawCard(rng: Rng, pack: PackDef, odds: Partial<Odds>, pool: Record<RarityId, Athlete[]>): CardFace {
   const rarity = rollRarity(rng, odds, pool);
-  const athlete = weightedPick(rng, pool[rarity], dropWeight);
+  const athlete = weightedPickCached(rng, pool[rarity], dropWeight);
   return cardOf(athlete, canBePrime(athlete) && rng() < pack.primeChance ? 'prime' : 'base');
 }
 
+const primePools = new Map<string, Athlete[]>();
+
 /** Légendes qui peuvent sortir en Prime dans ce booster. */
 export function primePool(pack: PackDef): Athlete[] {
-  return ATHLETES.filter((athlete) => canBePrime(athlete) && (!pack.filter || pack.filter(athlete)));
+  let pool = primePools.get(pack.id);
+  if (!pool) {
+    pool = ATHLETES.filter((athlete) => canBePrime(athlete) && (!pack.filter || pack.filter(athlete)));
+    primePools.set(pack.id, pool);
+  }
+  return pool;
 }
 
 /** Poids de tirage de la Prime garantie : Messi ou Ronaldo sortent plus rarement que Lomu. */
@@ -182,7 +189,7 @@ export function openPack(pack: PackDef, rng: Rng): CardFace[] {
   for (let i = 0; i < pack.size; i++) {
     const isLast = i === pack.size - 1;
     if (isLast && pack.guaranteed?.prime) {
-      cards.push(cardOf(weightedPick(rng, primePool(pack), primeWeight), 'prime'));
+      cards.push(cardOf(weightedPickCached(rng, primePool(pack), primeWeight), 'prime'));
     } else if (isLast && pack.guaranteed) {
       cards.push(drawCard(rng, pack, pack.guaranteed.odds ?? { [pack.guaranteed.min]: 1 }, pool));
     } else {

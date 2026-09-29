@@ -9,7 +9,7 @@ import { Card } from '../components/Card';
 import { CardStats } from '../components/CardStats';
 import { Logo } from '../components/Logo';
 import { PackArt } from '../components/PackArt';
-import { Flag, COUNTRY_NAMES } from '../components/Flag';
+import { Flag, countryName } from '../components/Flag';
 import { SportIcon } from '../components/SportIcon';
 import { Confetti, type ConfettiHandle } from '../components/Confetti';
 import { sfx } from '../audio/sfx';
@@ -118,7 +118,7 @@ function Walkout({ card, onDone }: { card: CardFace; onDone: () => void }) {
           {step === 0 && (
             <>
               <Flag code={athlete.country} className="walkout__flag" />
-              <span className="walkout__label">{COUNTRY_NAMES[athlete.country]}</span>
+              <span className="walkout__label">{countryName(athlete.country)}</span>
             </>
           )}
           {step === 1 && (

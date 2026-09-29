@@ -49,6 +49,36 @@ export function weightedPick<T>(rng: Rng, items: readonly T[], weight: (item: T)
   return items[items.length - 1];
 }
 
+const samplers = new WeakMap<readonly unknown[], { cdf: Float64Array; total: number }>();
+
+/**
+ * Même tirage que weightedPick, pour une liste qui ne change pas (pools de boosters, base d'athlètes) :
+ * les poids cumulés sont calculés une fois par liste, puis chaque tirage est une recherche dichotomique.
+ * La liste doit toujours être tirée avec la même fonction de poids.
+ */
+export function weightedPickCached<T>(rng: Rng, items: readonly T[], weight: (item: T) => number): T {
+  let sampler = samplers.get(items);
+  if (!sampler) {
+    const cdf = new Float64Array(items.length);
+    let total = 0;
+    items.forEach((item, i) => {
+      total += Math.max(0, weight(item));
+      cdf[i] = total;
+    });
+    sampler = { cdf, total };
+    samplers.set(items, sampler);
+  }
+  const roll = rng() * sampler.total;
+  let lo = 0;
+  let hi = items.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (sampler.cdf[mid] <= roll) lo = mid + 1;
+    else hi = mid;
+  }
+  return items[lo];
+}
+
 export function shuffle<T>(rng: Rng, items: readonly T[]): T[] {
   const out = items.slice();
   for (let i = out.length - 1; i > 0; i--) {

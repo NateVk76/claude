@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 // @ts-expect-error module JavaScript sans types (script Node)
-import { archetypeFor, describesAthlete, factFrom, fameFromAnchors, fameFromRank, levelFromSitelinksRank, pickCountry, slugify, splitName } from '../../../scripts/wikidata/helpers.mjs';
+import { archetypeFor, describesAthlete, factFrom, fameFromAnchors, fameFromRank, isCoach, levelFromSitelinksRank, pickCountry, slugify, splitName } from '../../../scripts/wikidata/helpers.mjs';
 
 describe('générateur d’athlètes (Wikidata)', () => {
   it('garde très peu de légendaires même sur 10 000 athlètes', () => {
@@ -54,6 +54,8 @@ describe('générateur d’athlètes (Wikidata)', () => {
     expect(describesAthlete('foot', 'joueur de football américain')).toBe(false);
     expect(describesAthlete('us', 'joueur de football américain')).toBe(true);
     expect(describesAthlete('tennis', '')).toBe(false);
+    expect(isCoach('Footballeur et entraîneur espagnol')).toBe(true);
+    expect(isCoach('Footballeur français')).toBe(false);
   });
 
   it('choisit le pays sportif et écrit le nom comme la base manuelle', () => {
@@ -62,6 +64,11 @@ describe('générateur d’athlètes (Wikidata)', () => {
     expect(pickCountry([], ['FR', 'DZ'], 'footballeur international algérien')).toBe('DZ');
     expect(pickCountry([], ['FR', 'DZ'], 'footballeur international français')).toBe('FR');
     expect(pickCountry([], [], 'judoka')).toBeNull();
+    // la description l'emporte sur une nationalité seule : rugbyman irlandais né aux États-Unis
+    expect(pickCountry([], ['US'], 'joueur de rugby à XV international irlandais')).toBe('IE');
+    expect(pickCountry([], ['GB', 'IE'], 'golfeur nord-irlandais')).toBe('GB-NIR');
+    expect(pickCountry([], ['US', 'CL'], 'surfeur', ['US'])).toBe('US');
+    expect(pickCountry(['DD'], [], 'patineuse artistique')).toBe('DE');
     expect(splitName('Son Heung-min', 'KR')).toEqual({ first: 'Heung-min', last: 'Son' });
     expect(splitName('Marc-André ter Stegen (footballeur)', 'DE')).toEqual({ first: 'Marc-André', last: 'ter Stegen' });
     expect(splitName('Kaká', 'BR')).toEqual({ first: '', last: 'Kaká' });
@@ -78,6 +85,10 @@ describe('générateur d’athlètes (Wikidata)', () => {
     expect(archetypeFor('athle', 'marathonien éthiopien').archetype).toBe('fond');
     expect(archetypeFor('basket', 'joueur de basket-ball | ailier fort').archetype).toBe('pivot');
     expect(archetypeFor('hand', 'handballeur | ailier gauche').archetype).toBe('hand-ailier');
+    // un combattant de MMA qui a aussi boxé reste un combattant de MMA
+    expect(archetypeFor('combat', 'pratiquant irlandais d’arts martiaux mixtes', { archetype: 'boxeur', role: 'Boxe' }).archetype).toBe('mma');
+    expect(archetypeFor('auto', 'pilote automobile canadien', { archetype: 'pilote-moto', role: 'Moto' }).archetype).toBe('pilote-f1');
+    expect(archetypeFor('us', 'joueur de football américain | quarterback', { archetype: 'baseball', role: 'Baseball (MLB)' }).archetype).toBe('quarterback');
   });
 
   it('produit des identifiants et des phrases propres', () => {

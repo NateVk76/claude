@@ -478,6 +478,10 @@ const CURATED: Athlete[] = [
   a('leclerc', 'Charles', 'Leclerc', 'auto', 'pilote-f1', 'Formule 1', 'MC', 70, 92, 'Vainqueur du Grand Prix de Monaco 2024, à domicile.', { num: 16 }),
   a('norris', 'Lando', 'Norris', 'auto', 'pilote-f1', 'Formule 1', 'GB', 64, 93, 'Pilote britannique de McLaren, star de la nouvelle génération.', { num: 4 }),
   a('alonso', 'Fernando', 'Alonso', 'auto', 'pilote-f1', 'Formule 1', 'ES', 70, 92, 'Double champion du monde de F1 (2005, 2006).', { num: 14, stats: { int: 95 } }),
+  a('schumacher', 'Michael', 'Schumacher', 'auto', 'pilote-f1', 'Formule 1', 'DE', 93, 98, 'Sept titres de champion du monde de F1, dont cinq d’affilée avec Ferrari (2000-2004).', {
+    ...R, ...P('2004', '13 victoires en 18 Grands Prix et un septième titre mondial.'), stats: { tec: 97, aur: 98 },
+    ulti: sig('schumacher', 'Baron rouge', 'Cinq titres d’affilée avec Ferrari : +12, puis +3 par manche déjà gagnée.', { kind: 'streak', value: 12, perWin: 3 }),
+  }),
   a('prost', 'Alain', 'Prost', 'auto', 'pilote-f1', 'Formule 1', 'FR', 54, 95, 'Quatre titres de champion du monde, surnommé « le Professeur ».', { ...R, stats: { int: 98 } }),
   a('vettel', 'Sebastian', 'Vettel', 'auto', 'pilote-f1', 'Formule 1', 'DE', 56, 93, 'Quatre titres de champion du monde de F1 (2010-2013).', { ...R }),
   a('gasly', 'Pierre', 'Gasly', 'auto', 'pilote-f1', 'Formule 1', 'FR', 46, 86, 'Vainqueur du Grand Prix d’Italie 2020.', { num: 10 }),
@@ -725,7 +729,11 @@ const CURATED: Athlete[] = [
 // Athlètes générés depuis Wikidata (scripts/wikidata/generer-athletes.mjs). La base manuelle garde la priorité.
 const SPORT_IDS = new Set<string>(['foot', 'basket', 'tennis', 'athle', 'natation', 'cyclisme', 'auto', 'combat', 'rugby', 'hand', 'volley', 'hiver', 'gym', 'golf', 'glisse', 'us']);
 const curatedIds = new Set(CURATED.map((athlete) => athlete.id));
-const GENERATED = (generated as unknown as Athlete[]).filter((athlete) => SPORT_IDS.has(athlete.sport) && !curatedIds.has(athlete.id));
+const fullName = (athlete: Athlete) => `${athlete.first} ${athlete.last}`.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const curatedNames = new Set(CURATED.map(fullName));
+const GENERATED = (generated as unknown as Athlete[]).filter(
+  (athlete) => SPORT_IDS.has(athlete.sport) && !curatedIds.has(athlete.id) && !curatedNames.has(fullName(athlete)),
+);
 
 export const ATHLETES: Athlete[] = [...CURATED, ...GENERATED];
 

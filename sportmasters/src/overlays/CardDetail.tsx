@@ -8,7 +8,7 @@ import { isIcon, overallOf, popularityOf, quickSellValue, rarityOf, statsOf, ult
 import { MARKET_TAX, marketPrice, netAfterTax, nextMinBid, priceBounds, priceHistory, suggestedPrices } from '../engine/market';
 import type { CardFace, OwnedCard } from '../engine/types';
 import { Card } from '../components/Card';
-import { Flag, COUNTRY_NAMES } from '../components/Flag';
+import { Flag, countryName } from '../components/Flag';
 import { Balles } from '../components/Balles';
 import { photoCredit } from '../photos';
 
@@ -246,7 +246,7 @@ export function CardDetail() {
             {athlete.nick && <small> « {athlete.nick} »</small>}
           </h2>
           <p className="detail__meta">
-            <Flag code={athlete.country} className="detail__flag" /> {COUNTRY_NAMES[athlete.country]} · {sport.name} · {athlete.role}
+            <Flag code={athlete.country} className="detail__flag" /> {countryName(athlete.country)} · {sport.name} · {athlete.role}
             {athlete.died ? ` · ${athlete.born}–${athlete.died}` : ''}
           </p>
           <p className="detail__fact">{athlete.fact}</p>
