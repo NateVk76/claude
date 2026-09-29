@@ -97,45 +97,67 @@ function readAthletes() {
 
 const normalize = (text) => text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[’']/g, "'");
 
-async function summary(lang, title) {
-  return json(`https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/ /g, '_'))}`);
+/** Page Wikipédia (API MediaWiki) : titre, description, image principale, homonymie. */
+async function lookup(lang, title) {
+  const params = new URLSearchParams({
+    action: 'query',
+    format: 'json',
+    formatversion: '2',
+    redirects: '1',
+    prop: 'pageimages|description|pageprops|extracts',
+    piprop: 'original|name',
+    exintro: '1',
+    explaintext: '1',
+    exsentences: '2',
+    titles: title,
+  });
+  const data = await json(`https://${lang}.wikipedia.org/w/api.php?${params}`);
+  const page = data?.query?.pages?.[0];
+  if (!page || page.missing || page.invalid) return null;
+  return {
+    lang,
+    title: page.title,
+    description: page.description ?? '',
+    extract: page.extract ?? '',
+    disambiguation: page.pageprops ? 'disambiguation' in page.pageprops : false,
+    image: page.pageimage ?? null,
+  };
 }
 
 function accepts(page, sport) {
-  if (!page || page.type === 'disambiguation') return false;
-  return KEYWORDS[sport].test(`${page.description ?? ''} ${page.extract ?? ''}`);
+  if (!page || page.disambiguation) return false;
+  return KEYWORDS[sport].test(`${page.description} ${page.extract}`);
 }
 
 async function search(lang, query) {
-  const data = await json(`https://${lang}.wikipedia.org/w/api.php?action=query&list=search&srlimit=4&format=json&srsearch=${encodeURIComponent(query)}`);
+  const params = new URLSearchParams({ action: 'query', format: 'json', list: 'search', srlimit: '4', srsearch: query });
+  const data = await json(`https://${lang}.wikipedia.org/w/api.php?${params}`);
   return (data?.query?.search ?? []).map((result) => result.title);
 }
 
-async function resolve(athlete) {
+async function resolve(athlete, log) {
   const name = `${athlete.first} ${athlete.last}`.trim().replace(/’/g, "'");
   const lastWord = normalize(athlete.last).split(/[\s-]/).pop();
   for (const lang of ['fr', 'en']) {
     const titles = lang === 'fr' && OVERRIDES[athlete.id] ? [OVERRIDES[athlete.id], name] : [name];
     for (const title of titles) {
-      const page = await summary(lang, title);
+      const page = await lookup(lang, title);
       if (accepts(page, athlete.sport)) return page;
+      log.push(`${lang}:« ${title} » ${page ? (page.disambiguation ? 'homonymie' : 'autre sport') : 'introuvable'}`);
     }
     for (const title of await search(lang, `${name} ${SEARCH_WORDS[lang][athlete.sport]}`)) {
       if (!normalize(title).includes(lastWord)) continue;
-      const page = await summary(lang, title);
+      const page = await lookup(lang, title);
       if (accepts(page, athlete.sport)) return page;
     }
   }
   return null;
 }
 
-/** Nom du fichier Commons de la photo principale (les images locales, souvent non libres, sont ignorées). */
-function commonsFile(page) {
-  const src = page.originalimage?.source ?? page.thumbnail?.source;
-  if (!src || !src.includes('/wikipedia/commons/')) return null;
-  const match = src.match(/\/wikipedia\/commons\/(?:thumb\/)?[0-9a-f]\/[0-9a-f]{2}\/([^/]+)/);
-  if (!match) return null;
-  const file = decodeURIComponent(match[1]);
+/** Fichier de l'image principale, seulement si c'est une photo (jpg, png, webp). */
+function photoFile(page) {
+  if (!page.image) return null;
+  const file = page.image.replace(/_/g, ' ');
   return /\.(jpe?g|png|webp)$/i.test(file) ? file : null;
 }
 
@@ -185,17 +207,25 @@ async function download() {
   async function worker() {
     while (next < athletes.length) {
       const athlete = athletes[next++];
+      const log = [];
       try {
-        const page = await resolve(athlete);
-        const file = page && commonsFile(page);
+        const page = await resolve(athlete, log);
+        const file = page && photoFile(page);
         const info = file && (await commonsInfo(file));
-        if (!info) {
+        if (!page) {
           missing.push(athlete.id);
+          console.log(`  ${athlete.id} : page introuvable (${log.join(', ')})`);
+        } else if (!file) {
+          missing.push(athlete.id);
+          console.log(`  ${athlete.id} : pas de photo sur « ${page.title} »`);
+        } else if (!info) {
+          missing.push(athlete.id);
+          console.log(`  ${athlete.id} : « ${file} » n'est pas une image libre de Commons`);
         } else {
           const response = await request(info.thumb);
           const buffer = Buffer.from(await response.arrayBuffer());
           await sharp(buffer).rotate().resize({ width: 720, withoutEnlargement: true }).jpeg({ quality: 90 }).toFile(join(RAW_DIR, `${athlete.id}.jpg`));
-          meta[athlete.id] = { title: page.title, lang: page.lang ?? '', file, ...info };
+          meta[athlete.id] = { title: page.title, lang: page.lang, file, ...info };
         }
       } catch (error) {
         missing.push(athlete.id);
