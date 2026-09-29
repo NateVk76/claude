@@ -21,6 +21,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, unlinkSync, writeFile
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
+import { SPORT_KEYWORDS } from '../wikidata/helpers.mjs';
 
 // chemins en texte : sharp n'accepte pas les objets URL
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
@@ -53,24 +54,7 @@ const option = (name) => {
 };
 
 // Mots qui doivent apparaître dans la description Wikipédia pour être sûr d'avoir le bon athlète.
-const KEYWORDS = {
-  foot: /football|soccer/i,
-  basket: /basket/i,
-  tennis: /tennis/i,
-  athle: /athl|sprint|perch|pole vault|saut|jump|lanc|throw|marath|coureu|runner|haies|hurdl|d[ée]cathl|demi-fond|javelot|javelin|disque|discus|poids|shot put|middle-distance|long-distance/i,
-  natation: /nag|swim/i,
-  cyclisme: /cycl/i,
-  auto: /pilote|driver|racer|formule|formula|rall|moto/i,
-  combat: /box|judo|MMA|arts martiaux|mixed martial|combattant|fighter|lutt|wrestl/i,
-  rugby: /rugby/i,
-  hand: /hand/i,
-  volley: /volley/i,
-  hiver: /ski|biathl|patin|skat|snowboard|freestyle|bosses|mogul/i,
-  gym: /gymnast/i,
-  golf: /golf/i,
-  glisse: /surf|skate|grimp|climb|escalad|BMX/i,
-  us: /football am[ée]ricain|american football|baseball|hockey|quarterback|NFL|MLB|NHL|tight end/i,
-};
+const KEYWORDS = SPORT_KEYWORDS;
 
 const SEARCH_WORDS = {
   fr: {
@@ -112,11 +96,19 @@ async function json(url) {
   return response ? response.json() : null;
 }
 
+/** Base manuelle (athletes.ts) puis athlètes générés depuis Wikidata (identifiant et page connus). */
 function readAthletes() {
   const source = readFileSync(path('src/data/athletes.ts'), 'utf8');
   const out = [];
   const pattern = /^\s*a\('([^']+)', '([^']*)', '([^']*)', '([a-z]+)', '[^']*', '[^']*', '[A-Z-]+', (\d+), (\d+)/gm;
   for (const m of source.matchAll(pattern)) out.push({ id: m[1], first: m[2], last: m[3], sport: m[4], fame: Number(m[5]) });
+  const ids = new Set(out.map((a) => a.id));
+  const generated = JSON.parse(readFileSync(path('src/data/athletes.generated.json'), 'utf8'));
+  for (const a of generated) {
+    if (ids.has(a.id)) continue;
+    ids.add(a.id);
+    out.push({ id: a.id, first: a.first, last: a.last, sport: a.sport, fame: a.fame, wikidata: a.wikidata, wiki: a.wiki });
+  }
   return out.sort((a, b) => b.fame - a.fame);
 }
 
@@ -204,11 +196,16 @@ async function* candidates(athlete, log) {
     seen.add(choice.file);
     yield { file: choice.file, source: 'choix', crop: choice.crop };
   }
-  let item = null;
+  // athlète généré : son élément Wikidata et sa page sont connus, on ne garde que des pages qui en parlent
+  let item = athlete.wikidata ?? null;
   let enTitle = null;
   for (const lang of ['fr', 'en']) {
-    const page = await resolve(lang, athlete, log, lang === 'en' ? enTitle : null);
+    const page = await resolve(lang, athlete, log, lang === 'en' ? enTitle : athlete.wiki);
     if (!page) continue;
+    if (athlete.wikidata && page.item && page.item !== athlete.wikidata) {
+      log.push(`${lang}:« ${page.title} » homonyme`);
+      continue;
+    }
     item ??= page.item;
     enTitle ??= page.enTitle;
     const file = page.image?.replace(/_/g, ' ');
