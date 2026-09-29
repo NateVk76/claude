@@ -4,7 +4,7 @@ import { POSITION_CODES, getAthlete, isIcon, overallOf, rarityOf, statsOf } from
 import { SPORTS, STAT_KEYS, STAT_LABELS } from '../data/sports';
 import { usePhoto } from '../photos';
 import { Flag } from './Flag';
-import { Pictogram, poseFor } from './Pictogram';
+import { Bust } from './Bust';
 import { SportIcon } from './SportIcon';
 
 // Carte au style « vignette » : photo de l'athlète en grand sur un fond métallisé,
@@ -114,7 +114,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     locked ? 'is-locked' : '',
     tilt ? 'has-tilt' : '',
     onClick ? 'is-clickable' : '',
-    showPhoto ? (photo.cutout ? 'has-cutout' : 'has-photo') : 'has-picto',
+    showPhoto ? (photo.cutout ? 'has-cutout' : 'has-photo') : 'has-bust',
     className,
   ]
     .filter(Boolean)
@@ -156,7 +156,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
           {showPhoto ? (
             <img className="card__photo" src={photo.src} alt="" loading="lazy" decoding="async" draggable={false} onError={() => setPhotoFailed(true)} />
           ) : (
-            <Pictogram pose={poseFor(athlete)} className="card__picto" />
+            <Bust color={SPORTS[athlete.sport].color} num={athlete.num} className="card__bust" />
           )}
         </div>
 
