@@ -36,7 +36,7 @@ Chaque athlète a un score de célébrité (0-100), estimé d'après son audienc
 ### Versions spéciales
 
 - **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or, années de vie pour les disparus.
-- **Prime** : la meilleure saison d'un athlète (LeBron 2016, Messi 2012, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. 1,5 à 2 % de chances par carte, valeur ×6 au marché.
+- **Prime** : la meilleure saison d'un athlète (LeBron 2016, Messi 2012, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Environ 1 % de chances par carte (une Prime de légendaire : environ 1 carte sur 14 000), valeur ×6 au marché.
 
 ### La carte
 
@@ -109,9 +109,24 @@ src/
 
 Le moteur (`src/engine`) ne dépend pas de l'interface : il prend un état, l'heure et une source de hasard, et renvoie le nouvel état. C'est ce qui permettra de le faire tourner sur un serveur pour le multijoueur.
 
+## Passer à 10 000 athlètes
+
+La base manuelle (`src/data/athletes.ts`) contient les stars, leurs ultis signatures et leurs versions Prime. Pour le reste, un script va chercher des milliers d'athlètes dans Wikidata et calcule leur célébrité d'après les vues de leur page Wikipédia en français sur 12 mois, comme WikiMasters :
+
+```bash
+node scripts/wikidata/generer-athletes.mjs --contact "ton.adresse@exemple.fr" --par-sport 50   # essai
+node scripts/wikidata/generer-athletes.mjs --contact "ton.adresse@exemple.fr" --par-sport 700  # ~10 000 athlètes
+```
+
+- Le résultat va dans `src/data/athletes.generated.json`, fusionné automatiquement avec la base manuelle (qui garde la priorité).
+- La rareté est calculée par percentile : les 0,3 % les plus vus sont Légendaires, les 1,2 % suivants Épiques, puis 6 % Rares, 17,5 % Peu communes, le reste Commune. Sur 10 000 athlètes, ça fait une trentaine de légendaires.
+- Le poste et le profil de stats sont devinés depuis la description Wikidata (« spécialiste du saut à la perche » → perchiste).
+- `--contact` est obligatoire : Wikimedia demande un moyen de contact dans les requêtes.
+- Le script n'a pas pu être lancé là où il a été écrit (pas d'accès réseau à Wikidata) : fais d'abord un essai avec `--par-sport 50` et regarde le fichier produit.
+- Le moteur a été testé avec 10 000 athlètes factices : 6 ms par booster, 0,2 s pour rattraper 24 h de marché, et les grilles s'affichent par pages de 120 cartes.
+
 ## Et ensuite
 
-- **10 000 athlètes** : générer la base depuis Wikidata et les vues Wikipédia, puis recalculer la rareté par percentile pour garder des légendaires très rares.
 - **Multijoueur** : un vrai marché entre joueurs demande un serveur qui fait autorité sur les soldes, l'ouverture des boosters et les ventes (sinon on peut tricher). Piste simple : Supabase (PostgreSQL, comptes, temps réel), puis Node + PostgreSQL + Redis si le nombre de joueurs explose.
 - **Matchs entre joueurs**, classement, saisons, événements (cartes « Équipe de la semaine »).
 

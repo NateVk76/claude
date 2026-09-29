@@ -137,6 +137,8 @@ export interface Athlete {
   stats?: Partial<Stats>;
   ulti?: Ulti;
   pose?: PoseId;
+  /** identifiant Wikidata (athlètes générés automatiquement) */
+  wikidata?: string;
 }
 
 export interface Rarity {

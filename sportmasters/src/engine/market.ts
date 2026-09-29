@@ -142,8 +142,32 @@ function listingWeight(athleteId: string): number {
   return tierWeight * (0.35 + dropWeight(athlete));
 }
 
+// Répartition cumulée des poids, calculée une fois : le tirage reste rapide même avec 10 000 athlètes.
+let listingCdf: { cdf: Float64Array; total: number } | null = null;
+
+function pickListingAthlete(rng: Rng) {
+  if (!listingCdf) {
+    const cdf = new Float64Array(ATHLETES.length);
+    let total = 0;
+    ATHLETES.forEach((athlete, i) => {
+      total += listingWeight(athlete.id);
+      cdf[i] = total;
+    });
+    listingCdf = { cdf, total };
+  }
+  const roll = rng() * listingCdf.total;
+  let lo = 0;
+  let hi = listingCdf.cdf.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (listingCdf.cdf[mid] <= roll) lo = mid + 1;
+    else hi = mid;
+  }
+  return ATHLETES[lo];
+}
+
 export function createAiListing(rng: Rng, t: number, news: MarketNews[], forceAthleteId?: string): Listing {
-  const athlete = forceAthleteId ? ATHLETES_BY_ID[forceAthleteId] : weightedPick(rng, ATHLETES, (a) => listingWeight(a.id));
+  const athlete = forceAthleteId ? ATHLETES_BY_ID[forceAthleteId] : pickListingAthlete(rng);
   const variant: Variant = rng() < 0.035 ? 'prime' : 'base';
   const record = primeRecordStart(athlete);
   const card: CardFace = { athleteId: athlete.id, variant, ...(record ? { record: record + randInt(rng, 0, 6) } : {}) };

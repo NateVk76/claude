@@ -1,4 +1,5 @@
 import type { Athlete, ArchetypeId, SportId, Ulti, UltiEffect } from '../engine/types';
+import generated from './athletes.generated.json';
 
 // Base de sportifs réels.
 // - fame (0-100) : célébrité, estimée d'après l'audience (Wikipédia, réseaux). Elle fixe la rareté.
@@ -31,7 +32,7 @@ const P = (year: string, note: string) => ({ prime: { year, note } });
 
 const R = { retired: true } as const;
 
-export const ATHLETES: Athlete[] = [
+const CURATED: Athlete[] = [
   // ───────────────────────── FOOTBALL ─────────────────────────
   a('messi', 'Lionel', 'Messi', 'foot', 'ailier', 'Attaquant', 'AR', 100, 97, '8 Ballons d’Or et champion du monde 2022.', { ...P('2012', '91 buts sur l’année civile, record mondial.'),
     nick: 'La Pulga', num: 10, pose: 'sig-doigts-ciel', stats: { tec: 99, int: 99, vit: 86 },
@@ -720,5 +721,12 @@ export const ATHLETES: Athlete[] = [
   a('seve', 'Seve', 'Ballesteros', 'golf', 'golfeur', 'Golf', 'ES', 40, 95, 'Cinq titres majeurs, génie du petit jeu.', { ...R, born: 1957, died: 2011 }),
   a('arnold-palmer', 'Arnold', 'Palmer', 'golf', 'golfeur', 'Golf', 'US', 38, 95, 'Sept titres majeurs, surnommé « The King ».', { ...R, born: 1929, died: 2016 }),
 ];
+
+// Athlètes générés depuis Wikidata (scripts/wikidata/generer-athletes.mjs). La base manuelle garde la priorité.
+const SPORT_IDS = new Set<string>(['foot', 'basket', 'tennis', 'athle', 'natation', 'cyclisme', 'auto', 'combat', 'rugby', 'hand', 'volley', 'hiver', 'gym', 'golf', 'glisse', 'us']);
+const curatedIds = new Set(CURATED.map((athlete) => athlete.id));
+const GENERATED = (generated as unknown as Athlete[]).filter((athlete) => SPORT_IDS.has(athlete.sport) && !curatedIds.has(athlete.id));
+
+export const ATHLETES: Athlete[] = [...CURATED, ...GENERATED];
 
 export const ATHLETES_BY_ID: Record<string, Athlete> = Object.fromEntries(ATHLETES.map((athlete) => [athlete.id, athlete]));

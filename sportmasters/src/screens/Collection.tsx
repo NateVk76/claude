@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useGame, formatBalles } from '../store/game';
 import { useUi } from '../store/ui';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
@@ -9,6 +9,20 @@ import { Card } from '../components/Card';
 import { SportIcon } from '../components/SportIcon';
 
 type Sort = 'rating' | 'rarity' | 'recent' | 'name';
+
+// On n'affiche qu'une page de cartes à la fois : la base peut contenir des milliers d'athlètes.
+const PAGE = 120;
+
+function MoreButton({ shown, total, onMore }: { shown: number; total: number; onMore: () => void }) {
+  if (shown >= total) return null;
+  return (
+    <div className="more">
+      <button type="button" className="btn btn--ghost" onClick={onMore}>
+        Afficher plus ({(total - shown).toLocaleString('fr-FR')} restantes)
+      </button>
+    </div>
+  );
+}
 
 interface Group {
   key: string;
@@ -30,6 +44,9 @@ function Club() {
   const [sort, setSort] = useState<Sort>('rating');
   const [dupesOnly, setDupesOnly] = useState(false);
   const [confirmDupes, setConfirmDupes] = useState(false);
+  const [limit, setLimit] = useState(PAGE);
+
+  useEffect(() => setLimit(PAGE), [query, sport, rarity, sort, dupesOnly]);
 
   const groups = useMemo(() => {
     const map = new Map<string, Group>();
@@ -161,7 +178,7 @@ function Club() {
         {groups.length} carte{groups.length > 1 ? 's' : ''} affichée{groups.length > 1 ? 's' : ''}
       </p>
       <div className="card-grid">
-        {groups.map((group) => {
+        {groups.slice(0, limit).map((group) => {
           const card = group.cards[0];
           return (
             <div key={group.key} className="card-cell">
@@ -179,6 +196,7 @@ function Club() {
           );
         })}
       </div>
+      <MoreButton shown={limit} total={groups.length} onMore={() => setLimit((l) => l + PAGE)} />
     </>
   );
 }
@@ -188,6 +206,9 @@ function Album() {
   const collection = useGame((s) => s.collection);
   const openDetail = useUi((s) => s.openDetail);
   const [sport, setSport] = useState<SportId>('athle');
+  const [limit, setLimit] = useState(PAGE);
+
+  useEffect(() => setLimit(PAGE), [sport]);
 
   const athletes = useMemo(
     () =>
@@ -235,7 +256,7 @@ function Album() {
         </p>
       </div>
       <div className="card-grid card-grid--album">
-        {athletes.map((athlete) => {
+        {athletes.slice(0, limit).map((athlete) => {
           const have = !!discovered[athlete.id];
           const mine = collection.find((c) => c.athleteId === athlete.id);
           const card = mine ?? { athleteId: athlete.id, variant: 'base' as const };
@@ -247,6 +268,7 @@ function Album() {
           );
         })}
       </div>
+      <MoreButton shown={limit} total={athletes.length} onMore={() => setLimit((l) => l + PAGE)} />
     </>
   );
 }

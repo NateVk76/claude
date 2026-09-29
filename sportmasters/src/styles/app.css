@@ -1081,6 +1081,12 @@
   stroke-width: 1.6;
 }
 
+.more {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+}
+
 .album-name {
   font-size: 0.75rem;
   color: var(--text-faint);

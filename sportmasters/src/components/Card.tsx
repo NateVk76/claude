@@ -133,7 +133,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
 
         <div className="card__side">
           <div className="card__ovr">{overallOf(athlete, variant)}</div>
-          <div className="card__pos">{POSITION_CODES[athlete.archetype]}</div>
+          <div className="card__pos">{POSITION_CODES[athlete.archetype] ?? SPORTS[athlete.sport].short}</div>
           <Flag code={athlete.country} className="card__flag" />
           <SportIcon sport={athlete.sport} className="card__sport" title={SPORTS[athlete.sport].name} />
         </div>

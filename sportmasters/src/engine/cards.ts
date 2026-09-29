@@ -40,7 +40,7 @@ export function dropWeight(athlete: Athlete): number {
 
 // ───────────── Prime ─────────────
 /** Chance qu'une carte tirée dans un booster standard soit en version Prime. */
-export const PRIME_CHANCE = 0.02;
+export const PRIME_CHANCE = 0.012;
 export const PRIME_LEVEL_BOOST = 3;
 export const PRIME_STAT_BOOST = 4;
 export const PRIME_ULTI_BOOST = 4;
@@ -138,7 +138,7 @@ export function statsOf(athlete: Athlete, variant: Variant = 'base'): Stats {
   const cached = statCache.get(key);
   if (cached) return cached;
 
-  const [oFor, oVit, oEnd, oTec, oInt, oMen] = ARCHETYPES[athlete.archetype];
+  const [oFor, oVit, oEnd, oTec, oInt, oMen] = ARCHETYPES[athlete.archetype] ?? [0, 0, 0, 0, 0, 0];
   const noise = (stat: string) => Math.round((hashUnit(`${athlete.id}:${stat}`) - 0.5) * 8);
   const skill = (offset: number, stat: string) => clamp(athlete.level + offset + noise(stat), 25, 99);
   const stats: Stats = {
