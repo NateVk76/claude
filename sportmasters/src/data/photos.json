@@ -26,10 +26,10 @@
  "agbegnenou": {
   "file": "agbegnenou.webp",
   "cutout": true,
-  "author": "AwkwardChester",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Clarisse_Agbegnenou_(FRA)_2021.jpg"
+  "author": "Presidential Press and Information Office",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Clarisse_Agbegnenou_(cropped).jpeg"
  },
  "ait-said": {
   "file": "ait-said.webp",
@@ -330,10 +330,10 @@
  "biles": {
   "file": "biles.webp",
   "cutout": true,
-  "author": "Ocoudis",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Simone_Biles_National_Team_2024.jpg"
+  "author": "File:Simone Biles at the 2016 Olympics all-around gold medal podium (28262782114).jpg : Ag",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Simone_Biles_-_2016_Olympics_podium_(cropped_01).jpg"
  },
  "bill-russell": {
   "file": "bill-russell.webp",
@@ -922,10 +922,10 @@
  "duplantis": {
   "file": "duplantis.webp",
   "cutout": true,
-  "author": "Peter Arnold",
+  "author": "Frankie Fouganthin",
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Armand_Duplantis_DSC02363.jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Armand_Duplantis_after_his_6.0_m_jump-1.jpg"
  },
  "dupont": {
   "file": "dupont.webp",
@@ -1050,10 +1050,10 @@
  "federer": {
   "file": "federer.webp",
   "cutout": true,
-  "author": "Squeaky Knees from Cornwall, UK",
-  "license": "CC BY 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Roger_Federer_(26_June_2009,_Wimbledon)_2.jpg"
+  "author": "si.robi",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Federer_WM16_(37)_(28136155830).jpg"
  },
  "fekir": {
   "file": "fekir.webp",
@@ -1458,10 +1458,10 @@
  "hamilton": {
   "file": "hamilton.webp",
   "cutout": true,
-  "author": "Picture by Lauren Hurley / No 10 Downing Street",
-  "license": "OGL 3",
-  "licenseUrl": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3",
-  "page": "https://commons.wikimedia.org/wiki/File:Prime_Minister_Keir_Starmer_meets_Sir_Lewis_Hamilton_(54566928382)_(cropped).jpg"
+  "author": "Governo do Estado de São Paulo",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Lewis_Hamilton_2022_S%C3%A3o_Paulo_Grand_Prix_(52498120773)_(cropped).jpg"
  },
  "hanyu": {
   "file": "hanyu.webp",
@@ -2269,7 +2269,7 @@
   "author": "Unknown author Unknown author",
   "license": "Public domain",
   "licenseUrl": "",
-  "page": "https://commons.wikimedia.org/wiki/File:Argentina_celebrando_copa_(cropped).jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Maradona-Mundial_86_con_la_copa.JPG"
  },
  "marchand": {
   "file": "marchand.webp",
@@ -2530,10 +2530,10 @@
  "nadal": {
   "file": "nadal.webp",
   "cutout": true,
-  "author": "y.caradec",
+  "author": "Tatiana from Moscow, Russia",
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Rafael_Nadal_2011_Roland_Garros_2011.jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Rafael_Nadal_(16207904747).jpg"
  },
  "nadeem": {
   "file": "nadeem.webp",
@@ -3197,7 +3197,7 @@
   "author": "Georges Biard",
   "license": "CC BY-SA 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Teddy_Riner_Cannes_2016.jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Teddy_Riner_JO_2012.jpg"
  },
  "risacher": {
   "file": "risacher.webp",
@@ -4054,14 +4054,6 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Zheng_Qinwen_(2023_US_Open)_01_(cropped).jpg"
- },
- "zhoya": {
-  "file": "zhoya.webp",
-  "cutout": true,
-  "author": "Erik van Leeuwen, attribution: Erik van Leeuwen (bron: Wikipedia).",
-  "license": "GFDL",
-  "licenseUrl": "http://www.gnu.org/copyleft/fdl.html",
-  "page": "https://commons.wikimedia.org/wiki/File:Sasha_Zhoya.jpg"
  },
  "zidane": {
   "file": "zidane.webp",
