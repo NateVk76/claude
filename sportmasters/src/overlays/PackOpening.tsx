@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
 import { useGame, formatBalles } from '../store/game';
 import { useUi } from '../store/ui';
 import { ATHLETES_BY_ID } from '../data/athletes';
@@ -42,6 +42,31 @@ function confettiColors(card: CardFace): string[] {
   if (card.variant === 'prime') return ['#ff9ad5', '#ffe27a', '#8dffcf', '#8fd3ff', '#d9a2ff', '#ffffff'];
   if (tierOf(card) === 4) return ['#ffd76a', '#fff3c4', '#e0a93a', '#ffffff', '#ff9ad5', '#8fd3ff'];
   return ['#b98cff', '#e3d2ff', '#ffd66b', '#ffffff'];
+}
+
+// Particules de lumière qui flottent dans la scène (positions fixes, pour un rendu stable).
+const DUST = Array.from({ length: 16 }, (_, i) => ({
+  x: (i * 37 + 11) % 100,
+  delay: -((i * 1.7) % 9),
+  dur: 9 + ((i * 2.3) % 7),
+  size: 2 + (i % 3),
+}));
+
+/** Inclinaison 3D qui suit le pointeur : pilote --tx / --ty sur l'élément .tilt3d du conteneur. */
+function tilt3d(event: PointerEvent<HTMLElement>) {
+  const el = event.currentTarget.querySelector<HTMLElement>('.tilt3d');
+  if (!el) return;
+  const rect = event.currentTarget.getBoundingClientRect();
+  const x = (event.clientX - rect.left) / rect.width - 0.5;
+  const y = (event.clientY - rect.top) / rect.height - 0.5;
+  el.style.setProperty('--tx', `${(-y * 18).toFixed(2)}deg`);
+  el.style.setProperty('--ty', `${(x * 26).toFixed(2)}deg`);
+}
+
+function untilt3d(event: PointerEvent<HTMLElement>) {
+  const el = event.currentTarget.querySelector<HTMLElement>('.tilt3d');
+  el?.style.setProperty('--tx', '0deg');
+  el?.style.setProperty('--ty', '0deg');
 }
 
 /** Étiquette sous une carte révélée : Reverse, sinon Nouveau ou Doublon. */
@@ -241,7 +266,7 @@ export function PackOpening() {
     window.setTimeout(() => {
       setCurrent((c) => c + 1);
       setLeaving(false);
-    }, 380);
+    }, 480);
   }, [stage, leaving, cards.length, revealed, current, revealNext]);
 
   const revealAll = useCallback(() => {
@@ -286,14 +311,16 @@ export function PackOpening() {
 
   const tear = () => {
     if (stage !== 'pack') return;
-    // la bande du haut glisse et s'efface, le sachet descend en fondu, puis les cartes apparaissent
+    // en 3D : le sachet se soulève, la bande s'arrache et bascule en arrière, la lumière jaillit,
+    // les cartes montent hors du sachet, puis le sachet s'éloigne vers le bas
     sfx.tear();
     setStage('tearing');
-    window.setTimeout(() => sfx.burst(), 450);
+    window.setTimeout(() => sfx.burst(), 500);
+    window.setTimeout(() => sfx.deal(), 700);
     window.setTimeout(() => {
       setStage('cards');
       sfx.deal();
-    }, 1100);
+    }, 1500);
   };
 
   // une Reverse n'est jamais comptée comme doublon à revendre
@@ -306,15 +333,39 @@ export function PackOpening() {
     <div className={`opening opening--${stage}`} style={{ ['--teaser' as string]: best ? glowOf(best) : '#fff' }}>
       <div className="opening__backdrop" aria-hidden="true" />
       <div className="opening__rays" aria-hidden="true" />
+      <div className="opening__floor" aria-hidden="true" />
+      <div className="opening__dust" aria-hidden="true">
+        {DUST.map((d, i) => (
+          <i key={i} style={{ left: `${d.x}%`, animationDelay: `${d.delay}s`, animationDuration: `${d.dur}s`, width: d.size, height: d.size }} />
+        ))}
+      </div>
       {(stage === 'pack' || stage === 'tearing') && (
-        <div className="opening__stage">
-          <button type="button" className="opening__pack" onClick={tear} aria-label={`Ouvrir le ${opening.packName}`}>
-            {/* deux copies du sachet : le corps et la bande du haut, qui s'arrache à l'ouverture */}
-            <span className="opening__pack-body">
-              <PackArt tone={opening.tone} name={opening.packName} size={cards.length} />
-            </span>
-            <span className="opening__pack-top" aria-hidden="true">
-              <PackArt tone={opening.tone} name={opening.packName} size={cards.length} />
+        <div className="opening__stage" onPointerMove={tilt3d} onPointerLeave={untilt3d}>
+          <button type="button" className="opening__pack3d" onClick={tear} aria-label={`Ouvrir le ${opening.packName}`}>
+            {/* sachet en volume : face avant (corps + bande du haut qui s'arrache), face arrière, tranches */}
+            <span className="pack3d-float">
+              <span className="pack3d tilt3d">
+                <span className="pack3d__cards" aria-hidden="true">
+                  <CardBack />
+                  <CardBack />
+                  <CardBack />
+                </span>
+                <span className="pack3d__face pack3d__front">
+                  <span className="pack3d__body">
+                    <PackArt tone={opening.tone} name={opening.packName} size={cards.length} />
+                  </span>
+                  <span className="pack3d__strip" aria-hidden="true">
+                    <PackArt tone={opening.tone} name={opening.packName} size={cards.length} />
+                  </span>
+                </span>
+                <span className="pack3d__face pack3d__back" aria-hidden="true">
+                  <Logo />
+                  <small>Série 1 · 2026</small>
+                </span>
+                <span className="pack3d__side pack3d__side--left" aria-hidden="true" />
+                <span className="pack3d__side pack3d__side--right" aria-hidden="true" />
+                <span className="pack3d__light" aria-hidden="true" />
+              </span>
             </span>
           </button>
           <div className="opening__flash" aria-hidden="true" />
@@ -329,7 +380,7 @@ export function PackOpening() {
           </p>
 
           {/* une seule carte, en grand : clic pour la retourner, puis pour passer à la suivante */}
-          <div className="opening__spot">
+          <div className="opening__spot" onPointerMove={tilt3d} onPointerLeave={untilt3d}>
             {(() => {
               const card = cards[current];
               const flipped = revealed > current;
@@ -343,18 +394,24 @@ export function PackOpening() {
                   tabIndex={-1}
                   aria-label={flipped ? 'Carte suivante' : 'Retourner la carte'}
                 >
-                  <div className="flip__inner">
-                    <div className="flip__back">
-                      <CardBack />
-                    </div>
-                    <div className="flip__front">
-                      <Card card={card} size="xl" />
-                      {flipped && <CardTag card={card} />}
+                  {/* inclinaison qui suit la souris, flottement lent, puis retournement en 3D */}
+                  <div className="stage-card__tilt tilt3d">
+                    <div className="stage-card__float">
+                      <div className="flip__inner">
+                        <div className="flip__back">
+                          <CardBack />
+                        </div>
+                        <div className="flip__front">
+                          <Card card={card} size="xl" />
+                          {flipped && <CardTag card={card} />}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               );
             })()}
+            <div className="opening__shadow" aria-hidden="true" />
           </div>
 
           <p className="opening__hint opening__hint--cards">
