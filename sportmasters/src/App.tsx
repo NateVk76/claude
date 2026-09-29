@@ -140,7 +140,14 @@ export function App() {
   useEffect(() => {
     tick();
     const id = window.setInterval(() => tick(), 4000);
-    return () => window.clearInterval(id);
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') tick();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, [tick]);
 
   return (

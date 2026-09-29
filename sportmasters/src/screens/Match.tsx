@@ -224,6 +224,26 @@ function CountUp({ value, run }: { value: number; run: boolean }) {
   return <>{Math.round(shown)}</>;
 }
 
+function UltiSplash({ match, log }: { match: MatchState; log: RoundLog }) {
+  const mine = log.me.ulti && !log.me.cancelled;
+  const theirs = log.opp.ulti && !log.opp.cancelled;
+  const side = mine ? 'me' : theirs ? 'opp' : null;
+  if (!side) return null;
+  const card = side === 'me' ? match.me.cards[log.me.index] : match.opp.cards[log.opp.index];
+  const athlete = ATHLETES_BY_ID[card.athleteId];
+  const ulti = ultiOf(athlete, card.variant);
+  const record = side === 'me' && log.records.length && card.record ? card.record : null;
+  return (
+    <div className="ulti-splash" style={{ ['--splash' as string]: side === 'me' ? SPORTS[athlete.sport].color : '#ff6464' }} aria-hidden="true">
+      <span className="ulti-splash__label">{side === 'me' ? 'Ulti' : 'Ulti adverse'}</span>
+      <p className="ulti-splash__name">{ulti.name}</p>
+      <span className="ulti-splash__sub">
+        {record ? `Nouveau record : ${Math.floor(record / 100)},${String(record % 100).padStart(2, '0')} m` : `${athlete.first} ${athlete.last}`}
+      </span>
+    </div>
+  );
+}
+
 function RoundResolution({ match, log, onNext }: { match: MatchState; log: RoundLog; onNext: () => void }) {
   const me = match.me.cards[log.me.index];
   const opp = match.opp.cards[log.opp.index];
@@ -270,6 +290,7 @@ function RoundResolution({ match, log, onNext }: { match: MatchState; log: Round
 
   return (
     <div className={`clash clash--${log.winner}`}>
+      <UltiSplash match={match} log={log} />
       <p className="clash__event">
         Manche {log.round + 1} · {EVENTS[log.event].name}
       </p>
@@ -335,7 +356,16 @@ function MatchView({ match }: { match: MatchState }) {
 
   const lastLog = match.log[match.log.length - 1];
   if (revealing && lastLog) {
-    return <RoundResolution match={match} log={lastLog} onNext={() => setRevealing(false)} />;
+    return (
+      <RoundResolution
+        match={match}
+        log={lastLog}
+        onNext={() => {
+          setRevealing(false);
+          window.scrollTo({ top: 0 });
+        }}
+      />
+    );
   }
 
   const selectedCard = selected !== null ? match.me.cards[selected] : null;
@@ -439,6 +469,7 @@ function MatchView({ match }: { match: MatchState }) {
               setSelected(null);
               setUseUlti(false);
               setRevealing(true);
+              window.scrollTo({ top: 0 });
             }}
           >
             Jouer la manche

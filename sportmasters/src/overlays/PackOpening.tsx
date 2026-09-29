@@ -232,7 +232,7 @@ export function PackOpening() {
   useEffect(() => {
     if (!opening) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && stage === 'summary') close();
+      if (event.key === 'Escape' && stage === 'summary' && !useUi.getState().detail) close();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
