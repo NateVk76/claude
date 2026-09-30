@@ -92,12 +92,12 @@ const ICONS: Record<SportId, ReactNode> = {
       <path d="M9,12 H15 M10.5,10.5 V13.5 M12,10.5 V13.5 M13.5,10.5 V13.5" />
     </>
   ),
-  // raquette et balle
+  // raquette pleine (pour ne pas ressembler à une loupe) et balle
   pingpong: (
     <>
-      <circle cx={9.5} cy={10} r={6.8} />
-      <path d="M14.3,14.8 L19.8,20.3" strokeWidth={3.2} />
-      <circle cx={19.2} cy={5.2} r={2.1} fill="currentColor" stroke="none" />
+      <path d="M13.2,15.6 L19.6,21.2" strokeWidth={3.4} />
+      <circle cx={9.4} cy={10.2} r={7} fill="currentColor" stroke="none" />
+      <circle cx={19.6} cy={4.6} r={2.2} />
     </>
   ),
   // cavalier

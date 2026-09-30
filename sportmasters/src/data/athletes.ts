@@ -651,18 +651,17 @@ const CURATED: Athlete[] = [
 
   // ───────────────────────── TENNIS DE TABLE ─────────────────────────
   a('ma-long', 'Long', 'Ma', 'pingpong', 'pong-attaque', 'Attaquant', 'CN', 40, 99, 'Six titres olympiques, dont le simple en 2016 et 2021, et trois titres mondiaux en simple.', {
-    stats: { tec: 99, int: 97, aur: 97 },
     ulti: sig('ma-long', 'Guerrier hexagonal', 'Aucun point faible : utilise sa meilleure stat, +14, puis +3 pour toute l’équipe.', [{ kind: 'best-stat', value: 14 }, { kind: 'team-buff', value: 0, boost: 3 }]),
   }),
   a('fan-zhendong', 'Zhendong', 'Fan', 'pingpong', 'pong-attaque', 'Attaquant', 'CN', 30, 98, 'Champion olympique en simple à Paris en 2024, la dernière pièce de son Grand Chelem.', {
-    stats: { for: 90, vit: 96 },
+    stats: { for: 97 },
     ulti: sig('fan-zhendong', 'Grand Chelem', 'Il complète la collection : +12, +10 de plus à la dernière manche.', { kind: 'last-round', value: 12, bonus: 10 }),
   }),
-  a('wang-chuqin', 'Chuqin', 'Wang', 'pingpong', 'pong-attaque', 'Attaquant', 'CN', 26, 97, 'Gaucher, double champion olympique à Paris en 2024, en double mixte et par équipes.', { stats: { vit: 97 } }),
+  a('wang-chuqin', 'Chuqin', 'Wang', 'pingpong', 'pong-attaque', 'Attaquant', 'CN', 26, 97, 'Gaucher, double champion olympique à Paris en 2024, en double mixte et par équipes.', {}),
   a('sun-yingsha', 'Yingsha', 'Sun', 'pingpong', 'pong-attaque', 'Attaquante', 'CN', 22, 97, 'Championne du monde en simple en 2023 et championne olympique en double mixte en 2024.', {}),
   a('chen-meng', 'Meng', 'Chen', 'pingpong', 'pong-attaque', 'Attaquante', 'CN', 18, 95, 'Double championne olympique en simple (2021 et 2024).', {}),
   a('felix-lebrun', 'Félix', 'Lebrun', 'pingpong', 'pong-attaque', 'Porte-plume', 'FR', 48, 94, 'Médaillé de bronze en simple aux Jeux de Paris à 17 ans, avec une prise porte-plume rarissime en Europe.', {
-    stats: { vit: 97, aur: 94 },
+    stats: { aur: 94 },
     ulti: sig('felix-lebrun', 'Porte-plume', 'Une prise que personne ne sait lire : +10, et l’adversaire perd 8.', [{ kind: 'boost', value: 10 }, { kind: 'debuff', value: 8 }]),
   }),
   a('alexis-lebrun', 'Alexis', 'Lebrun', 'pingpong', 'pong-attaque', 'Attaquant', 'FR', 36, 91, 'Médaillé de bronze par équipes aux Jeux de Paris 2024 avec son frère Félix.', {
@@ -676,33 +675,33 @@ const CURATED: Athlete[] = [
   a('mima-ito', 'Mima', 'Ito', 'pingpong', 'pong-attaque', 'Attaquante', 'JP', 14, 92, 'Championne olympique du double mixte à Tokyo en 2021, premier or japonais de l’histoire du tennis de table.', {}),
   a('gauzy', 'Simon', 'Gauzy', 'pingpong', 'pong-attaque', 'Attaquant', 'FR', 12, 88, 'Médaillé de bronze par équipes aux Jeux de Paris 2024 avec les frères Lebrun.', {}),
   a('waldner', 'Jan-Ove', 'Waldner', 'pingpong', 'pong-attaque', 'Attaquant', 'SE', 28, 98, 'Champion du monde (1989, 1997) et champion olympique (1992), le Mozart du tennis de table.', {
-    ...R, stats: { tec: 99, int: 98 },
+    ...R,
     ulti: sig('waldner', 'Mozart du ping', 'Il invente un coup à chaque échange : utilise sa meilleure stat, +16.', { kind: 'best-stat', value: 16 }),
   }),
   a('deng-yaping', 'Yaping', 'Deng', 'pingpong', 'pong-attaque', 'Attaquante', 'CN', 20, 97, 'Quatre titres olympiques (1992 et 1996) du haut de son 1,50 m.', {
-    ...R, stats: { vit: 97, aur: 96 },
+    ...R, stats: { aur: 96 },
     ulti: sig('deng-yaping', 'Un mètre cinquante', 'On la croit petite : +10, et +10 de plus en Face-à-face et en Bras de fer.', { kind: 'event', value: 10, events: ['face-a-face', 'bras-de-fer'], bonus: 10 }),
   }),
   a('zhang-jike', 'Jike', 'Zhang', 'pingpong', 'pong-attaque', 'Attaquant', 'CN', 22, 97, 'Grand Chelem en 445 jours : champion du monde 2011, vainqueur de la Coupe du monde 2011 et champion olympique 2012.', {
     ...R,
     ulti: sig('zhang-jike', '445 jours', 'Tout gagner, et vite : +10, puis +4 par manche déjà gagnée.', { kind: 'streak', value: 10, perWin: 4 }),
   }),
-  a('liu-guoliang', 'Guoliang', 'Liu', 'pingpong', 'pong-attaque', 'Porte-plume', 'CN', 14, 95, 'Champion olympique en 1996, pionnier du revers en prise porte-plume.', { ...R, stats: { int: 96 } }),
+  a('liu-guoliang', 'Guoliang', 'Liu', 'pingpong', 'pong-attaque', 'Porte-plume', 'CN', 14, 95, 'Champion olympique en 1996, pionnier du revers en prise porte-plume.', { ...R }),
   a('gatien', 'Jean-Philippe', 'Gatien', 'pingpong', 'pong-attaque', 'Attaquant', 'FR', 22, 90, 'Premier Français champion du monde, en 1993 à Göteborg, et vice-champion olympique en 1992.', { ...R }),
-  a('timo-boll', 'Timo', 'Boll', 'pingpong', 'pong-attaque', 'Attaquant', 'DE', 30, 93, 'Premier Allemand numéro un mondial (2003), il a joué au plus haut niveau jusqu’à 44 ans.', { ...R, stats: { tec: 96, aur: 94 } }),
+  a('timo-boll', 'Timo', 'Boll', 'pingpong', 'pong-attaque', 'Attaquant', 'DE', 30, 93, 'Premier Allemand numéro un mondial (2003), il a joué au plus haut niveau jusqu’à 44 ans.', { ...R, stats: { aur: 94 } }),
   a('schlager', 'Werner', 'Schlager', 'pingpong', 'pong-attaque', 'Attaquant', 'AT', 8, 89, 'Champion du monde en 2003 à Paris, dernier non-Chinois titré en simple messieurs.', { ...R }),
 
   // ───────────────────────── ÉCHECS ─────────────────────────
   a('carlsen', 'Magnus', 'Carlsen', 'echecs', 'echecs-stratege', 'Grand maître', 'NO', 72, 99, 'Cinq fois champion du monde (2013-2021) et record du classement Elo (2882 en 2014).', {
-    nick: 'Mozart des échecs', stats: { int: 99, tec: 98, end: 92, aur: 96 },
+    nick: 'Mozart des échecs',
     ulti: sig('carlsen', 'Grind', 'Il gagne les finales que tout le monde croit nulles : +12, +12 de plus à la dernière manche.', { kind: 'last-round', value: 12, bonus: 12 }),
   }),
   a('kasparov', 'Garry', 'Kasparov', 'echecs', 'echecs-tacticien', 'Grand maître', 'RU', 70, 99, 'Champion du monde de 1985 à 2000 et numéro un mondial pendant vingt ans.', {
-    ...R, nick: 'L’ogre de Bakou', stats: { int: 99, aur: 97 },
+    ...R, nick: 'L’ogre de Bakou',
     ulti: sig('kasparov', 'L’ogre de Bakou', 'Préparation écrasante, attaque sans pitié : INT devient la stat principale, +16.', { kind: 'stat-swap', stat: 'int', value: 16 }),
   }),
   a('fischer', 'Bobby', 'Fischer', 'echecs', 'echecs-tacticien', 'Grand maître', 'US', 66, 98, 'Champion du monde en 1972 à Reykjavik face à Boris Spassky, en pleine guerre froide.', {
-    ...R, born: 1943, died: 2008, stats: { int: 99, aur: 97 },
+    ...R, born: 1943, died: 2008, stats: { aur: 97 },
     ulti: sig('fischer', 'Match du siècle', 'Seul contre l’école soviétique : +12, et +10 de plus en Face-à-face et en Money time.', { kind: 'event', value: 12, events: ['face-a-face', 'money-time'], bonus: 10 }),
   }),
   a('karpov', 'Anatoli', 'Karpov', 'echecs', 'echecs-stratege', 'Grand maître', 'RU', 44, 97, 'Champion du monde de 1975 à 1985, maître du jeu de position.', {
@@ -710,23 +709,23 @@ const CURATED: Athlete[] = [
     ulti: sig('karpov', 'Boa constrictor', 'Il étouffe lentement : l’adversaire perd 12 de puissance, +6.', [{ kind: 'debuff', value: 12 }, { kind: 'boost', value: 6 }]),
   }),
   a('tal', 'Mikhaïl', 'Tal', 'echecs', 'echecs-tacticien', 'Grand maître', 'LV', 36, 97, 'Champion du monde en 1960, le « magicien de Riga » et ses sacrifices spectaculaires.', {
-    ...R, born: 1936, died: 1992, stats: { int: 98 },
+    ...R, born: 1936, died: 1992,
     ulti: sig('tal', 'Magicien de Riga', 'Un sacrifice fou qui renverse tout : +12, +12 de plus si l’équipe est menée.', { kind: 'comeback', value: 12, bonus: 12 }),
   }),
   a('spassky', 'Boris', 'Spassky', 'echecs', 'echecs-tacticien', 'Grand maître', 'RU', 36, 96, 'Champion du monde de 1969 à 1972, puis installé en France dont il a défendu les couleurs.', { ...R, born: 1937, died: 2025 }),
-  a('capablanca', 'José Raúl', 'Capablanca', 'echecs', 'echecs-stratege', 'Champion du monde', 'CU', 34, 96, 'Champion du monde de 1921 à 1927, surnommé « la machine humaine des échecs ».', { ...R, born: 1888, died: 1942, stats: { tec: 98 } }),
+  a('capablanca', 'José Raúl', 'Capablanca', 'echecs', 'echecs-stratege', 'Champion du monde', 'CU', 34, 96, 'Champion du monde de 1921 à 1927, surnommé « la machine humaine des échecs ».', { ...R, born: 1888, died: 1942 }),
   a('morphy', 'Paul', 'Morphy', 'echecs', 'echecs-tacticien', 'Échecs', 'US', 28, 95, 'Meilleur joueur du monde à 21 ans, en 1858, avant de quitter les échecs.', { ...R, born: 1837, died: 1884 }),
   a('kramnik', 'Vladimir', 'Kramnik', 'echecs', 'echecs-stratege', 'Grand maître', 'RU', 26, 97, 'Il détrône Kasparov en 2000 grâce à une défense imprenable, le « mur de Berlin ».', {
     ...R,
     ulti: sig('kramnik', 'Mur de Berlin', 'La défense impénétrable : annule l’ulti adverse, +12.', { kind: 'cancel', value: 12 }),
   }),
-  a('anand', 'Viswanathan', 'Anand', 'echecs', 'echecs-blitz', 'Grand maître', 'IN', 36, 97, 'Cinq fois champion du monde (2000-2012), pionnier des échecs en Inde.', { nick: 'Tigre de Madras', stats: { vit: 96 } }),
+  a('anand', 'Viswanathan', 'Anand', 'echecs', 'echecs-blitz', 'Grand maître', 'IN', 36, 97, 'Cinq fois champion du monde (2000-2012), pionnier des échecs en Inde.', { nick: 'Tigre de Madras' }),
   a('polgar', 'Judit', 'Polgár', 'echecs', 'echecs-tacticien', 'Grand maître', 'HU', 36, 96, 'Meilleure joueuse de l’histoire : grand maître à 15 ans, elle a battu Kasparov en 2002.', {
-    ...R, stats: { int: 97, aur: 95 },
+    ...R, stats: { aur: 95 },
     ulti: sig('polgar', 'Plus jeune que Fischer', 'Grand maître à 15 ans : +10, puis +3 par manche déjà gagnée.', { kind: 'streak', value: 10, perWin: 3 }),
   }),
   a('nakamura', 'Hikaru', 'Nakamura', 'echecs', 'echecs-blitz', 'Grand maître', 'US', 40, 96, 'Roi du blitz et du bullet, l’un des joueurs d’échecs les plus suivis en ligne.', {
-    stats: { vit: 98, aur: 93 },
+    stats: { aur: 93 },
     ulti: sig('nakamura', 'Bullet', 'Une minute pour toute la partie : VIT devient la stat principale, +14.', { kind: 'stat-swap', stat: 'vit', value: 14 }),
   }),
   a('gukesh', 'Gukesh', 'Dommaraju', 'echecs', 'echecs-tacticien', 'Grand maître', 'IN', 34, 95, 'Plus jeune champion du monde de l’histoire, à 18 ans, en 2024.', {
@@ -734,22 +733,20 @@ const CURATED: Athlete[] = [
   }),
   a('ding-liren', 'Liren', 'Ding', 'echecs', 'echecs-stratege', 'Grand maître', 'CN', 20, 95, 'Premier Chinois champion du monde, en 2023.', {}),
   a('hou-yifan', 'Yifan', 'Hou', 'echecs', 'echecs-stratege', 'Grand maître', 'CN', 16, 94, 'Quatre fois championne du monde, la première fois à 16 ans (2010).', {}),
-  a('caruana', 'Fabiano', 'Caruana', 'echecs', 'echecs-stratege', 'Grand maître', 'US', 20, 96, 'Sept victoires d’affilée contre l’élite mondiale à Saint-Louis en 2014, challenger au titre en 2018.', { stats: { int: 97 } }),
-  a('firouzja', 'Alireza', 'Firouzja', 'echecs', 'echecs-tacticien', 'Grand maître', 'FR', 30, 95, 'Plus jeune joueur à franchir 2800 Elo, à 18 ans. Français depuis 2021.', { stats: { vit: 94 } }),
-  a('mvl', 'Maxime', 'Vachier-Lagrave', 'echecs', 'echecs-blitz', 'Grand maître', 'FR', 28, 94, 'Champion du monde de blitz en 2021 et longtemps numéro un français.', { nick: 'MVL', stats: { vit: 95 } }),
+  a('caruana', 'Fabiano', 'Caruana', 'echecs', 'echecs-stratege', 'Grand maître', 'US', 20, 96, 'Sept victoires d’affilée contre l’élite mondiale à Saint-Louis en 2014, challenger au titre en 2018.', {}),
+  a('firouzja', 'Alireza', 'Firouzja', 'echecs', 'echecs-tacticien', 'Grand maître', 'FR', 30, 95, 'Plus jeune joueur à franchir 2800 Elo, à 18 ans. Français depuis 2021.', {}),
+  a('mvl', 'Maxime', 'Vachier-Lagrave', 'echecs', 'echecs-blitz', 'Grand maître', 'FR', 28, 94, 'Champion du monde de blitz en 2021 et longtemps numéro un français.', { nick: 'MVL' }),
   a('bacrot', 'Étienne', 'Bacrot', 'echecs', 'echecs-stratege', 'Grand maître', 'FR', 12, 88, 'Plus jeune grand maître du monde en 1997, à 14 ans.', {}),
 
   // ───────────────────────── ESPORT ─────────────────────────
   a('faker', '', 'Faker', 'esport', 'esport-moba', 'League of Legends', 'KR', 44, 99, 'Six titres de champion du monde de League of Legends entre 2013 et 2025, un record.', {
-    nick: 'Roi démon', stats: { int: 99, tec: 98, aur: 98 },
+    nick: 'Roi démon', stats: { aur: 98 },
     ulti: sig('faker', 'Roi démon', 'Invincible dans les grands matchs : +14, puis +3 par manche déjà gagnée.', { kind: 'streak', value: 14, perWin: 3 }),
   }),
   a('zywoo', '', 'ZywOo', 'esport', 'esport-fps', 'Counter-Strike', 'FR', 30, 98, 'Double champion de Major avec Vitality (Paris 2023, Austin 2025), élu meilleur joueur des deux.', {
-    stats: { tec: 98, vit: 97 },
     ulti: sig('zywoo', 'Ace', 'Il élimine les cinq adversaires : +14, et la manche compte double.', [{ kind: 'boost', value: 14 }, { kind: 'double', value: 0 }]),
   }),
   a('s1mple', '', 's1mple', 'esport', 'esport-fps', 'Counter-Strike', 'UA', 22, 97, 'Champion du Major de Stockholm en 2021 avec NAVI, souvent cité comme le meilleur joueur de Counter-Strike.', {
-    stats: { vit: 97, tec: 97 },
     ulti: sig('s1mple', 'Tir à l’aveugle', 'Un tir impossible à travers la fumée : utilise sa meilleure stat, +14.', { kind: 'best-stat', value: 14 }),
   }),
   a('gotaga', '', 'Gotaga', 'esport', 'esport-fps', 'Call of Duty', 'FR', 36, 88, 'Figure du Call of Duty français devenue l’un des streameurs les plus suivis, cofondateur de la Gentle Mates.', {
@@ -757,8 +754,8 @@ const CURATED: Athlete[] = [
   }),
   a('ninja', '', 'Ninja', 'esport', 'esport-fps', 'Fortnite', 'US', 34, 86, 'Star de Twitch à l’époque de Fortnite, premier joueur de jeux vidéo en couverture d’ESPN The Magazine.', { stats: { aur: 93 } }),
   a('bugha', '', 'Bugha', 'esport', 'esport-fps', 'Fortnite', 'US', 14, 92, 'Champion du monde de Fortnite en 2019, à 16 ans, pour 3 millions de dollars.', {}),
-  a('tenz', '', 'TenZ', 'esport', 'esport-fps', 'Valorant', 'CA', 14, 94, 'Champion des Masters de Reykjavik en 2021 avec Sentinels, première star de Valorant.', { ...R, stats: { vit: 97 } }),
-  a('shroud', '', 'shroud', 'esport', 'esport-fps', 'Counter-Strike', 'CA', 16, 90, 'Ancien joueur de Counter-Strike réputé pour sa visée, devenu l’un des plus grands streameurs du monde.', { ...R, stats: { tec: 95 } }),
+  a('tenz', '', 'TenZ', 'esport', 'esport-fps', 'Valorant', 'CA', 14, 94, 'Champion des Masters de Reykjavik en 2021 avec Sentinels, première star de Valorant.', { ...R }),
+  a('shroud', '', 'shroud', 'esport', 'esport-fps', 'Counter-Strike', 'CA', 16, 90, 'Ancien joueur de Counter-Strike réputé pour sa visée, devenu l’un des plus grands streameurs du monde.', { ...R }),
   a('device', '', 'device', 'esport', 'esport-fps', 'Counter-Strike', 'DK', 8, 94, 'Quatre Majors de Counter-Strike avec Astralis entre 2017 et 2019.', {}),
   a('caps', '', 'Caps', 'esport', 'esport-moba', 'League of Legends', 'DK', 14, 95, 'Vainqueur du MSI 2019 avec G2 Esports et finaliste des championnats du monde la même année.', {}),
   a('xpeke', '', 'xPeke', 'esport', 'esport-moba', 'League of Legends', 'ES', 10, 88, 'Auteur du backdoor le plus célèbre de League of Legends en 2013, puis fondateur d’Origen.', {
@@ -771,8 +768,8 @@ const CURATED: Athlete[] = [
     nick: 'The Beast', stats: { aur: 96 },
     ulti: sig('daigo', 'Evo Moment 37', 'Il pare tout, à un pixel de la défaite : +10, +12 de plus si l’équipe est menée.', { kind: 'comeback', value: 10, bonus: 12 }),
   }),
-  a('serral', '', 'Serral', 'esport', 'esport-rts', 'StarCraft II', 'FI', 8, 96, 'Premier joueur non coréen champion du monde de StarCraft II, en 2018.', { stats: { vit: 97 } }),
-  a('flash', '', 'Flash', 'esport', 'esport-rts', 'StarCraft', 'KR', 10, 97, 'Surnommé « God », le joueur le plus dominant de l’histoire de StarCraft: Brood War.', { nick: 'God', stats: { int: 97 } }),
+  a('serral', '', 'Serral', 'esport', 'esport-rts', 'StarCraft II', 'FI', 8, 96, 'Premier joueur non coréen champion du monde de StarCraft II, en 2018.', {}),
+  a('flash', '', 'Flash', 'esport', 'esport-rts', 'StarCraft', 'KR', 10, 97, 'Surnommé « God », le joueur le plus dominant de l’histoire de StarCraft: Brood War.', { nick: 'God' }),
   a('kaydop', '', 'Kaydop', 'esport', 'esport-simu', 'Rocket League', 'FR', 10, 93, 'Double champion du monde de Rocket League (2017, 2018).', {}),
   a('msdossary', '', 'Msdossary', 'esport', 'esport-simu', 'EA Sports FC', 'SA', 8, 90, 'Champion du monde de FIFA (eWorld Cup) en 2018.', {}),
   // ───────────────────────── ICÔNES (légendes retraitées ou disparues) ─────────────────────────

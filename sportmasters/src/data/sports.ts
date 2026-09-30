@@ -225,6 +225,7 @@ export const SPORTS: Record<SportId, SportDef> = {
     name: 'Échecs',
     short: 'ÉCHECS',
     color: '#e9dfc9',
+    ink: '#231d14',
     passive: { name: 'Préparation', desc: 'Son équipe commence le match avec 3 points d’énergie au lieu de 2.' },
     ultis: [
       { name: 'Échec et mat', desc: 'La manche compte double si elle est gagnée. +{v}.', effect: { kind: 'double', value: 0 } },

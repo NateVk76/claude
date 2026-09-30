@@ -172,6 +172,8 @@ export interface SportDef {
   name: string;
   short: string;
   color: string;
+  /** couleur de l'emblème posé sur la couleur du sport, quand celle-ci est trop claire pour du blanc */
+  ink?: string;
   passive: { name: string; desc: string };
   ultis: SportUltiTemplate[];
 }

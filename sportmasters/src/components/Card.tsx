@@ -126,7 +126,12 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     <div
       ref={ref}
       className={classes}
-      style={{ ['--card-w' as string]: `${width}px`, ['--sport' as string]: SPORTS[athlete.sport].color, ...style }}
+      style={{
+        ['--card-w' as string]: `${width}px`,
+        ['--sport' as string]: SPORTS[athlete.sport].color,
+        ...(SPORTS[athlete.sport].ink ? { ['--sport-ink' as string]: SPORTS[athlete.sport].ink } : {}),
+        ...style,
+      }}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
       onClick={onClick}
