@@ -23,15 +23,15 @@ npm run build:single # un seul fichier HTML autonome dans artifact/
 
 ### Rareté = célébrité
 
-Chaque athlète a un score de célébrité (0-100), estimé d'après son audience. Plus il est connu, plus sa carte est rare. Le jeu compte 1 035 athlètes : 524 dans la base manuelle et 511 ajoutés depuis Wikidata.
+Chaque athlète a un score de célébrité (0-100), estimé d'après son audience. Plus il est connu, plus sa carte est rare. Le jeu compte 1 152 athlètes dans 19 sports : 580 dans la base manuelle et 572 ajoutés depuis Wikidata.
 
 | Rareté | Célébrité | Athlètes | Booster gratuit |
 | --- | --- | --- | --- |
 | Légendaire | 90 et plus | 32 | 0,8 % par carte |
-| Épique | 75 à 89 | 50 | 3,2 % |
-| Rare | 60 à 74 | 153 | 10 % |
-| Peu commune | 44 à 59 | 281 | 26 % |
-| Commune | moins de 44 | 519 | 60 % |
+| Épique | 75 à 89 | 51 | 3,2 % |
+| Rare | 60 à 74 | 155 | 10 % |
+| Peu commune | 44 à 59 | 297 | 26 % |
+| Commune | moins de 44 | 617 | 60 % |
 
 À l'intérieur d'une rareté, les plus célèbres sortent encore moins souvent : Messi sort environ 5 fois moins que Duplantis.
 
@@ -52,7 +52,7 @@ Dans une même rareté, le niveau sportif réel de l'athlète et sa célébrité
 ### Versions spéciales
 
 - **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or à partir de Rare, papier ancien mat en dessous (une carte n'a jamais l'air plus précieuse qu'elle n'est rare), années de vie pour les disparus.
-- **Prime** : la meilleure saison d'une très grande légende, et seulement d'elles : 36 athlètes (Messi 2012, Cristiano Ronaldo 2014, Ronaldo Nazário 2002, LeBron 2016, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Une de ces légendes tirée dans un booster a 8 % de chances d'être en Prime, soit environ 1 carte sur 1 200 dans le booster gratuit, dix fois plus rare qu'une Légendaire. Valeur ×6 au marché.
+- **Prime** : la meilleure saison d'une très grande légende, et seulement d'elles : 37 athlètes (Messi 2012, Cristiano Ronaldo 2014, Ronaldo Nazário 2002, LeBron 2016, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Une de ces légendes tirée dans un booster a 8 % de chances d'être en Prime, soit environ 1 carte sur 1 200 dans le booster gratuit, dix fois plus rare qu'une Légendaire. Valeur ×6 au marché.
 
 ### La carte
 
@@ -120,8 +120,8 @@ Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » 
 
 ```
 src/
-  data/athletes.ts   base manuelle : 524 athlètes, ultis signatures, versions Prime
-  data/athletes.generated.json   511 athlètes ajoutés depuis Wikidata (1 035 au total, dont 200 Icônes)
+  data/athletes.ts   base manuelle : 580 athlètes, ultis signatures, versions Prime
+  data/athletes.generated.json   572 athlètes ajoutés depuis Wikidata (1 152 au total, dont 522 Icônes)
   data/sports.ts     sports, particularités, ultis de sport, épreuves
   engine/            moteur pur, sans interface : cartes, boosters, marché, matchs
   store/             état du jeu (sauvegarde locale) et état de l'interface
