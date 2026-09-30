@@ -446,8 +446,8 @@
  {
   "id": "vitinha",
   "fame": 48,
-  "vues": 38576,
-  "liens": 14
+  "vues": 342102,
+  "liens": 51
  },
  {
   "id": "joao-neves",
@@ -2797,127 +2797,127 @@
  },
  {
   "id": "ma-long",
-  "fame": 40,
+  "fame": 34,
   "vues": 23516,
   "liens": 41
  },
  {
   "id": "fan-zhendong",
-  "fame": 30,
+  "fame": 32,
   "vues": 25395,
   "liens": 29
  },
  {
   "id": "wang-chuqin",
-  "fame": 26,
+  "fame": 30,
   "vues": 32673,
   "liens": 23
  },
  {
   "id": "sun-yingsha",
-  "fame": 22,
+  "fame": 16,
   "vues": 5526,
   "liens": 24
  },
  {
   "id": "chen-meng",
-  "fame": 18,
+  "fame": 16,
   "vues": 3251,
   "liens": 30
  },
  {
   "id": "felix-lebrun",
-  "fame": 48,
+  "fame": 40,
   "vues": 145553,
   "liens": 21
  },
  {
   "id": "alexis-lebrun",
-  "fame": 36,
+  "fame": 34,
   "vues": 93906,
   "liens": 18
  },
  {
   "id": "calderano",
-  "fame": 22,
+  "fame": 20,
   "vues": 13863,
   "liens": 21
  },
  {
   "id": "moregardh",
-  "fame": 22,
+  "fame": 20,
   "vues": 13792,
   "liens": 23
  },
  {
   "id": "harimoto",
-  "fame": 16,
+  "fame": 22,
   "vues": 14864,
   "liens": 24
  },
  {
   "id": "mima-ito",
-  "fame": 14,
+  "fame": 10,
   "vues": 1138,
   "liens": 25
  },
  {
   "id": "gauzy",
-  "fame": 12,
+  "fame": 24,
   "vues": 28675,
   "liens": 19
  },
  {
   "id": "waldner",
-  "fame": 28,
+  "fame": 22,
   "vues": 6172,
   "liens": 38
  },
  {
   "id": "deng-yaping",
-  "fame": 20,
+  "fame": 10,
   "vues": 800,
   "liens": 29
  },
  {
   "id": "zhang-jike",
-  "fame": 22,
+  "fame": 16,
   "vues": 3071,
   "liens": 33
  },
  {
   "id": "liu-guoliang",
-  "fame": 14,
+  "fame": 11,
   "vues": 1997,
   "liens": 24
  },
  {
   "id": "gatien",
-  "fame": 22,
+  "fame": 28,
   "vues": 22294,
   "liens": 25
  },
  {
   "id": "timo-boll",
-  "fame": 30,
+  "fame": 26,
   "vues": 7353,
   "liens": 41
  },
  {
   "id": "schlager",
-  "fame": 8,
+  "fame": 10,
   "vues": 1368,
   "liens": 25
  },
  {
   "id": "carlsen",
-  "fame": 72,
+  "fame": 76,
   "vues": 160044,
   "liens": 110
  },
  {
   "id": "kasparov",
-  "fame": 70,
+  "fame": 74,
   "vues": 129608,
   "liens": 119
  },
@@ -2929,133 +2929,133 @@
  },
  {
   "id": "karpov",
-  "fame": 44,
+  "fame": 48,
   "vues": 31043,
   "liens": 90
  },
  {
   "id": "tal",
-  "fame": 36,
+  "fame": 42,
   "vues": 15470,
   "liens": 80
  },
  {
   "id": "spassky",
-  "fame": 36,
+  "fame": 42,
   "vues": 15164,
   "liens": 83
  },
  {
   "id": "capablanca",
-  "fame": 34,
+  "fame": 40,
   "vues": 11404,
   "liens": 89
  },
  {
   "id": "morphy",
-  "fame": 28,
+  "fame": 34,
   "vues": 9884,
   "liens": 64
  },
  {
   "id": "kramnik",
-  "fame": 26,
+  "fame": 44,
   "vues": 28234,
   "liens": 75
  },
  {
   "id": "anand",
-  "fame": 36,
+  "fame": 44,
   "vues": 13523,
   "liens": 102
  },
  {
   "id": "polgar",
-  "fame": 36,
+  "fame": 52,
   "vues": 66849,
   "liens": 71
  },
  {
   "id": "nakamura",
-  "fame": 40,
+  "fame": 42,
   "vues": 27058,
   "liens": 62
  },
  {
   "id": "gukesh",
-  "fame": 34,
+  "fame": 44,
   "vues": 29771,
   "liens": 68
  },
  {
   "id": "ding-liren",
-  "fame": 20,
+  "fame": 34,
   "vues": 8408,
   "liens": 64
  },
  {
   "id": "hou-yifan",
-  "fame": 16,
+  "fame": 30,
   "vues": 5442,
   "liens": 54
  },
  {
   "id": "caruana",
-  "fame": 20,
+  "fame": 36,
   "vues": 13768,
   "liens": 59
  },
  {
   "id": "firouzja",
-  "fame": 30,
+  "fame": 42,
   "vues": 52207,
   "liens": 44
  },
  {
   "id": "mvl",
-  "fame": 28,
+  "fame": 38,
   "vues": 41668,
   "liens": 35
  },
  {
   "id": "bacrot",
-  "fame": 12,
+  "fame": 30,
   "vues": 17935,
   "liens": 31
  },
  {
   "id": "faker",
-  "fame": 44,
+  "fame": 40,
   "vues": 120508,
   "liens": 26
  },
  {
   "id": "zywoo",
-  "fame": 30,
+  "fame": 20,
   "vues": 37963,
   "liens": 12
  },
  {
   "id": "s1mple",
-  "fame": 22,
+  "fame": 20,
   "vues": 7370,
   "liens": 28
  },
  {
   "id": "gotaga",
-  "fame": 36,
+  "fame": 30,
   "vues": 91733,
   "liens": 2
  },
  {
   "id": "ninja",
-  "fame": 34,
+  "fame": 20,
   "vues": 6673,
   "liens": 33
  },
  {
   "id": "shroud",
-  "fame": 16,
+  "fame": 12,
   "vues": 3329,
   "liens": 20
  },
@@ -3067,13 +3067,13 @@
  },
  {
   "id": "daigo",
-  "fame": 14,
+  "fame": 10,
   "vues": 4155,
   "liens": 11
  },
  {
   "id": "serral",
-  "fame": 8,
+  "fame": 10,
   "vues": 2169,
   "liens": 8
  },
