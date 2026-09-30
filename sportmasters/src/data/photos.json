@@ -1,4 +1,12 @@
 {
+ "aaron-nimzowitsch": {
+  "file": "aaron-nimzowitsch.webp",
+  "cutout": true,
+  "author": "Not mentioned",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Aron_Nimzowitsch.jpg"
+ },
  "aaron-rodgers": {
   "file": "aaron-rodgers.webp",
   "cutout": true,
@@ -135,6 +143,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:2022-08-19_European_Championships_2022_%E2%80%93_Men%27s_Discus_Throw_by_Sandro_Halank%E2%80%93009.jpg"
  },
+ "aleksandr-grichtchouk": {
+  "file": "aleksandr-grichtchouk.webp",
+  "cutout": true,
+  "author": "Vladimir Barskij",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Alexander_Grischuk_4,_Candidates_Tournament_2018.jpg"
+ },
  "aleksandr-popov": {
   "file": "aleksandr-popov.webp",
   "cutout": true,
@@ -159,6 +175,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Aly_Raisman_Rio_2016.jpg"
  },
+ "alexandre-alekhine": {
+  "file": "alexandre-alekhine.webp",
+  "cutout": true,
+  "author": "Alexandre_Alekhine_01.jpg : George Grantham Bain Collection (Library of Congress) derivati",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Alexandre_Alekhine_Color.jpg"
+ },
  "alexandre-vinokourov": {
   "file": "alexandre-vinokourov.webp",
   "cutout": true,
@@ -166,6 +190,14 @@
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Alexandre_Vinokourov_TR_2011.jpg"
+ },
+ "alexis-lebrun": {
+  "file": "alexis-lebrun.webp",
+  "cutout": true,
+  "author": "Granada",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:20220818_European_Championships_Munich_2022_Alexis_Lebrun_850_9513.jpg"
  },
  "alexis-sanchez": {
   "file": "alexis-sanchez.webp",
@@ -279,6 +311,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Ana_Ivanovic_(18407719442).jpg"
  },
+ "anand": {
+  "file": "anand.webp",
+  "cutout": true,
+  "author": "Barnos",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vishi_Anand-29-4-17.jpg"
+ },
  "anderson-silva": {
   "file": "anderson-silva.webp",
   "cutout": true,
@@ -327,6 +367,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Andy_Schleck_2013.JPG"
  },
+ "anish-giri": {
+  "file": "anish-giri.webp",
+  "cutout": true,
+  "author": "Andreas Kontokanis from Piraeus, Greece",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Giri_Anish_over_the_board_(30158959584).jpg"
+ },
  "anita-wlodarczyk": {
   "file": "anita-wlodarczyk.webp",
   "cutout": true,
@@ -334,6 +382,14 @@
   "license": "CC BY-SA 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:AnitaWRio2016_cropped.jpg"
+ },
+ "ann-haydon-jones": {
+  "file": "ann-haydon-jones.webp",
+  "cutout": true,
+  "author": "Unknown (Keystone, U.S. Office)",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Ann_Haydon-Jones_1969b.jpg"
  },
  "anna-kournikova": {
   "file": "anna-kournikova.webp",
@@ -415,6 +471,14 @@
   "licenseUrl": "",
   "page": "https://commons.wikimedia.org/wiki/File:Arnold_Palmer_(cropped).jpg"
  },
+ "arslan-siddique": {
+  "file": "arslan-siddique.webp",
+  "cutout": true,
+  "author": "continew TV",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Arslan_Ash_2019_interview.jpg"
+ },
  "aryna-sabalenka": {
   "file": "aryna-sabalenka.webp",
   "cutout": true,
@@ -486,6 +550,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:2019-03-27_Fu%C3%9Fball,_Frauen,_UEFA_Women%27s_Champions_League,_VfL_Wolfsburg_-_Olympique_Lyonnais_StP_3424_by_Stepro.jpg"
+ },
+ "bacrot": {
+  "file": "bacrot.webp",
+  "cutout": true,
+  "author": "TheBoburshokh",
+  "license": "CC0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Etienne_Bacrot_3rd_Al-Beruniy_Tashkent_2026_Masters_(cropped).jpg"
  },
  "barcola": {
   "file": "barcola.webp",
@@ -646,6 +718,14 @@
   "license": "CC BY 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Karim_Benzema_wearing_Real_Madrid_home_kit_2021-2022.jpg"
+ },
+ "bernadette-szocs": {
+  "file": "bernadette-szocs.webp",
+  "cutout": true,
+  "author": "Granada",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:20220818_European_Championships_Munich_2022_Bernadette_Szocs_850_0193.jpg"
  },
  "bernal": {
   "file": "bernal.webp",
@@ -847,14 +927,6 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Celine_Boutier_(cropped).jpg"
  },
- "bradley-wiggins": {
-  "file": "bradley-wiggins.webp",
-  "cutout": true,
-  "author": "Petit Brun",
-  "license": "CC BY-SA 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Bradley_Wiggins_CD_2011.jpg"
- },
  "brady": {
   "file": "brady.webp",
   "cutout": true,
@@ -975,6 +1047,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Marcos_Evangelista_de_Moraes.jpg"
  },
+ "calderano": {
+  "file": "calderano.webp",
+  "cutout": true,
+  "author": "Breno Barros",
+  "license": "CC BY 3.0 br",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0/br/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Calderano_em_2021.jpg"
+ },
  "camavinga": {
   "file": "camavinga.webp",
   "cutout": true,
@@ -1015,6 +1095,22 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Eric_Cantona_Cannes_2009.jpg"
  },
+ "capablanca": {
+  "file": "capablanca.webp",
+  "cutout": true,
+  "author": "Anonymous Unknown author (Keystone-France)",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Jos%C3%A9_Ra%C3%BAl_Capablanca_1931.jpg"
+ },
+ "caps": {
+  "file": "caps.webp",
+  "cutout": true,
+  "author": "Fomos Esports",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Caps_2025.jpg"
+ },
  "carl-lewis": {
   "file": "carl-lewis.webp",
   "cutout": true,
@@ -1047,6 +1143,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:InddelVal-Boca_(4).jpg"
  },
+ "carlsen": {
+  "file": "carlsen.webp",
+  "cutout": true,
+  "author": "Stefan64",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:MagnusCarlsen24.jpg"
+ },
  "carmelo-anthony": {
   "file": "carmelo-anthony.webp",
   "cutout": true,
@@ -1078,6 +1182,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Dan_Carter_ONZM_(cropped).jpg"
+ },
+ "caruana": {
+  "file": "caruana.webp",
+  "cutout": true,
+  "author": "Frans Peeters",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Fabiano_Caruana_in_2025.jpg"
  },
  "cascarino": {
   "file": "cascarino.webp",
@@ -1199,6 +1311,14 @@
   "licenseUrl": "http://www.gnu.org/copyleft/fdl.html",
   "page": "https://commons.wikimedia.org/wiki/File:Beatrice_Chebet_(KEN)_2022.jpg"
  },
+ "chen-meng": {
+  "file": "chen-meng.webp",
+  "cutout": true,
+  "author": "China News Service",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Chen_Meng.png"
+ },
  "cherki": {
   "file": "cherki.webp",
   "cutout": true,
@@ -1246,6 +1366,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Neeraj_Chopra_Olympic_gold_medalist.jpg"
+ },
+ "chovy": {
+  "file": "chovy.webp",
+  "cutout": true,
+  "author": "E레기",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Chovy_Season_Kickoff_2023.jpg"
  },
  "chris-evert": {
   "file": "chris-evert.webp",
@@ -1431,6 +1559,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:2017-BG_Dafne_Schippers.jpg"
  },
+ "daigo": {
+  "file": "daigo.webp",
+  "cutout": true,
+  "author": "Andy L",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Daigo_playing_cropped.png"
+ },
  "damian-lillard": {
   "file": "damian-lillard.webp",
   "cutout": true,
@@ -1607,6 +1743,14 @@
   "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
   "page": "https://commons.wikimedia.org/wiki/File:Arnaud_De_Lie_(2023).jpg"
  },
+ "deft": {
+  "file": "deft.webp",
+  "cutout": true,
+  "author": "E레기",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Deft_interview_in_2022.jpg"
+ },
  "del-piero": {
   "file": "del-piero.webp",
   "cutout": true,
@@ -1639,6 +1783,22 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Ousmane_Dembele_France_v_Senegal_16_June_2026-341_(cropped).jpg"
  },
+ "dendi": {
+  "file": "dendi.webp",
+  "cutout": true,
+  "author": "Jakob Wells",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Dendi_TI4.jpg"
+ },
+ "deng-yaping": {
+  "file": "deng-yaping.webp",
+  "cutout": true,
+  "author": "中国新闻社",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:%E9%82%93%E4%BA%9A%E8%90%8D%E5%A5%B3%E5%A3%AB.png"
+ },
  "dennis-rodman": {
   "file": "dennis-rodman.webp",
   "cutout": true,
@@ -1662,6 +1822,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Didier_Deschamps_France_v_Senegal_16_June_2026-294.jpg"
+ },
+ "device": {
+  "file": "device.webp",
+  "cutout": true,
+  "author": "BLAST Premier",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Astralis_dev1ce_2020_interview_(cropped).jpg"
  },
  "devin-booker": {
   "file": "devin-booker.webp",
@@ -1767,6 +1935,30 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Jubil%C3%A9_Chabal-Nallet_-_20150604_-_Dimitri_Yachvili_1.jpg"
  },
+ "dimitrij-ovtcharov": {
+  "file": "dimitrij-ovtcharov.webp",
+  "cutout": true,
+  "author": "Sandro Halank, Wikimedia Commons",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2022-08-19_European_Championships_2022_%E2%80%93_Table_Tennis_by_Sandro_Halank%E2%80%93068.jpg"
+ },
+ "ding-liren": {
+  "file": "ding-liren.webp",
+  "cutout": true,
+  "author": "Stefan64",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:DingLiren24a.jpg"
+ },
+ "ding-ning": {
+  "file": "ding-ning.webp",
+  "cutout": true,
+  "author": "XIAOYU TANG",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ding_Ning_ATTC2017_9.jpeg"
+ },
  "diogo-costa": {
   "file": "diogo-costa.webp",
   "cutout": true,
@@ -1814,6 +2006,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Luka_Doncic_(55095317361)_(cropped).jpg"
+ },
+ "donk": {
+  "file": "donk.webp",
+  "cutout": true,
+  "author": "TS.BigFARGO",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Team_spirit_19.01.202531303_%D0%BA%D0%BE%D0%BF%D0%B8%D1%8F.jpg"
  },
  "donnarumma": {
   "file": "donnarumma.webp",
@@ -2053,6 +2253,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Svitolina_RG19_(16)_(48199019751).jpg"
  },
+ "emanuel-lasker": {
+  "file": "emanuel-lasker.webp",
+  "cutout": true,
+  "author": "Unknown author Unknown author",
+  "license": "CC BY-SA 3.0 de",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Bundesarchiv_Bild_102-00457,_Emanuel_Lasker.jpg"
+ },
  "emmanuel-adebayor": {
   "file": "emmanuel-adebayor.webp",
   "cutout": true,
@@ -2181,6 +2389,30 @@
   "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
   "page": "https://commons.wikimedia.org/wiki/File:Ludovic_Fabregas_20180301.jpg"
  },
+ "faker": {
+  "file": "faker.webp",
+  "cutout": true,
+  "author": "Fomos Esports",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Faker_2020_interview.jpg"
+ },
+ "fallen": {
+  "file": "fallen.webp",
+  "cutout": true,
+  "author": "Esports Kingdom",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:FalleN_IEM_Chicago_(48353708812)_(cropped).jpg"
+ },
+ "fan-zhendong": {
+  "file": "fan-zhendong.webp",
+  "cutout": true,
+  "author": "XIAOYU TANG",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Fan_Zhendong_ATTC2017_21.jpeg"
+ },
  "fangio": {
   "file": "fangio.webp",
   "cutout": true,
@@ -2237,6 +2469,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Nabil_Fekir_2015.jpg"
  },
+ "felipe-contepomi": {
+  "file": "felipe-contepomi.webp",
+  "cutout": true,
+  "author": "Marie-Lan Nguyen",
+  "license": "CC BY 2.5",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:Felipe_Contepomi_Stade_francais_training_2012-03-03.jpg"
+ },
  "felix": {
   "file": "felix.webp",
   "cutout": true,
@@ -2244,6 +2484,14 @@
   "license": "CC BY 3.0 br",
   "licenseUrl": "https://creativecommons.org/licenses/by/3.0/br/deed.en",
   "page": "https://commons.wikimedia.org/wiki/File:AllysonFelixRio2016.jpg"
+ },
+ "felix-lebrun": {
+  "file": "felix-lebrun.webp",
+  "cutout": true,
+  "author": "Nicolas22g",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:F%C3%A9lix_Lebrun_-_Paris_2024_-_French_delegation_Parade.jpg_02_(cropped).jpg"
  },
  "fernando-torres": {
   "file": "fernando-torres.webp",
@@ -2333,6 +2581,30 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:MANON_FIOROT_ET_ALDRIC_CASSATA,_LE_COUPLE_GOAL_DU_MMA_-_MMA_EXTRA_ROUND_-22_-_YouTube_-_0-28-31_(cropped).jpg"
  },
+ "firouzja": {
+  "file": "firouzja.webp",
+  "cutout": true,
+  "author": "This photo was taken by Eldar Azimov . Foto Eldar Əzimov tərəfindən çəkilib. Mention the a",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Alireza_Firouzja_at_the_Candidates_2024_tournament_10.jpg"
+ },
+ "fischer": {
+  "file": "fischer.webp",
+  "cutout": true,
+  "author": "Bundesarchiv_Bild_183-76052-0335,_Schacholympiade,_Tal_(UdSSR)_gegen_Fischer_(USA).jpg: Ko",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bobby_Fischer_1960_in_Leipzig_in_color.jpg"
+ },
+ "flash": {
+  "file": "flash.webp",
+  "cutout": true,
+  "author": "Kevin Chang for Team Liquid",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Flash_at_2013_MLG_Winter_Championship_103_(cropped).jpg"
+ },
  "flojo": {
   "file": "flojo.webp",
   "cutout": true,
@@ -2420,6 +2692,14 @@
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Franco_Baresi_2012.jpg"
+ },
+ "francois-andre-danican-philidor": {
+  "file": "francois-andre-danican-philidor.webp",
+  "cutout": true,
+  "author": "Augustin de Saint-Aubin, Charles-Nicolas Cochin",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Andr%C3%A9_Danicant_Philidor.jpg"
  },
  "francois-cevert": {
   "file": "francois-cevert.webp",
@@ -2637,6 +2917,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Paris-FR-75-open_de_tennis-25-5-16-Roland_Garros-Richard_Gasquet-33.jpg"
  },
+ "gatien": {
+  "file": "gatien.webp",
+  "cutout": true,
+  "author": "Pierre-Yves Beaudouin",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mondial_Ping_-_Press_conference_-_28.jpg"
+ },
  "gauff": {
   "file": "gauff.webp",
   "cutout": true,
@@ -2644,6 +2932,14 @@
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:US_Open_2022_Photo_177_(52391301928)_(Gauff).jpg"
+ },
+ "gauzy": {
+  "file": "gauzy.webp",
+  "cutout": true,
+  "author": "Daraul94",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Simon_Gauzy.JPG"
  },
  "gavi": {
   "file": "gavi.webp",
@@ -2869,6 +3165,14 @@
   "licenseUrl": "",
   "page": "https://commons.wikimedia.org/wiki/File:Gordie_Howe_Chex_card.jpg"
  },
+ "gotaga": {
+  "file": "gotaga.webp",
+  "cutout": true,
+  "author": "Zack Nani",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Gotaga_2026.jpg"
+ },
  "gout-gout": {
   "file": "gout-gout.webp",
   "cutout": true,
@@ -2964,6 +3268,22 @@
   "license": "CC0",
   "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
   "page": "https://commons.wikimedia.org/wiki/File:Serhou_Guirassy_2.jpg"
+ },
+ "gukesh": {
+  "file": "gukesh.webp",
+  "cutout": true,
+  "author": "Frans Peeters",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Gukesh_in_2024_(cropped).jpg"
+ },
+ "gumayusi": {
+  "file": "gumayusi.webp",
+  "cutout": true,
+  "author": "Marie Claire",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:T1_Gumayusi_Lee_Min-hyeong_in_an_interview,_2026.png"
  },
  "gustavo-kuerten": {
   "file": "gustavo-kuerten.webp",
@@ -3061,6 +3381,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Harden_dribbling_midcourt,_Cavaliers_vs_Nets_on_January_17,_2022_(cropped).jpg"
  },
+ "harimoto": {
+  "file": "harimoto.webp",
+  "cutout": true,
+  "author": "Peter Porai-Koshits",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ITTF_World_Tour_2017_German_Open_Harimoto_Tomokazu_04.jpg"
+ },
  "hashimoto": {
   "file": "hashimoto.webp",
   "cutout": true,
@@ -3133,6 +3461,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Alex_Honnold_in_2023_in_Antarctica.jpg"
  },
+ "hou-yifan": {
+  "file": "hou-yifan.webp",
+  "cutout": true,
+  "author": "Andreas Kontokanis from Piraeus, Greece",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Hou_Yifan_(29762728494)_(cropped).jpg"
+ },
  "humbert": {
   "file": "humbert.webp",
   "cutout": true,
@@ -3140,6 +3476,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Ugo_Humbert_-_2024_Olympics_(portrait)_(cropped).jpg"
+ },
+ "ian-nepomniachtchi": {
+  "file": "ian-nepomniachtchi.webp",
+  "cutout": true,
+  "author": "Etery Kublashvili",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ian_Nepomniachtchi_Tal_Memorial_2018.jpg"
  },
  "ilia-topuria": {
   "file": "ilia-topuria.webp",
@@ -3365,6 +3709,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Jamie_Vardy_2018.jpg"
  },
+ "jan-timman": {
+  "file": "jan-timman.webp",
+  "cutout": true,
+  "author": "Winicjusz Drozdowski, Poland",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Timman_Jan.jpg"
+ },
  "jan-ullrich": {
   "file": "jan-ullrich.webp",
   "cutout": true,
@@ -3396,6 +3748,14 @@
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Jaylen_Brown_2022.jpg"
+ },
+ "jean-michel-saive": {
+  "file": "jean-michel-saive.webp",
+  "cutout": true,
+  "author": "Pierre-Yves Beaudouin",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mondial_Ping_-_Gatien-Saive_-_39.jpg"
  },
  "jean-pierre-beltoise": {
   "file": "jean-pierre-beltoise.webp",
@@ -3549,6 +3909,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:260711_Lynx_Liberty_JohnMc157_(55386997877)_(cropped).jpg"
  },
+ "john-daly": {
+  "file": "john-daly.webp",
+  "cutout": true,
+  "author": "Carl Lindberg",
+  "license": "CC BY 2.5",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:JohnDalyATTNational2.jpg"
+ },
  "john-elway": {
   "file": "john-elway.webp",
   "cutout": true,
@@ -3645,6 +4013,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Jordan_Spieth_February_2015.jpg"
  },
+ "jorg-rosskopf": {
+  "file": "jorg-rosskopf.webp",
+  "cutout": true,
+  "author": "Sven Teschke",
+  "license": "CC BY-SA 3.0 de",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:2012-11-06_-_J%C3%B6rg_Ro%C3%9Fkopf_-_DOSB_-_0594.jpg"
+ },
  "jorge-lorenzo": {
   "file": "jorge-lorenzo.webp",
   "cutout": true,
@@ -3652,6 +4028,14 @@
   "license": "CC BY 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Jorge_Lorenzo_2010_Indianapolis.jpg"
+ },
+ "jorgen-persson": {
+  "file": "jorgen-persson.webp",
+  "cutout": true,
+  "author": "Zorbedit",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:J%C3%B6rgen_Persson_2013.jpg"
  },
  "joshua": {
   "file": "joshua.webp",
@@ -3732,6 +4116,14 @@
   "license": "CC BY 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:JulienMarchand2018(cropped).jpg"
+ },
+ "jun-mizutani": {
+  "file": "jun-mizutani.webp",
+  "cutout": true,
+  "author": "Mondial_Ping_-_Men's_Doubles_-_Semifinals_-_46.jpg : Pierre-Yves Beaudouin derivative work",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mondial_Ping_-_Men%27s_Doubles_-_Semifinals_-_46_(cropped).jpg"
  },
  "justin-gaethje": {
   "file": "justin-gaethje.webp",
@@ -3853,6 +4245,22 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Lipofsky-Karl-Malone-32727.jpg"
  },
+ "karpov": {
+  "file": "karpov.webp",
+  "cutout": true,
+  "author": "duma.gov.ru",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Anatoly_Karpov_2018.jpg"
+ },
+ "kasparov": {
+  "file": "kasparov.webp",
+  "cutout": true,
+  "author": "Fryta 73 from Strzegom",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Garri_Kasparow_(18776605665)_(cropped)_2.jpg"
+ },
  "katarina-witt": {
   "file": "katarina-witt.webp",
   "cutout": true,
@@ -3956,6 +4364,14 @@
   "license": "CC BY 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Sam_Kendricks_Rio_2016b.jpg"
+ },
+ "kennys": {
+  "file": "kennys.webp",
+  "cutout": true,
+  "author": "G2 Esports",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:KennyS_at_IEM_Katowice_2019_(cropped).jpg"
  },
  "kentin-mahe": {
   "file": "kentin-mahe.webp",
@@ -4149,6 +4565,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Kobe_Bryant_2015.jpg"
  },
+ "koki-niwa": {
+  "file": "koki-niwa.webp",
+  "cutout": true,
+  "author": "Pierre-Yves Beaudouin",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mondial_Ping_-_Men%27s_Singles_-_Round_4_-_Ma_Long-Koki_Niwa_-_08.jpg"
+ },
  "kolbe": {
   "file": "kolbe.webp",
   "cutout": true,
@@ -4180,6 +4604,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Ibrahima_Konate_France_v_Senegal_16_June_2026-516_(cropped).jpg"
+ },
+ "kong-linghui": {
+  "file": "kong-linghui.webp",
+  "cutout": true,
+  "author": "Pierre-Yves Beaudouin",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mondial_Ping_-Women%27s_Singles_-_Quarterfinal_-_Melek_Hu-Liu_Shiwen_-_03.jpg"
  },
  "kopa": {
   "file": "kopa.webp",
@@ -4220,6 +4652,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Jules_Kounde_France_v_Senegal_16_June_2026-449_(cropped).jpg"
+ },
+ "kramnik": {
+  "file": "kramnik.webp",
+  "cutout": true,
+  "author": "Vladimir Barskij",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vladimir_Kramnik_2,_Candidates_Tournament_2018.jpg"
  },
  "kristaps-porzingis": {
   "file": "kristaps-porzingis.webp",
@@ -4541,6 +4981,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:20180602_FIFA_Friendly_Match_Austria_vs._Germany_Leroy_San%C3%A9_850_0668.jpg"
  },
+ "levon-aronian": {
+  "file": "levon-aronian.webp",
+  "cutout": true,
+  "author": "Frans Peeters",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Levon_Aronian_in_2023.jpg"
+ },
  "lewandowski": {
   "file": "lewandowski.webp",
   "cutout": true,
@@ -4564,6 +5012,22 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:2023-02-10_IBU_World_Championships_Biathlon_Oberhof_2023_1DX_5025_by_Stepro.jpg"
+ },
+ "liu-guoliang": {
+  "file": "liu-guoliang.webp",
+  "cutout": true,
+  "author": "Pierre-Yves Beaudouin",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mondial_Ping_-_Men%27s_Singles_-_Round_4_-_Ma_Long-Koki_Niwa_-_02.jpg"
+ },
+ "liu-shiwen": {
+  "file": "liu-shiwen.webp",
+  "cutout": true,
+  "author": "XIAOYU TANG",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Liu_Shiwen_ATTC2017_26.jpeg"
  },
  "livakovic": {
   "file": "livakovic.webp",
@@ -4669,6 +5133,22 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
   "page": "https://commons.wikimedia.org/wiki/File:Tourischeva_cortada.JPG"
  },
+ "ma-lin": {
+  "file": "ma-lin.webp",
+  "cutout": true,
+  "author": "Pierre-Yves Beaudouin",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mondial_Ping_-_Men%27s_Doubles_-_Semifinals_-_34.jpg"
+ },
+ "ma-long": {
+  "file": "ma-long.webp",
+  "cutout": true,
+  "author": "China News Service",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ma_Long_(2024).png"
+ },
  "mac-allister": {
   "file": "mac-allister.webp",
   "cutout": true,
@@ -4684,6 +5164,14 @@
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Magic_Johnson_Mercedes-Benz_Carousel_of_Hope_Gala_2014_(15333080200).jpg"
+ },
+ "magisk": {
+  "file": "magisk.webp",
+  "cutout": true,
+  "author": "Esports Kingdom",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:IEM_Katowice_2019_Magisk_IMG_2777_(32458362907)_(cropped).jpg"
  },
  "mahomes": {
   "file": "mahomes.webp",
@@ -5309,6 +5797,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Miguel_INDURAIN.jpg"
  },
+ "mikael-appelgren": {
+  "file": "mikael-appelgren.webp",
+  "cutout": true,
+  "author": "Armigo",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Mikael-Appelgren-2009.jpg"
+ },
  "mike-powell": {
   "file": "mike-powell.webp",
   "cutout": true,
@@ -5333,6 +5829,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Mike_Tyson_Photo_Op_GalaxyCon_Austin_2023.jpg"
  },
+ "mikhail-botvinnik": {
+  "file": "mikhail-botvinnik.webp",
+  "cutout": true,
+  "author": "Harry Pot for Anefo ]]",
+  "license": "CC BY-SA 3.0 nl",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/nl/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Mikhail_Botvinnik_1962.jpg"
+ },
  "mikkel-hansen": {
   "file": "mikkel-hansen.webp",
   "cutout": true,
@@ -5356,6 +5860,14 @@
   "license": "CC BY-SA 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Milla2008cropped.jpg"
+ },
+ "mima-ito": {
+  "file": "mima-ito.webp",
+  "cutout": true,
+  "author": "Peter Porai-Koshits",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ITTF_World_Tour_2017_German_Open_Ito_Mima_05.jpg"
  },
  "mireia-belmonte": {
   "file": "mireia-belmonte.webp",
@@ -5405,6 +5917,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Monica_Seles_1999.jpg"
  },
+ "moregardh": {
+  "file": "moregardh.webp",
+  "cutout": true,
+  "author": "Granada",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:20220814_European_Championships_Munich_2022_Truls_M%C3%B6reg%C3%A5rdh_850_2761.jpg"
+ },
  "morgan": {
   "file": "morgan.webp",
   "cutout": true,
@@ -5412,6 +5932,14 @@
   "license": "CC BY 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Alex_Morgan_May19.jpg"
+ },
+ "morphy": {
+  "file": "morphy.webp",
+  "cutout": true,
+  "author": "Auteur inconnu",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:PaulmorphyHair.jpg"
  },
  "mossely": {
   "file": "mossely.webp",
@@ -5469,6 +5997,22 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Jamal_Musiala_2022.jpg"
  },
+ "mvl": {
+  "file": "mvl.webp",
+  "cutout": true,
+  "author": "Lennart Ootes",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Maxime_Vachier-Lagrave_au_tournoi_des_candidats_(cropped).jpg"
+ },
+ "n0tail": {
+  "file": "n0tail.webp",
+  "cutout": true,
+  "author": "Dota 2 The International",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:The_International_2018_(42413912070)_(cropped).jpg"
+ },
  "nadal": {
   "file": "nadal.webp",
   "cutout": true,
@@ -5492,6 +6036,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Nafissatou_Thiam_Oregon_2022_(2).jpg"
+ },
+ "nakamura": {
+  "file": "nakamura.webp",
+  "cutout": true,
+  "author": "Stefan64",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:HikaruNakamura19.jpg"
  },
  "navratilova": {
   "file": "navratilova.webp",
@@ -5573,6 +6125,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Earvin_Ngapeth_(Legavolley_2018).jpg"
  },
+ "ni-xia-lian": {
+  "file": "ni-xia-lian.webp",
+  "cutout": true,
+  "author": "Vladimir Mirskiy",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ni_Xialian-001.JPG"
+ },
  "nick-diaz": {
   "file": "nick-diaz.webp",
   "cutout": true,
@@ -5652,6 +6212,14 @@
   "license": "CC BY 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Pole_Vault_Women_MEETING_STANISLAS_TOMBLAINE_2018_Stade_Raymond_Petit_(43082789941).jpg"
+ },
+ "ninja": {
+  "file": "ninja.webp",
+  "cutout": true,
+  "author": "State Farm",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Krystalogy,_Jess,_Ninja,_and_Typical_Gamer_relaxing_in_the_State_Farm_Gamerhood_(52899874282)_(cropped).jpg"
  },
  "noah": {
   "file": "noah.webp",
@@ -5877,6 +6445,14 @@
   "licenseUrl": "",
   "page": "https://commons.wikimedia.org/wiki/File:0K8A7984_(53451306826)_(cropped).jpg"
  },
+ "osmany-juantorena": {
+  "file": "osmany-juantorena.webp",
+  "cutout": true,
+  "author": "CristianNX",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Osmany_Juantorena.JPG"
+ },
  "ouliana-semionova": {
   "file": "ouliana-semionova.webp",
   "cutout": true,
@@ -5981,6 +6557,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Patrice_Evra_(52472689279)_(cropped).jpg"
  },
+ "patrick-chila": {
+  "file": "patrick-chila.webp",
+  "cutout": true,
+  "author": "Pierre-Yves Beaudouin",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mondial_Ping_-_Gatien-Saive_-_59_-_Patrick_Chila.jpg"
+ },
  "patrick-depailler": {
   "file": "patrick-depailler.webp",
   "cutout": true,
@@ -6077,6 +6661,14 @@
   "licenseUrl": "",
   "page": "https://commons.wikimedia.org/wiki/File:Payne_Stewart_in_October_1998.jpg"
  },
+ "peanut": {
+  "file": "peanut.webp",
+  "cutout": true,
+  "author": "Fomos Esports",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Peanut_2025.jpg"
+ },
  "peaty": {
   "file": "peaty.webp",
   "cutout": true,
@@ -6141,6 +6733,14 @@
   "licenseUrl": "",
   "page": "https://commons.wikimedia.org/wiki/File:Alex_Pereira_in_the_Oval_Office_(while_President_Donald_J._Trump_is_holding_a_meeting_with_UFC_fighters).jpg"
  },
+ "perkz": {
+  "file": "perkz.webp",
+  "cutout": true,
+  "author": "G2 Esports",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Perkz_2020.jpg"
+ },
  "pete-rose": {
   "file": "pete-rose.webp",
   "cutout": true,
@@ -6148,6 +6748,14 @@
   "license": "CC BY 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Pete_Rose_2008.jpg"
+ },
+ "peter-rothmann": {
+  "file": "peter-rothmann.webp",
+  "cutout": true,
+  "author": "BlAST Premier",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Dupreeh_BLAST_Backstage_Copenhagen_2018_(cropped).jpg"
  },
  "peter-sagan": {
   "file": "peter-sagan.webp",
@@ -6293,6 +6901,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Paul_Pogba_in_2018.jpg"
  },
+ "polgar": {
+  "file": "polgar.webp",
+  "cutout": true,
+  "author": "This photo was taken by Przemysław Jahr Autorem zdjęcia jest Przemysław Jahr Wykorzystując",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+  "page": "https://commons.wikimedia.org/wiki/File:Judit_Polg%C3%A1r_2013.jpg"
+ },
  "popovici": {
   "file": "popovici.webp",
   "cutout": true,
@@ -6308,6 +6924,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Portia_Woodman_2024.jpg"
+ },
+ "praggnanandhaa-rameshbabu": {
+  "file": "praggnanandhaa-rameshbabu.webp",
+  "cutout": true,
+  "author": "Vysotsky",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:TataSteelChess2017-79.jpg"
  },
  "prandi": {
   "file": "prandi.webp",
@@ -6468,6 +7092,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:25th_Laureus_World_Sports_Awards_-_Red_Carpet_-_Rayssa_Leal_-_240422_183748_(cropped01).jpg"
+ },
+ "rekkles": {
+  "file": "rekkles.webp",
+  "cutout": true,
+  "author": "G2 Esports",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Rekkles_2020.jpg"
  },
  "renard": {
   "file": "renard.webp",
@@ -6693,6 +7325,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Wayne_Rooney_(50121495731)_(cropped).jpg"
  },
+ "ropz": {
+  "file": "ropz.webp",
+  "cutout": true,
+  "author": "VaKarM.net",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ropz_at_Blast_Paris_Major_2023.jpg"
+ },
  "rory-mcilroy": {
   "file": "rory-mcilroy.webp",
   "cutout": true,
@@ -6732,6 +7372,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Diogo_Costa_Ruben_Dias_Croatia_v_Portugal_2_July_2026-181_(cropped).jpg"
+ },
+ "ruler": {
+  "file": "ruler.webp",
+  "cutout": true,
+  "author": "fomos esports",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:GEN_Ruler_2022.jpg"
  },
  "rune": {
   "file": "rune.webp",
@@ -6820,6 +7468,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Elena_Rybakina_(2025_DC_Open)_07_(cropped).jpg"
+ },
+ "s1mple": {
+  "file": "s1mple.webp",
+  "cutout": true,
+  "author": "Esports Kingdom",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Oleksandr_s1mple_Kostyliev.jpg"
  },
  "said-aouita": {
   "file": "said-aouita.webp",
@@ -6949,6 +7605,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Cyprien_Sarrazin_en_mars_2019_au_Super_Slalom_de_La_Plagne.jpg"
  },
+ "sasha-hostyn": {
+  "file": "sasha-hostyn.webp",
+  "cutout": true,
+  "author": "Kevin \"Silverfire\" Chang (for Team Liquid)",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sasha_%22Scarlett%22_Hostyn.jpg"
+ },
  "savanier": {
   "file": "savanier.webp",
   "cutout": true,
@@ -6981,6 +7645,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Scottie_Scheffler_Ryder_Cup_2025_(cropped).jpg"
  },
+ "schlager": {
+  "file": "schlager.webp",
+  "cutout": true,
+  "author": "Jü",
+  "license": "CC0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Schlager_Werner_2006.jpg"
+ },
  "schroder": {
   "file": "schroder.webp",
   "cutout": true,
@@ -7012,6 +7684,14 @@
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Lord_Coe_-_World_Economic_Forum_Annual_Meeting_2012_cropped.jpg"
+ },
+ "sebastien-debs": {
+  "file": "sebastien-debs.webp",
+  "cutout": true,
+  "author": "artubr",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Dota_2_desk_analysis_-_ESL_One_Frankfurt_2014_(cropped_to_Ceb).jpg"
  },
  "seixas": {
   "file": "seixas.webp",
@@ -7093,6 +7773,22 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Sergio_P%C3%A9rez_2019_(cropped).jpg"
  },
+ "serguei-kariakine": {
+  "file": "serguei-kariakine.webp",
+  "cutout": true,
+  "author": "Vladimir Barskij",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sergey_Karjakin_3,_Candidates_Tournament_2018.jpg"
+ },
+ "serral": {
+  "file": "serral.webp",
+  "cutout": true,
+  "author": "Marco Wutz",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Serral_2018.jpg"
+ },
  "seve": {
   "file": "seve.webp",
   "cutout": true,
@@ -7124,6 +7820,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:2023-08-09_Deutschland_gegen_Kanada_(Basketball-L%C3%A4nderspiel)_by_Sandro_Halank%E2%80%93109.jpg"
+ },
+ "shakhriyar-mamedyarov": {
+  "file": "shakhriyar-mamedyarov.webp",
+  "cutout": true,
+  "author": "Andreas Kontokanis from Piraeus, Greece",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mamedyarov_Shakhriyar_profile_(30680155211)_(cropped).jpg"
  },
  "shaq": {
   "file": "shaq.webp",
@@ -7180,6 +7884,22 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Mikaela_Shiffrin_M%C3%A9ribel_2023.jpg"
+ },
+ "shox": {
+  "file": "shox.webp",
+  "cutout": true,
+  "author": "Carlos \"ocelote\" Rodríguez Santiago",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Shox_in_2018.png"
+ },
+ "shroud": {
+  "file": "shroud.webp",
+  "cutout": true,
+  "author": "Nate Herrera n8bit_",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Shroud_at_PUBG_PGI_2018_(cropped).jpg"
  },
  "simon-billy": {
   "file": "simon-billy.webp",
@@ -7253,6 +7973,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:BFA_2023_-2_Heung-Min_Son_(cropped).jpg"
  },
+ "sonicfox": {
+  "file": "sonicfox.webp",
+  "cutout": true,
+  "author": "Vincent Samaco / vsmak.vincentsamaco.com",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:SonicFox_at_Evo_2015_(cropped).jpg"
+ },
  "sonny-bill-williams": {
   "file": "sonny-bill-williams.webp",
   "cutout": true,
@@ -7260,6 +7988,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Sonny_Bill_Williams_August_2014_.jpg"
+ },
+ "spassky": {
+  "file": "spassky.webp",
+  "cutout": true,
+  "author": "Hans van Dijk for Anefo",
+  "license": "CC0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Interpolis_schaaktoernooi_in_Tilburg,_B_Spassky,_Bestanddeelnr_931-0359.jpg"
  },
  "spyridon-louis": {
   "file": "spyridon-louis.webp",
@@ -7301,6 +8037,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Stephanie_Gilmore.jpg"
  },
+ "stephanie-harvey": {
+  "file": "stephanie-harvey.webp",
+  "cutout": true,
+  "author": "ETC-USC",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Stephanie_harvey_crop.jpg"
+ },
  "steve-kerr": {
   "file": "steve-kerr.webp",
   "cutout": true,
@@ -7325,14 +8069,6 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Steven_Gerrard_2018.jpg"
  },
- "stuart-hogg": {
-  "file": "stuart-hogg.webp",
-  "cutout": true,
-  "author": "Stefano Delfrate",
-  "license": "CC BY-SA 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Stuart_Hogg_2020_(cropped).jpg"
- },
  "suarez": {
   "file": "suarez.webp",
   "cutout": true,
@@ -7349,6 +8085,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Incheon_AsianGames_Swimming_34.jpg"
  },
+ "sun-yingsha": {
+  "file": "sun-yingsha.webp",
+  "cutout": true,
+  "author": "China News Service",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Sun_Yingsha.png"
+ },
  "suni-lee": {
   "file": "suni-lee.webp",
   "cutout": true,
@@ -7356,6 +8100,14 @@
   "license": "CC BY 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Sunisa_Lee_(2022)_01.png"
+ },
+ "susan-polgar": {
+  "file": "susan-polgar.webp",
+  "cutout": true,
+  "author": "GFHund",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Polgar,Susan_2012_Istanbul.jpg"
  },
  "svetlana-khorkina": {
   "file": "svetlana-khorkina.webp",
@@ -7372,6 +8124,22 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Iga_%C5%9Awi%C4%85tek_(2023_US_Open)_18_(cropped).jpg"
+ },
+ "sylvain-chavanel": {
+  "file": "sylvain-chavanel.webp",
+  "cutout": true,
+  "author": "Laurie Beylier from France",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Crit%C3%A9rium_de_Marcol%C3%A8s_2011_Sylvain_Chavanel_(6891826384).jpg"
+ },
+ "tal": {
+  "file": "tal.webp",
+  "cutout": true,
+  "author": "Croes, Rob C. for Anefo",
+  "license": "CC BY-SA 3.0 nl",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/nl/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Mikhail_Tal_1982.jpg"
  },
  "talant-dujshebaev": {
   "file": "talant-dujshebaev.webp",
@@ -7420,6 +8188,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Bislett_Games_2026_-_Letsile_Tebogo_(cropped).jpg"
+ },
+ "tenz": {
+  "file": "tenz.webp",
+  "cutout": true,
+  "author": "Billgatenguyen",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:SEN_TENZ_2023.jpg"
  },
  "tessa-virtue": {
   "file": "tessa-virtue.webp",
@@ -7517,6 +8293,14 @@
   "licenseUrl": "",
   "page": "https://commons.wikimedia.org/wiki/File:Tiger_Woods_in_May_2019.jpg"
  },
+ "tigran-petrossian": {
+  "file": "tigran-petrossian.webp",
+  "cutout": true,
+  "author": "Harry Pot / Anefo",
+  "license": "CC0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Tigran_Petrosian_1962.jpg"
+ },
  "tijana-boskovic": {
   "file": "tijana-boskovic.webp",
   "cutout": true,
@@ -7524,6 +8308,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Tijana_Bo%C5%A1kovi%C4%87_19_Vak%C4%B1fBank_SK_WV_TWVL_20260416_(10)_(cropped).jpg"
+ },
+ "timo-boll": {
+  "file": "timo-boll.webp",
+  "cutout": true,
+  "author": "Sandro Halank, Wikimedia Commons",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2022-08-19_European_Championships_2022_%E2%80%93_Table_Tennis_by_Sandro_Halank%E2%80%93071.jpg"
  },
  "tiril-eckhoff": {
   "file": "tiril-eckhoff.webp",
@@ -7548,14 +8340,6 @@
   "license": "Public domain",
   "licenseUrl": "",
   "page": "https://commons.wikimedia.org/wiki/File:Tom_Simpson_c1966.jpg"
- },
- "tommy-fleetwood": {
-  "file": "tommy-fleetwood.webp",
-  "cutout": true,
-  "author": "ChristopherJClarke",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Tommy_Fleetwood_pro-am_Wentworth_2023-2.jpg"
  },
  "toni-sailer": {
   "file": "toni-sailer.webp",
@@ -7709,6 +8493,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Wayde_van_Niekerk_080817_London_2017ceopped.jpg"
  },
+ "vassili-ivantchouk": {
+  "file": "vassili-ivantchouk.webp",
+  "cutout": true,
+  "author": "Andreas Kontokanis from Piraeus, Greece",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:GM_Vassily_Ivanchuk.jpg"
+ },
  "vauquelin": {
   "file": "vauquelin.webp",
   "cutout": true,
@@ -7733,6 +8525,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Max_Verstappen_at_the_Red_Bull_Fan_Zone_%E2%80%93_Crown_Riverwalk,_Melbourne_(028A7659)_-_cropped.jpg"
  },
+ "veselin-topalov": {
+  "file": "veselin-topalov.webp",
+  "cutout": true,
+  "author": "This photo was taken by Przemysław Jahr Autorem zdjęcia jest Przemysław Jahr Wykorzystując",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+  "page": "https://commons.wikimedia.org/wiki/File:Veselin_Topalov_2013.jpg"
+ },
  "vettel": {
   "file": "vettel.webp",
   "cutout": true,
@@ -7740,6 +8540,14 @@
   "license": "CC BY-SA 2.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:2019_Formula_One_tests_Barcelona,_Vettel_(47200008782).jpg"
+ },
+ "viktor-kortchnoi": {
+  "file": "viktor-kortchnoi.webp",
+  "cutout": true,
+  "author": "Andreas Kontokanis from Piraeus, Greece",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viktor_Korchnoi_2011.jpg"
  },
  "vince-carter": {
   "file": "vince-carter.webp",
@@ -7805,6 +8613,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Vitinha_USMNT_v_Portugal_Mar_31_2026-50.jpg"
  },
+ "vladimir-samsonov": {
+  "file": "vladimir-samsonov.webp",
+  "cutout": true,
+  "author": "Pierre-Yves Beaudouin",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vladimir_Samsonov_2013.jpg"
+ },
  "vlahovic": {
   "file": "vlahovic.webp",
   "cutout": true,
@@ -7837,6 +8653,38 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:25th_Laureus_World_Sports_Awards_-_Red_Carpet_-_Lindsey_Vonn_-_240422_181204_(cropped).jpg"
  },
+ "waldner": {
+  "file": "waldner.webp",
+  "cutout": true,
+  "author": "Kanjitard",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Jan-Ove_Waldner.JPG"
+ },
+ "wang-chuqin": {
+  "file": "wang-chuqin.webp",
+  "cutout": true,
+  "author": "Marcus Cyron",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Table_tennis_at_the_2018_Summer_Youth_Olympics_%E2%80%93_Men%27s_Singles_Gold_Medal_Match_068_(cropped).jpg"
+ },
+ "wang-hao": {
+  "file": "wang-hao.webp",
+  "cutout": true,
+  "author": "Peter Porai-Koshits",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ITTF_World_Tour_2017_German_Open_Wang_Hao_and_Fan_Zhendong.jpg"
+ },
+ "wang-liqin": {
+  "file": "wang-liqin.webp",
+  "cutout": true,
+  "author": "Pierre-Yves Beaudouin",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mondial_Ping_-_Mixed_Doubles_-_Semifinals_-_01.jpg"
+ },
  "warholm": {
   "file": "warholm.webp",
   "cutout": true,
@@ -7860,6 +8708,14 @@
   "license": "CC BY 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Victor_Wembanyama_San_Antonio_Spurs_2024.jpg"
+ },
+ "wilhelm-steinitz": {
+  "file": "wilhelm-steinitz.webp",
+  "cutout": true,
+  "author": "Auteur inconnu",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Steinitz,_William-6_-_DPLA_-_14aa7ef9477056e77578e1aca30a7e8d_(cropped).jpg"
  },
  "wilkinson": {
   "file": "wilkinson.webp",
@@ -7925,6 +8781,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Xavi_Hernandez.jpg"
  },
+ "xavier-tartakover": {
+  "file": "xavier-tartakover.webp",
+  "cutout": true,
+  "author": "Auteur inconnu",
+  "license": "Public domain",
+  "licenseUrl": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Ksawery_Tartakower.jpg"
+ },
  "xhaka": {
   "file": "xhaka.webp",
   "cutout": true,
@@ -7940,6 +8804,22 @@
   "license": "CC BY-SA 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Xherdan_Shaqiri_2018.jpg"
+ },
+ "xpeke": {
+  "file": "xpeke.webp",
+  "cutout": true,
+  "author": "Bruce Liu",
+  "license": "CC BY-SA 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:XPeke_at_2015_League_of_Legends_Worlds_crop.jpeg"
+ },
+ "xu-xin": {
+  "file": "xu-xin.webp",
+  "cutout": true,
+  "author": "XIAOYU TANG",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Xu_Xin_ATTC2017_19.jpeg"
  },
  "yabusele": {
   "file": "yabusele.webp",
@@ -8101,6 +8981,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Zehra_G%C3%BCne%C5%9F_18_Vak%C4%B1fBank_SK_WV_TWVL_20260416_(5)_(cropped).jpg"
  },
+ "zhang-jike": {
+  "file": "zhang-jike.webp",
+  "cutout": true,
+  "author": "XIAOYU TANG",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Zhang_Jike_ATTC2017_444.jpeg"
+ },
  "zheng": {
   "file": "zheng.webp",
   "cutout": true,
@@ -8148,5 +9036,13 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Alexander_Zverev.jpg"
+ },
+ "zywoo": {
+  "file": "zywoo.webp",
+  "cutout": true,
+  "author": "Radosław Makuch",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:SR2y6O24ZOQk4EgiwwyauP.jpg"
  }
 }
