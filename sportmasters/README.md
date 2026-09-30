@@ -51,7 +51,7 @@ Dans une même rareté, le niveau sportif réel de l'athlète et sa célébrité
 
 ### Versions spéciales
 
-- **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or, années de vie pour les disparus.
+- **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or à partir de Rare, papier ancien mat en dessous (une carte n'a jamais l'air plus précieuse qu'elle n'est rare), années de vie pour les disparus.
 - **Prime** : la meilleure saison d'une très grande légende, et seulement d'elles : 36 athlètes (Messi 2012, Cristiano Ronaldo 2014, Ronaldo Nazário 2002, LeBron 2016, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Une de ces légendes tirée dans un booster a 8 % de chances d'être en Prime, soit environ 1 carte sur 1 200 dans le booster gratuit, dix fois plus rare qu'une Légendaire. Valeur ×6 au marché.
 
 ### La carte
@@ -160,6 +160,7 @@ node scripts/wikidata/generer-athletes.mjs --recaler   # sans réseau : recalcul
 - **Écartés** : les doublons de la base manuelle (même identifiant Wikidata ou même nom), les personnes de `scripts/wikidata/exclus.json` (entraîneurs célèbres surtout comme tels, personnalités connues hors du sport…), avec la raison.
 - **Célébrité** : la popularité (vues Wikipédia en français × nombre de Wikipédias au carré, pour mêler audience en France et notoriété mondiale) est comparée à celle des athlètes de la base manuelle : à popularité égale, même célébrité, donc même rareté. Un ancien joueur devenu entraîneur ne dépasse pas « rare ». `scripts/wikidata/celebrite.json` permet de corriger un cas à la main.
 - **Fiche** : pays sportif (y compris Angleterre, Écosse, pays de Galles), poste ou discipline d'après Wikidata, description comme phrase de la carte, noms d'usage dans `scripts/wikidata/noms.json` (Isco, Bernardinho…). Un décès n'est retenu (carte Icône avec les années) que si l'introduction Wikipédia le confirme. Les retraités deviennent aussi des Icônes : c'est l'introduction en anglais qui tranche, car elle dit toujours « former » pour un retraité (« is a French former professional footballer ») et jamais pour un joueur en activité, même à 59 ans comme Kazuyoshi Miura ; Wikipédia en français décrit souvent une carrière finie au présent. Faute de page en anglais : les tournures françaises (« est un ancien footballeur », « qui évoluait au poste de… », « professionnel de 2003 à 2022 »…), puis l'âge (50 ans). Les noms chinois et coréens s'affichent nom de famille en premier (« Ma Long », « Son Heung-min »).
+- **Retouches** : `scripts/wikidata/corrections.json` corrige à la main un pays, une retraite, un profil ou un poste, avec la raison (Tigran Petrossian est arménien, Patrick Chila est retraité même si sa page anglaise ne le dit pas…).
 - **Recalage hors ligne** : les mesures (vues, nombre de Wikipédias) sont gardées dans le fichier et dans `scripts/wikidata/reperes.json` ; `--recaler` refait le calcul après une retouche, sans réseau.
 - `--contact` est obligatoire : Wikimedia demande un moyen de contact dans les requêtes (l'adresse du dépôt suffit).
 - Le moteur a été testé avec 10 000 athlètes factices : 6 ms par booster, 0,2 s pour rattraper 24 h de marché, et les grilles s'affichent par pages de 120 cartes.

@@ -113,6 +113,12 @@ describe('générateur d’athlètes (Wikidata)', () => {
     expect(retired({ en: 'Kazuyoshi Miura is a Japanese professional footballer who plays as a forward.', fr: 'Kazuyoshi Miura est un footballeur ayant évolué à Santos.' }, 1967)).toBe(false);
     expect(retired({ en: 'Conor McGregor is an Irish professional mixed martial artist. He is a former UFC champion.' }, 1988)).toBe(false);
     expect(retired({ en: 'Caroline Wozniacki is a Danish professional tennis player. She is a former world No. 1.' }, 1990)).toBe(false);
+    // « former » devant un titre ou un autre métier ne dit pas une retraite
+    expect(retired({ en: 'Islam Makhachev is a Russian professional mixed martial artist and former UFC Lightweight Champion.' }, 1991)).toBe(false);
+    expect(retired({ en: 'Manny Pacquiao is a Filipino former politician and professional boxer.' }, 1978)).toBe(false);
+    expect(retired({ en: 'Veselin Topalov is a Bulgarian chess grandmaster and former FIDE World Champion.' }, 1975)).toBe(false);
+    expect(retired({ en: 'George Weah is a Liberian politician and former professional footballer who served as president.' }, 1966)).toBe(true);
+    expect(retired({ en: 'Giacomo Agostini is an Italian former Grand Prix motorcycle road racer.' }, 1942)).toBe(true);
     // sans page anglaise : les tournures de la page française, puis l'âge
     expect(retired({ fr: 'Franck Ribéry, né le 7 avril 1983, est un ancien footballeur international français.' }, 1983)).toBe(true);
     expect(retired({ fr: 'Marion Bartoli est une joueuse de tennis française, professionnelle de février 2000 à août 2013.' }, 1984)).toBe(true);
@@ -141,7 +147,12 @@ describe('générateur d’athlètes (Wikidata)', () => {
     expect(archetypeFor('esport', 'joueur professionnel de League of Legends')).toEqual({ archetype: 'esport-moba', role: 'League of Legends' });
     expect(archetypeFor('esport', 'joueur de Counter-Strike: Global Offensive').archetype).toBe('esport-fps');
     expect(archetypeFor('esport', 'joueur professionnel de StarCraft II').archetype).toBe('esport-rts');
-    expect(archetypeFor('esport', 'joueur de Street Fighter').archetype).toBe('esport-versus');
+    expect(archetypeFor('esport', 'joueur de Street Fighter')).toEqual({ archetype: 'esport-versus', role: 'Jeux de combat' });
+    // le jeu vient parfois seulement de Wikidata (P641) ou du poste
+    expect(archetypeFor('esport', 'joueur professionnel de sport électronique | League of Legends')).toEqual({ archetype: 'esport-moba', role: 'League of Legends' });
+    expect(archetypeFor('esport', 'joueur de jeux vidéo | mid laner').role).toBe('League of Legends');
+    expect(archetypeFor('esport', 'joueur professionnel de jeux vidéo | Counter-Strike 2').role).toBe('Counter-Strike');
+    expect(archetypeFor('esport', 'joueuse de sport électronique | StarCraft II | Dota 2').archetype).toBe('esport-rts');
     expect(archetypeFor('pingpong', 'pongiste suédois')).toEqual({ archetype: 'pong-attaque', role: 'Tennis de table' });
     expect(archetypeFor('echecs', 'joueur d’échecs russe').archetype).toBe('echecs-stratege');
     expect(defaultFact('esport', 'Counter-Strike', false)).toBe('Joueur professionnel de Counter-Strike');

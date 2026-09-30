@@ -225,7 +225,8 @@ const RULES = {
   pingpong: [[/d[ée]fenseu|d[ée]fensi/, 'pong-defense', 'Défenseur']],
   // esport : le jeu donne le profil (MOBA, tir, stratégie, combat, simulation) et s'affiche comme poste
   esport: [
-    [/league of legends/, 'esport-moba', 'League of Legends'],
+    [/starcraft/, 'esport-rts', 'StarCraft'],
+    [/league of legends|(top|mid|bot)[ -]?lan|jungl|ad carry/, 'esport-moba', 'League of Legends'],
     [/dota/, 'esport-moba', 'Dota 2'],
     [/counter-strike|cs:?go|\bcs2\b/, 'esport-fps', 'Counter-Strike'],
     [/valorant/, 'esport-fps', 'Valorant'],
@@ -233,11 +234,9 @@ const RULES = {
     [/call of duty/, 'esport-fps', 'Call of Duty'],
     [/overwatch/, 'esport-fps', 'Overwatch'],
     [/halo|quake|apex|pubg|rainbow six/, 'esport-fps', 'Jeux de tir'],
-    [/starcraft/, 'esport-rts', 'StarCraft'],
     [/warcraft|age of empires|hearthstone/, 'esport-rts', 'Stratégie'],
-    [/street fighter/, 'esport-versus', 'Street Fighter'],
     [/smash/, 'esport-versus', 'Super Smash Bros.'],
-    [/tekken|mortal kombat|jeux? de combat|fighting game/, 'esport-versus', 'Jeux de combat'],
+    [/street fighter|tekken|mortal kombat|guilty gear|dragon ball|jeux? de combat|fighting game/, 'esport-versus', 'Jeux de combat'],
     [/rocket league/, 'esport-simu', 'Rocket League'],
     [/fifa|ea sports fc|pro evolution/, 'esport-simu', 'EA Sports FC'],
     [/trackmania|gran turismo|iracing|sim racing/, 'esport-simu', 'Course virtuelle'],
@@ -431,6 +430,11 @@ const RETIRED_CLUES_FR = [
 ];
 /** Âge à partir duquel un athlète sans page en anglais est tenu pour retraité. */
 const RETIREMENT_AGE = 50;
+// « former » dit une carrière finie (« French former professional footballer », « and former player »),
+// sauf devant un titre ou un autre métier : « former UFC Lightweight Champion », « former world No. 1 »,
+// « former politician and professional boxer » (Manny Pacquiao boxe encore).
+const RETIRED_EN =
+  /\b(former|retired)\s+(?!(?:[\w-]+\s+){0,2}(?:champion|titleholder|world|number|no\.)(?![\w-]))(?!(?:politician|senator|president|minister|governor|mayor|member|owner|chairman|captain|model|coach|manager)\b)/i;
 
 /**
  * Pourquoi la carrière est finie (une carte d'athlète retraité est une Icône), ou null si elle continue :
@@ -444,8 +448,8 @@ export function retirementClue({ fr = '', en = '', born, died, year = new Date()
   const definition = englishDefinition(en);
   if (definition) {
     if (definition.verb === 'was') return '« was a »';
-    const former = /\b(former|retired)\b/i.exec(definition.words);
-    return former ? `« ${former[0]} »` : null;
+    const former = RETIRED_EN.exec(definition.words);
+    return former ? `« ${former[0].trim()} »` : null;
   }
   for (const clue of RETIRED_CLUES_FR) {
     const match = fr.match(clue);

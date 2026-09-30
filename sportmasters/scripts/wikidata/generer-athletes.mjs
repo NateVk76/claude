@@ -58,7 +58,20 @@ const FAME_OVERRIDES = JSON.parse(readFileSync(new URL('./celebrite.json', impor
 const ANCHORS_FILE = new URL('./reperes.json', import.meta.url);
 // noms d'usage quand le libellé Wikidata est l'état civil : { "francisco-roman-alarcon": { "first": "", "last": "Isco" } }
 const NAME_OVERRIDES = JSON.parse(readFileSync(new URL('./noms.json', import.meta.url), 'utf8'));
+// retouches à la main d'un athlète généré, avec la raison : { "tigran-petrossian": { "country": "AM", "raison": "…" } }
+// (pays, retraité ou non, profil, poste)
+const CORRECTIONS = JSON.parse(readFileSync(new URL('./corrections.json', import.meta.url), 'utf8'));
 const TITLE_OVERRIDES = JSON.parse(readFileSync(path('scripts/photos/titres.json'), 'utf8'));
+
+/** Applique corrections.json (aussi avec --recaler). */
+function applyCorrections(athletes) {
+  for (const athlete of athletes) {
+    const { raison, retired, ...fields } = CORRECTIONS[athlete.id] ?? {};
+    Object.assign(athlete, fields);
+    if (retired === true) athlete.retired = true;
+    if (retired === false) delete athlete.retired;
+  }
+}
 
 // Métiers Wikidata (P106) et nombre d'athlètes à ajouter par métier (à l'échelle 1).
 const SPORTS = [
@@ -332,6 +345,7 @@ SELECT ?athlete (SAMPLE(?label) AS ?name) (SAMPLE(?description) AS ?desc) (SAMPL
   (GROUP_CONCAT(DISTINCT ?bc; separator=",") AS ?birthCountry)
   (GROUP_CONCAT(DISTINCT ?posLabel; separator=" | ") AS ?positions)
   (GROUP_CONCAT(DISTINCT ?discLabel; separator=" | ") AS ?disciplines)
+  (GROUP_CONCAT(DISTINCT ?gameLabel; separator=" | ") AS ?games)
 WHERE {
   VALUES ?athlete { ${batch.map((qid) => `wd:${qid}`).join(' ')} }
   ?article schema:about ?athlete ; schema:isPartOf <https://fr.wikipedia.org/> ; schema:name ?title .
@@ -346,6 +360,8 @@ WHERE {
   OPTIONAL { ?athlete wdt:P19 ?birthPlace . ?birthPlace wdt:P17 ?birthState . ?birthState wdt:P297 ?bc . }
   OPTIONAL { ?athlete wdt:P413 ?position . ?position rdfs:label ?posLabel . FILTER(LANG(?posLabel) = "fr") }
   OPTIONAL { ?athlete wdt:P2416 ?discipline . ?discipline rdfs:label ?discLabel . FILTER(LANG(?discLabel) = "fr") }
+  # sport pratiqué (P641) : pour un joueur d'esport, c'est le jeu (League of Legends, Counter-Strike 2…)
+  OPTIONAL { ?athlete wdt:P641 ?game . ?game rdfs:label ?gameLabel . FILTER(LANG(?gameLabel) = "en") }
 }
 GROUP BY ?athlete`);
     const codes = (text) => (text ?? '').split(',').filter((code) => /^[A-Z]{2}(-[A-Z]{3})?$/.test(code));
@@ -365,6 +381,7 @@ GROUP BY ?athlete`);
         birthCountry: codes(row.birthCountry?.value),
         positions: row.positions?.value ?? '',
         disciplines: row.disciplines?.value ?? '',
+        games: row.games?.value ?? '',
       });
     }
     await sleep(500);
@@ -416,6 +433,7 @@ function recalibrate() {
   const fames = new Map(readCurated().map((a) => [a.id, a.fame]));
   // la célébrité des repères suit la base manuelle telle qu'elle est aujourd'hui
   const anchors = JSON.parse(readFileSync(ANCHORS_FILE, 'utf8')).filter((a) => fames.has(a.id)).map((a) => ({ ...a, fame: fames.get(a.id) }));
+  applyCorrections(athletes);
   calibrate(athletes, anchors);
   writeFileSync(OUTPUT, `${JSON.stringify(athletes, null, 1)}\n`);
   report(athletes);
@@ -485,7 +503,8 @@ async function main() {
     usedIds.add(id);
     const { first, last } = NAME_OVERRIDES[id] ?? splitName(person.name, person.country);
     const described = person.description || (person.config.english ? person.enDescription : '');
-    const text = [described, person.positions, person.disciplines].filter(Boolean).join(' | ');
+    // le jeu (P641) seulement pour les nouveaux sports : ailleurs, il ne dit rien de plus que la description
+    const text = [described, person.positions, person.disciplines, person.config.english ? person.games : ''].filter(Boolean).join(' | ');
     const { archetype, role } = archetypeFor(person.config.sport, text, person.config.fallback);
     return {
       id,
@@ -508,6 +527,7 @@ async function main() {
       ...(isCoach(person.description) ? { entraineur: true } : {}),
     };
   });
+  applyCorrections(athletes);
   calibrate(athletes, anchors);
   writeFileSync(OUTPUT, `${JSON.stringify(athletes, null, 1)}\n`);
   report(athletes);

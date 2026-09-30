@@ -134,6 +134,24 @@
   --trim: rgba(201, 162, 74, 0.95);
 }
 
+/* Icônes communes et peu communes : papier ancien mat, sans dorure. L'or reste aux Icônes rares et au-delà,
+   pour qu'une carte ait toujours l'air aussi précieuse qu'elle est rare. */
+.card.is-icon.r-commune,
+.card.is-icon.r-peu-commune {
+  --foil: linear-gradient(160deg, #f5f0e6 0%, #e4d9c4 45%, #c7b79a 100%);
+  --glow: rgba(255, 255, 255, 0.45);
+  --ring: rgba(112, 94, 66, 0.42);
+  --ghost: rgba(112, 94, 66, 0.14);
+  --lines: rgba(112, 94, 66, 0.06);
+  --edition: #faf6ee;
+  --edition-stroke: #54462f;
+  --tile-bg: #3b3327;
+  --tile-ink: #efe5cf;
+  --banner-bg: #3b3327;
+  --banner-ink: #efe5cf;
+  --trim: rgba(150, 132, 104, 0.9);
+}
+
 /* Prime : reflets arc-en-ciel */
 .card.is-prime {
   --foil: linear-gradient(135deg, #ffd1ec 0%, #fff1b3 22%, #c4ffe6 45%, #bfe4ff 68%, #e5cbff 100%);
