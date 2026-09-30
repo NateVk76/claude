@@ -21,7 +21,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, unlinkSync, writeFile
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { SPORT_KEYWORDS } from '../wikidata/helpers.mjs';
+import { SEARCH_WORDS, SPORT_KEYWORDS } from '../wikidata/helpers.mjs';
 
 // chemins en texte : sharp n'accepte pas les objets URL
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
@@ -55,21 +55,6 @@ const option = (name) => {
 
 // Mots qui doivent apparaître dans la description Wikipédia pour être sûr d'avoir le bon athlète.
 const KEYWORDS = SPORT_KEYWORDS;
-
-const SEARCH_WORDS = {
-  fr: {
-    foot: 'footballeur', basket: 'basket-ball', tennis: 'tennis', athle: 'athlétisme', natation: 'nageur', cyclisme: 'cycliste',
-    auto: 'pilote', combat: 'boxe OR judo OR MMA', rugby: 'rugby', hand: 'handball', volley: 'volley-ball',
-    hiver: 'ski OR biathlon OR patinage OR snowboard', gym: 'gymnaste', golf: 'golfeur', glisse: 'surf OR skateboard OR escalade OR BMX',
-    us: 'football américain OR baseball OR hockey',
-  },
-  en: {
-    foot: 'footballer', basket: 'basketball', tennis: 'tennis', athle: 'athlete', natation: 'swimmer', cyclisme: 'cyclist',
-    auto: 'racing driver', combat: 'boxer OR judoka OR fighter', rugby: 'rugby', hand: 'handball', volley: 'volleyball',
-    hiver: 'skier OR biathlete OR skater OR snowboarder', gym: 'gymnast', golf: 'golfer', glisse: 'surfer OR skateboarder OR climber',
-    us: 'american football OR baseball OR hockey',
-  },
-};
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, Math.max(0, ms)));
 
