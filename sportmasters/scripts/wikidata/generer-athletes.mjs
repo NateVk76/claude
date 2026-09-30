@@ -22,6 +22,8 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   archetypeFor,
+  deathConfirmed,
+  defaultFact,
   describesAthlete,
   factFrom,
   fameFromAnchors,
@@ -31,7 +33,9 @@ import {
   normalizeName,
   pickCountry,
   retirementClue,
+  SEARCH_WORDS,
   slugify,
+  SPORT_KEYWORDS,
   splitName,
 } from './helpers.mjs';
 
@@ -81,6 +85,10 @@ const SPORTS = [
   { sport: 'us', occupation: 'Q19204627', quota: 8 }, // joueur de football américain
   { sport: 'us', occupation: 'Q10871364', quota: 6, fallback: { archetype: 'baseball', role: 'Baseball (MLB)' } }, // joueur de baseball
   { sport: 'us', occupation: 'Q11774891', quota: 8, fallback: { archetype: 'hockey', role: 'Hockey (NHL)' } }, // hockeyeur
+  // english : description anglaise acceptée faute de française (beaucoup de joueurs d'esport n'en ont pas)
+  { sport: 'pingpong', occupation: 'Q13382519', quota: 20, english: true }, // pongiste
+  { sport: 'echecs', occupation: 'Q10873124', quota: 20, english: true }, // joueur d'échecs
+  { sport: 'esport', occupation: 'Q4379701', quota: 20, english: true }, // joueur professionnel de jeux vidéo
 ];
 
 // ───────────── Réseau ─────────────
@@ -139,6 +147,40 @@ function readCurated() {
   return [...source.matchAll(pattern)].map((m) => ({ id: m[1], first: m[2], last: m[3], sport: m[4], fame: Number(m[5]) }));
 }
 
+/**
+ * La page parle-t-elle du bon sport ? Écarte les homonymes, sans filtrer les streameurs ni les entraîneurs :
+ * les athlètes de la base manuelle sont choisis à la main.
+ */
+function aboutSport(sport, description = '') {
+  if (!description) return true;
+  if (sport === 'foot' && /football (am[ée]ricain|canadien|australien|ga[ée]lique)/i.test(description)) return false;
+  return SPORT_KEYWORDS[sport]?.test(description) ?? false;
+}
+
+/** Page d'un athlète manuel introuvable sous son nom (pseudo d'esport, homonyme) : recherche Wikipédia. */
+async function searchCurated(athlete) {
+  const name = `${athlete.first} ${athlete.last}`.trim();
+  const lastWord = normalizeName(athlete.last).split(/[\s-]/).pop();
+  const params = new URLSearchParams({
+    action: 'query',
+    format: 'json',
+    formatversion: '2',
+    generator: 'search',
+    gsrsearch: `${name} ${SEARCH_WORDS.fr[athlete.sport] ?? ''}`,
+    gsrlimit: '4',
+    prop: 'pageprops|description',
+    ppprop: 'wikibase_item|disambiguation',
+  });
+  const data = await fetchJson(`https://fr.wikipedia.org/w/api.php?${params}`);
+  const pages = (data?.query?.pages ?? []).sort((a, b) => (a.index ?? 0) - (b.index ?? 0));
+  for (const page of pages) {
+    if (!normalizeName(page.title).includes(lastWord) || 'disambiguation' in (page.pageprops ?? {})) continue;
+    if (!page.description || !aboutSport(athlete.sport, page.description)) continue;
+    return { title: page.title, qid: page.pageprops?.wikibase_item };
+  }
+  return null;
+}
+
 /** Page Wikipédia, identifiant Wikidata et vues de chaque athlète manuel (pour caler la célébrité et repérer les doublons). */
 async function resolveCurated(curated) {
   const titleOf = (athlete) => (TITLE_OVERRIDES[athlete.id] ?? `${athlete.first} ${athlete.last}`.trim()).replace(/’/g, "'");
@@ -164,10 +206,18 @@ async function resolveCurated(curated) {
       const page = pages.get(title);
       if (!page || page.missing || page.invalid || 'disambiguation' in (page.pageprops ?? {})) continue;
       // la page doit bien parler de ce sport (sinon c'est un homonyme)
-      if (page.description && !describesAthlete(athlete.sport, page.description)) continue;
+      if (!aboutSport(athlete.sport, page.description)) continue;
       resolved.set(athlete.id, { title: page.title, qid: page.pageprops?.wikibase_item });
     }
   }
+  const lost = [];
+  for (const athlete of curated.filter((a) => !resolved.has(a.id))) {
+    const found = await searchCurated(athlete);
+    if (found) resolved.set(athlete.id, found);
+    else lost.push(athlete.id);
+    await sleep(200);
+  }
+  if (lost.length) console.log(`  pages introuvables (titres.json) : ${lost.join(', ')}`);
   const entries = [...resolved.entries()];
   const views = await mapLimit(entries, 8, ([, info]) => pageviews(info.title));
   entries.forEach(([, info], i) => (info.views = views[i]));
@@ -182,54 +232,73 @@ async function resolveCurated(curated) {
   return resolved;
 }
 
+/** Introductions (texte brut, deux phrases) de pages d'une Wikipédia, en suivant les redirections. */
+async function wikiIntros(lang, titles, extra = {}) {
+  const params = new URLSearchParams({
+    action: 'query',
+    format: 'json',
+    formatversion: '2',
+    redirects: '1',
+    prop: 'extracts',
+    exintro: '1',
+    explaintext: '1',
+    exsentences: '2',
+    exlimit: '20',
+    titles: titles.join('|'),
+    ...extra,
+  });
+  const data = await fetchJson(`https://${lang}.wikipedia.org/w/api.php?${params}`);
+  const hop = new Map([...(data?.query?.normalized ?? []), ...(data?.query?.redirects ?? [])].map((step) => [step.from, step.to]));
+  const pages = new Map((data?.query?.pages ?? []).map((page) => [page.title, page]));
+  return (title) => {
+    let current = title;
+    for (let guard = 0; hop.has(current) && guard < 3; guard++) current = hop.get(current);
+    return pages.get(current);
+  };
+}
+
 /**
- * Lit l'introduction Wikipédia de chaque athlète retenu :
- * - un décès n'est gardé que si elle le confirme (« … et mort le … »), pour ne jamais enterrer un vivant
- *   sur une erreur de Wikidata ;
- * - « est un ancien footballeur », « qui évoluait au poste de… », « a mis un terme à sa carrière »…
- *   (ou 50 ans passés sans « qui évolue… ») en font un retraité, donc une Icône, comme les légendes
- *   retraitées de la base manuelle (voir retirementClue).
+ * Lit l'introduction Wikipédia de chaque athlète retenu, en français et en anglais :
+ * - un décès n'est gardé que si l'une d'elles le confirme (« … et mort le … », « was a … »), pour ne
+ *   jamais enterrer un vivant sur une erreur de Wikidata ;
+ * - « is a French former footballer » en fait un retraité, donc une Icône, comme les légendes retraitées
+ *   de la base manuelle (voir retirementClue).
  */
 async function readIntros(people) {
-  const intros = new Map();
+  const fr = new Map();
+  const enTitles = new Map();
   for (let i = 0; i < people.length; i += 20) {
     const batch = people.slice(i, i + 20);
-    const params = new URLSearchParams({
-      action: 'query',
-      format: 'json',
-      formatversion: '2',
-      redirects: '1',
-      prop: 'extracts',
-      exintro: '1',
-      explaintext: '1',
-      exsentences: '2',
-      exlimit: '20',
-      titles: batch.map((person) => person.title).join('|'),
-    });
-    const data = await fetchJson(`https://fr.wikipedia.org/w/api.php?${params}`);
-    const hop = new Map([...(data?.query?.normalized ?? []), ...(data?.query?.redirects ?? [])].map((step) => [step.from, step.to]));
-    const extracts = new Map((data?.query?.pages ?? []).map((page) => [page.title, page.extract ?? '']));
+    const page = await wikiIntros('fr', batch.map((person) => person.title), { prop: 'extracts|langlinks', lllang: 'en', lllimit: 'max' });
     for (const person of batch) {
-      let title = person.title;
-      for (let guard = 0; hop.has(title) && guard < 3; guard++) title = hop.get(title);
-      intros.set(person.qid, extracts.get(title) ?? '');
+      fr.set(person.qid, page(person.title)?.extract ?? '');
+      const en = page(person.title)?.langlinks?.[0]?.title;
+      if (en) enTitles.set(person.qid, en);
     }
+    await sleep(300);
+  }
+  const en = new Map();
+  const withEn = people.filter((person) => enTitles.has(person.qid));
+  for (let i = 0; i < withEn.length; i += 20) {
+    const batch = withEn.slice(i, i + 20);
+    const page = await wikiIntros('en', batch.map((person) => enTitles.get(person.qid)));
+    for (const person of batch) en.set(person.qid, page(enTitles.get(person.qid))?.extract ?? '');
     await sleep(300);
   }
   const year = new Date().getUTCFullYear();
   for (const person of people) {
-    const intro = intros.get(person.qid) ?? '';
-    if (person.died && intro && !/(?<!\p{L})(mort|morte|décédé|décédée|meurt)(?!\p{L})/iu.test(intro)) {
+    const intro = { fr: fr.get(person.qid) ?? '', en: en.get(person.qid) ?? '' };
+    if (person.died && (intro.fr || intro.en) && !deathConfirmed(intro.fr, intro.en)) {
       console.log(`  décès non confirmé par Wikipédia, carte laissée « en vie » : ${person.name} (${person.died})`);
       person.died = undefined;
     }
-    const clue = retirementClue(intro, person.born, person.died, year);
+    const clue = retirementClue({ ...intro, born: person.born, died: person.died, year });
     person.retired = Boolean(clue);
     // de quoi relire les décisions dans le journal de l'Action
     if (clue) console.log(`  retraité (${clue}) : ${person.name}`);
-    else if (person.born && year - person.born >= 38) console.log(`  en activité à ${year - person.born} ans ? ${person.name} : ${intro.slice(0, 160)}`);
+    else if (person.born && year - person.born >= 36) console.log(`  en activité à ${year - person.born} ans : ${person.name} : ${(intro.en || intro.fr).slice(0, 140)}`);
   }
-  console.log(`${people.filter((person) => person.retired).length} retraités sur ${people.length}`);
+  console.log(`${people.filter((person) => person.retired).length} retraités sur ${people.length} (${en.size} pages en anglais)`);
 }
 
 // ───────────── Wikidata ─────────────
@@ -256,8 +325,8 @@ async function details(qids) {
   for (let i = 0; i < qids.length; i += 120) {
     const batch = qids.slice(i, i + 120);
     const rows = await sparql(`
-SELECT ?athlete (SAMPLE(?label) AS ?name) (SAMPLE(?description) AS ?desc) (SAMPLE(?title) AS ?page)
-  (SAMPLE(?birth) AS ?born) (SAMPLE(?death) AS ?died)
+SELECT ?athlete (SAMPLE(?label) AS ?name) (SAMPLE(?description) AS ?desc) (SAMPLE(?enDescription) AS ?enDesc)
+  (SAMPLE(?title) AS ?page) (SAMPLE(?birth) AS ?born) (SAMPLE(?death) AS ?died) (SAMPLE(?gender) AS ?sex)
   (GROUP_CONCAT(DISTINCT ?cc; separator=",") AS ?citizen)
   (GROUP_CONCAT(DISTINCT ?sc; separator=",") AS ?sportCountry)
   (GROUP_CONCAT(DISTINCT ?bc; separator=",") AS ?birthCountry)
@@ -268,6 +337,8 @@ WHERE {
   ?article schema:about ?athlete ; schema:isPartOf <https://fr.wikipedia.org/> ; schema:name ?title .
   OPTIONAL { ?athlete rdfs:label ?label . FILTER(LANG(?label) = "fr") }
   OPTIONAL { ?athlete schema:description ?description . FILTER(LANG(?description) = "fr") }
+  OPTIONAL { ?athlete schema:description ?enDescription . FILTER(LANG(?enDescription) = "en") }
+  OPTIONAL { ?athlete wdt:P21 ?gender . }
   OPTIONAL { ?athlete wdt:P569 ?birth . }
   OPTIONAL { ?athlete wdt:P570 ?death . }
   OPTIONAL { ?athlete wdt:P27 ?country . ?country wdt:P297 ?cc . }
@@ -283,6 +354,9 @@ GROUP BY ?athlete`);
       out.set(qid, {
         label: row.name?.value ?? row.page.value,
         description: row.desc?.value ?? '',
+        // faute de description en français (joueurs d'esport, souvent), l'anglaise dit au moins le sport et le jeu
+        enDescription: row.enDesc?.value ?? '',
+        female: /\/(Q6581072|Q1052281)$/.test(row.sex?.value ?? ''),
         title: row.page.value,
         born: row.born ? Number(row.born.value.slice(0, 4)) : undefined,
         died: row.died ? Number(row.died.value.slice(0, 4)) : undefined,
@@ -354,11 +428,12 @@ async function main() {
   console.log(`Base manuelle : ${curated.length} athlètes, recherche de leurs pages…`);
   const resolved = await resolveCurated(curated);
   const curatedQids = new Set([...resolved.values()].map((info) => info.qid).filter(Boolean));
-  // noms complets, noms de famille seuls et sans suffixe (« Neymar Jr » → « neymar »)
+  // noms complets dans les deux ordres (« Ma Long »), noms de famille seuls et sans suffixe (« Neymar Jr » → « neymar »)
   const curatedNames = new Set(
     curated.flatMap((a) => {
       const last = normalizeName(a.last);
-      return [normalizeName(`${a.first} ${a.last}`.trim()), last, last.replace(/ (jr|junior|filho|neto|sr)$/, '')];
+      const full = [normalizeName(`${a.first} ${a.last}`.trim()), normalizeName(`${a.last} ${a.first}`.trim())];
+      return [...full, last, last.replace(/ (jr|junior|filho|neto|sr)$/, '')];
     }),
   );
   const curatedIds = new Set(curated.map((a) => a.id));
@@ -367,6 +442,10 @@ async function main() {
     .map((a) => ({ id: a.id, fame: a.fame, vues: resolved.get(a.id).views, liens: resolved.get(a.id).sitelinks }));
   writeFileSync(ANCHORS_FILE, `${JSON.stringify(anchors, null, 1)}\n`);
   console.log(`  ${resolved.size} pages trouvées, ${anchors.length} servent à caler la célébrité`);
+
+  // libellés des métiers Wikidata, pour vérifier les identifiants dans le journal
+  const jobs = await sparql(`SELECT ?job ?label WHERE { VALUES ?job { ${[...new Set(SPORTS.map((c) => `wd:${c.occupation}`))].join(' ')} } ?job rdfs:label ?label . FILTER(LANG(?label) = "fr") }`);
+  console.log(`Métiers : ${jobs.map((row) => `${row.job.value.split('/').pop()} ${row.label.value}`).join(', ')}`);
 
   const taken = new Set(curatedQids);
   const selected = [];
@@ -378,7 +457,7 @@ async function main() {
     const eligible = [];
     for (const candidate of fresh) {
       const person = info.get(candidate.qid);
-      if (!person || !describesAthlete(config.sport, person.description)) continue;
+      if (!person || !describesAthlete(config.sport, person.description, config.english ? person.enDescription : '')) continue;
       const name = person.label.replace(/\s*\(.*\)\s*$/, '');
       if (curatedNames.has(normalizeName(name)) || EXCLUDED[slugify(name)]) continue;
       const country = pickCountry(person.sportCountry, person.citizen, person.description, person.birthCountry);
@@ -405,7 +484,8 @@ async function main() {
     if (usedIds.has(id)) id = `${id}-${person.qid.toLowerCase()}`;
     usedIds.add(id);
     const { first, last } = NAME_OVERRIDES[id] ?? splitName(person.name, person.country);
-    const text = [person.description, person.positions, person.disciplines].filter(Boolean).join(' | ');
+    const described = person.description || (person.config.english ? person.enDescription : '');
+    const text = [described, person.positions, person.disciplines].filter(Boolean).join(' | ');
     const { archetype, role } = archetypeFor(person.config.sport, text, person.config.fallback);
     return {
       id,
@@ -417,7 +497,7 @@ async function main() {
       country: person.country,
       fame: 0,
       level: 0,
-      fact: factFrom(person.description, role),
+      fact: factFrom(person.description, defaultFact(person.config.sport, role, person.female)),
       ...(person.retired ? { retired: true } : {}),
       ...(person.died ? { born: person.born, died: person.died } : {}),
       wikidata: person.qid,

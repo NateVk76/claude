@@ -3,7 +3,7 @@ import { useGame } from '../store/game';
 import { useUi } from '../store/ui';
 import { ATHLETES_BY_ID } from '../data/athletes';
 import { EVENTS, EVENT_ORDER, SPORTS, SPORT_ORDER, STAT_LABELS } from '../data/sports';
-import { overallOf, ultiOf } from '../engine/cards';
+import { displayName, overallOf, ultiOf } from '../engine/cards';
 import { MAX_ENERGY, ROUNDS, TEAM_SIZE, divisionTarget, estimatePower, matchResult, rewardFor, teamRating, teamSynergies, type MatchState, type RoundLog } from '../engine/match';
 import type { OwnedCard } from '../engine/types';
 import { Card } from '../components/Card';
@@ -25,7 +25,7 @@ function Picker({ onPick, onClose, exclude }: { onPick: (uid: string) => void; o
     const q = query.trim().toLowerCase();
     return collection
       .filter((c) => !exclude.includes(c.uid))
-      .filter((c) => !q || `${ATHLETES_BY_ID[c.athleteId].first} ${ATHLETES_BY_ID[c.athleteId].last}`.toLowerCase().includes(q))
+      .filter((c) => !q || displayName(ATHLETES_BY_ID[c.athleteId]).toLowerCase().includes(q))
       .sort((a, b) => overallOf(ATHLETES_BY_ID[b.athleteId], b.variant) - overallOf(ATHLETES_BY_ID[a.athleteId], a.variant))
       .slice(0, 80);
   }, [collection, exclude, query]);
@@ -157,7 +157,7 @@ function TeamBuilder() {
         </summary>
         <p>
           Un match se joue en {ROUNDS} manches. Chaque manche est une épreuve tirée au sort. Tu choisis quel athlète envoyer, sans savoir qui l’adversaire aligne. Chaque athlète ne joue qu’une fois.
-          Tu commences avec 2 points d’énergie (⚡) : un ulti en coûte un, et chaque manche perdue en rend un (3 maximum).
+          Tu commences avec 2 points d’énergie (⚡), 3 avec un joueur d’échecs dans l’équipe : un ulti en coûte un, et chaque manche perdue en rend un (3 maximum).
         </p>
         <ul className="rules__events">
           {EVENT_ORDER.map((id) => (
@@ -238,7 +238,7 @@ function UltiSplash({ match, log }: { match: MatchState; log: RoundLog }) {
       <span className="ulti-splash__label">{side === 'me' ? 'Ulti' : 'Ulti adverse'}</span>
       <p className="ulti-splash__name">{ulti.name}</p>
       <span className="ulti-splash__sub">
-        {record ? `Nouveau record : ${Math.floor(record / 100)},${String(record % 100).padStart(2, '0')} m` : `${athlete.first} ${athlete.last}`}
+        {record ? `Nouveau record : ${Math.floor(record / 100)},${String(record % 100).padStart(2, '0')} m` : displayName(athlete)}
       </span>
     </div>
   );

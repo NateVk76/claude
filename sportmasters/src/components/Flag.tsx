@@ -14,7 +14,7 @@ export const COUNTRY_NAMES: Record<string, string> = {
   PK: 'Pakistan', PH: 'Philippines', MC: 'Monaco', LT: 'Lituanie', LC: 'Sainte-Lucie', KZ: 'Kazakhstan',
   IN: 'Inde', IE: 'Irlande', GN: 'Guinée', GH: 'Ghana', GE: 'Géorgie', FI: 'Finlande', ER: 'Érythrée',
   CZ: 'Tchéquie', BW: 'Botswana', BF: 'Burkina Faso', AT: 'Autriche',
-  'GB-WLS': 'Pays de Galles', 'GB-NIR': 'Irlande du Nord', XK: 'Kosovo',
+  'GB-WLS': 'Pays de Galles', 'GB-NIR': 'Irlande du Nord', XK: 'Kosovo', HK: 'Hong Kong', TW: 'Taïwan',
 };
 
 let regionNames: Intl.DisplayNames | null | undefined;
@@ -36,6 +36,17 @@ function starPoints(cx: number, cy: number, r: number, rotation = -90): string {
   for (let i = 0; i < 10; i++) {
     const radius = i % 2 === 0 ? r : r * 0.4;
     const angle = ((rotation + i * 36) * Math.PI) / 180;
+    points.push(`${(cx + radius * Math.cos(angle)).toFixed(2)},${(cy + radius * Math.sin(angle)).toFixed(2)}`);
+  }
+  return points.join(' ');
+}
+
+/** Soleil ou étoile à n branches (Taïwan, Azerbaïdjan). */
+function sunPoints(cx: number, cy: number, r: number, rays: number, inner = 0.55): string {
+  const points: string[] = [];
+  for (let i = 0; i < rays * 2; i++) {
+    const radius = i % 2 === 0 ? r : r * inner;
+    const angle = ((-90 + (i * 180) / rays) * Math.PI) / 180;
     points.push(`${(cx + radius * Math.cos(angle)).toFixed(2)},${(cy + radius * Math.sin(angle)).toFixed(2)}`);
   }
   return points.join(' ');
@@ -667,6 +678,111 @@ const FLAGS: Record<string, () => ReactNode> = {
       {Array.from({ length: 5 }, (_, i) => (
         <polygon key={i} points={`1.8,${1 + i * 4} 3,${3 + i * 4} 1.8,${5 + i * 4} 0.6,${3 + i * 4}`} fill="#C8313E" />
       ))}
+    </>
+  ),
+  // pays des pongistes, joueurs d'échecs et joueurs d'esport
+  SA: () => (
+    <>
+      <rect width={30} height={20} fill="#006C35" />
+      <path d="M8,8.4 Q10,6.4 12,8.4 T16,8.4 T20,8.4 T22,7.6" stroke="#fff" strokeWidth={1} fill="none" />
+      <path d="M8.5,12.8 H21.5 L20.2,11.9" stroke="#fff" strokeWidth={0.9} fill="none" />
+    </>
+  ),
+  TW: () => (
+    <>
+      <rect width={30} height={20} fill="#FE0000" />
+      <rect width={15} height={10} fill="#000095" />
+      <polygon points={sunPoints(7.5, 5, 3.7, 12)} fill="#fff" />
+      <circle cx={7.5} cy={5} r={2} fill="#000095" />
+      <circle cx={7.5} cy={5} r={1.65} fill="#fff" />
+    </>
+  ),
+  HK: () => (
+    <>
+      <rect width={30} height={20} fill="#DE2910" />
+      {[0, 72, 144, 216, 288].map((angle) => (
+        <ellipse key={angle} cx={15} cy={6.9} rx={1.9} ry={3.1} fill="#fff" transform={`rotate(${angle} 15 10)`} />
+      ))}
+    </>
+  ),
+  SG: () => (
+    <>
+      {hStripes(['#EF3340', '#ffffff'])}
+      <circle cx={6} cy={5} r={3.3} fill="#fff" />
+      <circle cx={7.3} cy={5} r={3.05} fill="#EF3340" />
+      {[
+        [9.8, 3.5],
+        [11.3, 4.6],
+        [10.7, 6.4],
+        [8.9, 6.4],
+        [8.3, 4.6],
+      ].map(([x, y]) => (
+        <Star key={`${x}-${y}`} cx={x} cy={y} r={0.7} fill="#fff" />
+      ))}
+    </>
+  ),
+  EE: () => hStripes(['#0072CE', '#000000', '#ffffff']),
+  IL: () => (
+    <>
+      <rect width={30} height={20} fill="#fff" />
+      <rect y={2.2} width={30} height={2.6} fill="#0038B8" />
+      <rect y={15.2} width={30} height={2.6} fill="#0038B8" />
+      <polygon points="15,6.2 18.3,11.9 11.7,11.9" fill="none" stroke="#0038B8" strokeWidth={0.8} />
+      <polygon points="15,13.8 11.7,8.1 18.3,8.1" fill="none" stroke="#0038B8" strokeWidth={0.8} />
+    </>
+  ),
+  AZ: () => (
+    <>
+      {hStripes(['#00B5E2', '#EF3340', '#509E2F'])}
+      <circle cx={14} cy={10} r={2.6} fill="#fff" />
+      <circle cx={14.8} cy={10} r={2.1} fill="#EF3340" />
+      <polygon points={sunPoints(17.7, 10, 1.3, 8)} fill="#fff" />
+    </>
+  ),
+  IR: () => (
+    <>
+      {hStripes(['#239F40', '#ffffff', '#DA0000'])}
+      <path
+        d="M15,7.4 C13.4,8.4 13.4,11.2 15,12.4 C16.6,11.2 16.6,8.4 15,7.4 Z M13.2,8.2 C12,9.6 12.4,11.6 13.8,12.4 M16.8,8.2 C18,9.6 17.6,11.6 16.2,12.4"
+        fill="none"
+        stroke="#DA0000"
+        strokeWidth={0.7}
+      />
+    </>
+  ),
+  JO: () => (
+    <>
+      {hStripes(['#000000', '#ffffff', '#007A3D'])}
+      <polygon points="0,0 15,10 0,20" fill="#CE1126" />
+      <Star cx={4.8} cy={10} r={1.6} fill="#fff" />
+    </>
+  ),
+  KP: () => (
+    <>
+      {hStripes(['#024FA2', '#ffffff', '#ED1C27', '#ffffff', '#024FA2'], [3, 0.6, 11, 0.6, 3])}
+      <circle cx={10} cy={10} r={3.6} fill="#fff" />
+      <Star cx={10} cy={10} r={3.4} fill="#ED1C27" />
+    </>
+  ),
+  VN: () => (
+    <>
+      <rect width={30} height={20} fill="#DA251D" />
+      <Star cx={15} cy={10.4} r={6} fill="#FFFF00" />
+    </>
+  ),
+  TH: () => hStripes(['#A51931', '#F4F5F8', '#2D2A4A', '#F4F5F8', '#A51931'], [1, 1, 2, 1, 1]),
+  MN: () => (
+    <>
+      {vStripes(['#C4272F', '#015197', '#C4272F'])}
+      <circle cx={5} cy={6} r={1.2} fill="#F9CF02" />
+      <rect x={3.6} y={8} width={2.8} height={1} fill="#F9CF02" />
+      <rect x={3.6} y={10} width={2.8} height={4.5} fill="none" stroke="#F9CF02" strokeWidth={0.7} />
+    </>
+  ),
+  TJ: () => (
+    <>
+      {hStripes(['#CC0000', '#ffffff', '#006600'], [2, 3, 2])}
+      <path d="M13,11 L13.6,8.8 L15,10 L16.4,8.8 L17,11 Z" fill="#F8C300" />
     </>
   ),
 };

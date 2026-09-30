@@ -92,6 +92,30 @@ const ICONS: Record<SportId, ReactNode> = {
       <path d="M9,12 H15 M10.5,10.5 V13.5 M12,10.5 V13.5 M13.5,10.5 V13.5" />
     </>
   ),
+  // raquette et balle
+  pingpong: (
+    <>
+      <circle cx={9.5} cy={10} r={6.8} />
+      <path d="M14.3,14.8 L19.8,20.3" strokeWidth={3.2} />
+      <circle cx={19.2} cy={5.2} r={2.1} fill="currentColor" stroke="none" />
+    </>
+  ),
+  // cavalier
+  echecs: (
+    <>
+      <path d="M6.5,21 H18 M8,21 Q7.6,17.4 10.6,14.6 Q12.6,12.8 12.2,10.9 Q10.2,12.7 7.6,12.6 Q5.5,12.3 6.4,10.1 L9.9,5.3 Q10.6,3.4 12.6,3.8 Q18.2,4.8 17.9,12.2 Q17.7,16.8 16.8,21" />
+      <circle cx={11.4} cy={7.6} r={0.9} fill="currentColor" stroke="none" />
+    </>
+  ),
+  // manette
+  esport: (
+    <>
+      <path d="M6.5,7.5 H17.5 Q21.4,7.5 21.8,12.6 L22,16 Q22,18.8 19.6,18.8 Q18.3,18.8 17,16.8 L16,15.3 H8 L7,16.8 Q5.7,18.8 4.4,18.8 Q2,18.8 2,16 L2.2,12.6 Q2.6,7.5 6.5,7.5 Z" />
+      <path d="M7.4,10.3 V13.7 M5.7,12 H9.1" />
+      <circle cx={15.6} cy={11} r={1} fill="currentColor" stroke="none" />
+      <circle cx={17.9} cy={13.1} r={1} fill="currentColor" stroke="none" />
+    </>
+  ),
 };
 
 interface SportIconProps {

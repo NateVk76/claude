@@ -3,7 +3,7 @@ import { useGame, formatBalles } from '../store/game';
 import { useUi } from '../store/ui';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS, SPORT_ORDER } from '../data/sports';
-import { RARITIES, RARITY_ORDER, overallOf, quickSellValue, rarityOf } from '../engine/cards';
+import { RARITIES, RARITY_ORDER, displayName, overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import type { OwnedCard, RarityId, SportId } from '../engine/types';
 import { Card } from '../components/Card';
 import { SportIcon } from '../components/SportIcon';
@@ -62,7 +62,7 @@ function Club() {
       if (sport && athlete.sport !== sport) return false;
       if (rarity && rarityOf(athlete).id !== rarity) return false;
       if (dupesOnly && group.cards.length < 2) return false;
-      if (q && !normalize(`${athlete.first} ${athlete.last} ${athlete.nick ?? ''}`).includes(q)) return false;
+      if (q && !normalize(`${displayName(athlete)} ${athlete.nick ?? ''}`).includes(q)) return false;
       return true;
     });
     const level = (g: Group) => overallOf(ATHLETES_BY_ID[g.cards[0].athleteId], g.cards[0].variant);

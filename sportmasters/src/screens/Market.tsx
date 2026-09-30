@@ -4,7 +4,7 @@ import { useUi, DEFAULT_FILTERS } from '../store/ui';
 import { useNow, formatDuration, timeAgo } from '../hooks/useNow';
 import { ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS, SPORT_ORDER } from '../data/sports';
-import { RARITIES, RARITY_ORDER, overallOf, rarityOf } from '../engine/cards';
+import { RARITIES, RARITY_ORDER, displayName, overallOf, rarityOf } from '../engine/cards';
 import { MARKET_TAX, MAX_MY_LISTINGS, marketPrice, netAfterTax, nextMinBid, type Listing, type MyListing } from '../engine/market';
 import type { RarityId, SportId } from '../engine/types';
 import { Card } from '../components/Card';
@@ -36,9 +36,7 @@ function ListingRow({ listing, now }: { listing: Listing; now: number }) {
       <Card card={listing.card} size="xs" onClick={() => openDetail({ card: listing.card, listingId: listing.id })} />
       <div className="listing__info">
         <p className="listing__name">
-          <b>
-            {athlete.first} {athlete.last}
-          </b>
+          <b>{displayName(athlete)}</b>
           {listing.card.variant === 'prime' && <span className="chip-rarity chip-rarity--prime">Prime</span>}
         </p>
         <p className="listing__meta">
@@ -117,7 +115,7 @@ function BuyTab() {
       if (filters.prime && listing.card.variant !== 'prime') return false;
       if (filters.icons && !athlete.retired) return false;
       if (filters.maxPrice && listing.buyNow > filters.maxPrice) return false;
-      if (q && !normalize(`${athlete.first} ${athlete.last} ${athlete.nick ?? ''}`).includes(q)) return false;
+      if (q && !normalize(`${displayName(athlete)} ${athlete.nick ?? ''}`).includes(q)) return false;
       return listing.expiresAt > now;
     });
     return list.sort((a, b) => {
@@ -227,9 +225,7 @@ function MyListingRow({ listing, now }: { listing: MyListing; now: number }) {
       <Card card={listing.card} size="xs" onClick={() => openDetail({ card: listing.card })} />
       <div className="listing__info">
         <p className="listing__name">
-          <b>
-            {athlete.first} {athlete.last}
-          </b>
+          <b>{displayName(athlete)}</b>
         </p>
         <p className="listing__meta">
           Départ <Balles value={listing.startPrice} /> · Immédiat <Balles value={listing.buyNow} />

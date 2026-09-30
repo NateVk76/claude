@@ -3,7 +3,7 @@ import { ATHLETES, ATHLETES_BY_ID } from '../../data/athletes';
 import { canBePrime, rarityOf, primeRecordStart } from '../cards';
 import { FREE_ODDS, FREE_PACK, SHOP_PACKS, openPack, primeOdds } from '../packs';
 import { advanceMarket, createAiListing, createMarket, createMyListing, marketPrice, netAfterTax, TARGET_LISTINGS, type MarketState } from '../market';
-import { createMatch, matchResult, playRound, ROUNDS, type MatchCard } from '../match';
+import { computePower, createMatch, matchResult, playRound, ROUNDS, takenMalus, type MatchCard } from '../match';
 import { mulberry32 } from '../random';
 
 const MINUTE = 60_000;
@@ -151,6 +151,24 @@ describe('matchs', () => {
     const { state, log } = playRound(match, 0, true, rng);
     expect(log.records).toEqual(['u0']);
     expect(state.me.cards[0].record).toBe(631);
+  });
+
+  it('donne à chaque nouveau sport sa particularité : Préparation, Remise et Clutch', () => {
+    const rng = mulberry32(21);
+    // échecs : un point d'énergie de plus au coup d'envoi, une seule fois par équipe
+    expect(createMatch(team(['carlsen', 'kasparov', 'bolt', 'riner', 'biles']), 8, rng).me.energy).toBe(3);
+    expect(createMatch(team(['messi', 'lebron', 'bolt', 'riner', 'biles']), 8, rng).me.energy).toBe(2);
+    // tennis de table : le pongiste ne subit rien et renvoie ce qu'on lui envoie
+    expect(takenMalus('pingpong', 'foot', 10, 0)).toEqual({ direct: 0, returned: 0 });
+    expect(takenMalus('foot', 'pingpong', 4, 10)).toEqual({ direct: 4, returned: 10 });
+    expect(takenMalus('pingpong', 'pingpong', 8, 8)).toEqual({ direct: 0, returned: 0 });
+    expect(takenMalus('natation', 'pingpong', 3, 9)).toEqual({ direct: 0, returned: 0 });
+    expect(takenMalus('foot', 'basket', 6, 9)).toEqual({ direct: 6, returned: 0 });
+    // esport : +8 à la dernière manche seulement
+    const match = createMatch(team(['faker', 'zywoo', 'bolt', 'riner', 'biles']), 8, rng);
+    const clutch = (round: number) => computePower(match.me, match.opp, 0, 'sprint', round, false, false).parts.find((part) => part.label === 'Clutch');
+    expect(clutch(ROUNDS - 1)?.value).toBe(8);
+    expect(clutch(0)).toBeUndefined();
   });
 
   it('donne l’avantage à une équipe de légendes contre une division faible', () => {

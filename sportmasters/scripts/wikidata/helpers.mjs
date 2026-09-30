@@ -102,20 +102,51 @@ export const SPORT_KEYWORDS = {
   golf: /golf/i,
   glisse: /surf|skate|grimp|climb|escalad|BMX/i,
   us: /football am[ée]ricain|american football|baseball|hockey|quarterback|NFL|MLB|NHL|tight end/i,
+  pingpong: /pongiste|tennis de table|ping-pong|table tennis/i,
+  echecs: /[ée]checs|chess|grand ma[iî]tre/i,
+  esport: /e-?sport|sport [ée]lectronique|jeux? vid[ée]o|video game|gamer|streameu|twitch|league of legends|counter-strike|dota|starcraft|fortnite|valorant|overwatch|call of duty|rocket league|street fighter|smash bros|tekken|hearthstone/i,
 };
 
-/** Descriptions de personnes connues d'abord pour autre chose (entraîneurs, dirigeants…). */
-const NOT_A_PLAYER = /^(ancien |ex-)?(entra[iî]neu|s[ée]lectionneu|dirigeant|pr[ée]sident|arbitre|homme politique|femme politique|politicien|journaliste|consultant|commentateur|acteur|actrice|chanteu|agent|homme d.affaires|femme d.affaires|m[ée]decin|avocat|militaire|aviat|soldat|[ée]crivain|juge)/i;
+/** Mots ajoutés au nom pour chercher la page Wikipédia d'un athlète, par langue et par sport. */
+export const SEARCH_WORDS = {
+  fr: {
+    foot: 'footballeur', basket: 'basket-ball', tennis: 'tennis', athle: 'athlétisme', natation: 'nageur', cyclisme: 'cycliste',
+    auto: 'pilote', combat: 'boxe OR judo OR MMA', rugby: 'rugby', hand: 'handball', volley: 'volley-ball',
+    hiver: 'ski OR biathlon OR patinage OR snowboard', gym: 'gymnaste', golf: 'golfeur', glisse: 'surf OR skateboard OR escalade OR BMX',
+    us: 'football américain OR baseball OR hockey',
+    pingpong: 'tennis de table OR pongiste', echecs: 'échecs', esport: 'esport OR jeux vidéo',
+  },
+  en: {
+    foot: 'footballer', basket: 'basketball', tennis: 'tennis', athle: 'athlete', natation: 'swimmer', cyclisme: 'cyclist',
+    auto: 'racing driver', combat: 'boxer OR judoka OR fighter', rugby: 'rugby', hand: 'handball', volley: 'volleyball',
+    hiver: 'skier OR biathlete OR skater OR snowboarder', gym: 'gymnast', golf: 'golfer', glisse: 'surfer OR skateboarder OR climber',
+    us: 'american football OR baseball OR hockey',
+    pingpong: 'table tennis', echecs: 'chess', esport: 'esports OR video game',
+  },
+};
+
+/** Descriptions de personnes connues d'abord pour autre chose (entraîneurs, dirigeants, vidéastes…). */
+const NOT_A_PLAYER = /^(ancien |ex-)?(entra[iî]neu|s[ée]lectionneu|dirigeant|pr[ée]sident|arbitre|homme politique|femme politique|politicien|journaliste|consultant|commentateur|acteur|actrice|chanteu|vid[ée]aste|youtubeu|streameu|streamer|animat|agent|homme d.affaires|femme d.affaires|m[ée]decin|avocat|militaire|aviat|soldat|[ée]crivain|juge)/i;
 
 /** Entraîneur ou sélectionneur : une partie de sa célébrité ne vient pas de sa carrière de joueur. */
 export function isCoach(description = '') {
   return /entra[iî]neu|s[ée]lectionneu/i.test(description);
 }
 
-/** La description (Wikidata, en français) correspond-elle bien à un joueur de ce sport ? */
-export function describesAthlete(sport, description = '') {
+/**
+ * La description (Wikidata, en français) correspond-elle bien à un joueur de ce sport ?
+ * english : description anglaise, examinée seulement s'il n'y a pas de française, et plus sévèrement
+ * (« South Korean professional League of Legends player », pas « American YouTuber and gamer »).
+ */
+export function describesAthlete(sport, description = '', english = '') {
   const text = description.trim();
-  if (!text || NOT_A_PLAYER.test(text)) return false;
+  if (!text) {
+    const en = english.trim();
+    if (!/player|gamer|grandmaster|champion/i.test(en)) return false;
+    if (/youtuber|streamer|internet personality|commentator|caster|coach|manager|executive|actor|actress|singer|rapper|politician/i.test(en)) return false;
+    return SPORT_KEYWORDS[sport]?.test(en) ?? false;
+  }
+  if (NOT_A_PLAYER.test(text)) return false;
   if (sport === 'foot' && /football (am[ée]ricain|canadien|australien|ga[ée]lique)/i.test(text)) return false;
   return SPORT_KEYWORDS[sport]?.test(text) ?? false;
 }
@@ -191,6 +222,26 @@ const RULES = {
     [/baseball/, 'baseball', 'Baseball (MLB)'],
     [/hockey/, 'hockey', 'Hockey (NHL)'],
   ],
+  pingpong: [[/d[ée]fenseu|d[ée]fensi/, 'pong-defense', 'Défenseur']],
+  // esport : le jeu donne le profil (MOBA, tir, stratégie, combat, simulation) et s'affiche comme poste
+  esport: [
+    [/league of legends/, 'esport-moba', 'League of Legends'],
+    [/dota/, 'esport-moba', 'Dota 2'],
+    [/counter-strike|cs:?go|\bcs2\b/, 'esport-fps', 'Counter-Strike'],
+    [/valorant/, 'esport-fps', 'Valorant'],
+    [/fortnite/, 'esport-fps', 'Fortnite'],
+    [/call of duty/, 'esport-fps', 'Call of Duty'],
+    [/overwatch/, 'esport-fps', 'Overwatch'],
+    [/halo|quake|apex|pubg|rainbow six/, 'esport-fps', 'Jeux de tir'],
+    [/starcraft/, 'esport-rts', 'StarCraft'],
+    [/warcraft|age of empires|hearthstone/, 'esport-rts', 'Stratégie'],
+    [/street fighter/, 'esport-versus', 'Street Fighter'],
+    [/smash/, 'esport-versus', 'Super Smash Bros.'],
+    [/tekken|mortal kombat|jeux? de combat|fighting game/, 'esport-versus', 'Jeux de combat'],
+    [/rocket league/, 'esport-simu', 'Rocket League'],
+    [/fifa|ea sports fc|pro evolution/, 'esport-simu', 'EA Sports FC'],
+    [/trackmania|gran turismo|iracing|sim racing/, 'esport-simu', 'Course virtuelle'],
+  ],
 };
 
 const DEFAULTS = {
@@ -210,6 +261,9 @@ const DEFAULTS = {
   golf: ['golfeur', 'Golf'],
   glisse: ['surfeur', 'Glisse'],
   us: ['receveur', 'Football américain'],
+  pingpong: ['pong-attaque', 'Tennis de table'],
+  echecs: ['echecs-stratege', 'Échecs'],
+  esport: ['esport-fps', 'Esport'],
 };
 
 /**
@@ -226,6 +280,14 @@ export function archetypeFor(sport, description = '', fallback) {
   return { archetype, role };
 }
 
+/** Phrase de la carte quand Wikidata n'a pas de description en français. */
+export function defaultFact(sport, role, female = false) {
+  if (sport === 'esport') return `${female ? 'Joueuse professionnelle' : 'Joueur professionnel'} de ${role === 'Esport' ? 'jeux vidéo' : role}`;
+  if (sport === 'echecs') return female ? 'Joueuse d’échecs' : 'Joueur d’échecs';
+  if (sport === 'pingpong') return 'Pongiste';
+  return role;
+}
+
 /** Met une majuscule à la description Wikidata pour en faire la phrase de la carte. */
 export function factFrom(description, fallback) {
   const text = (description || fallback || '').trim();
@@ -237,6 +299,17 @@ export function factFrom(description, fallback) {
 
 // Pays où le nom de famille s'écrit en premier dans Wikipédia (« Son Heung-min », « Yao Ming »).
 const FAMILY_NAME_FIRST = new Set(['CN', 'KR', 'KP', 'TW', 'VN', 'HK', 'MO']);
+// Noms de famille courants de ces pays : ils repèrent un libellé écrit à l'occidentale (« Yeon-Koung Kim »).
+const EAST_ASIAN_SURNAMES = new Set(
+  (
+    'wang li zhang liu chen yang huang zhao wu zhou xu sun ma zhu hu guo he gao lin luo zheng liang xie song tang han feng deng ' +
+    'cao peng zeng xiao tian dong pan yuan cai jiang yu du ye cheng wei su lu ding ren shen yao fan fu zhong jin qian kong bai cui ' +
+    'kang mao qiu qin shi gu hou shao meng long wan duan lei tan yin hao ' +
+    'kim lee park choi jung jeong kang cho jo yoon yun jang lim im oh seo shin kwon hwang ahn an yoo ryu hong jeon ko go moon ' +
+    'son bae baek heo nam noh ha kwak sung cha joo woo min na jin ji um chae won chun bang ' +
+    'nguyen tran le pham hoang phan vu dang bui do ho ngo duong ly'
+  ).split(' '),
+);
 
 /**
  * Prénom et nom à partir du libellé Wikipédia. Comme dans la base manuelle, le nom de famille
@@ -246,7 +319,12 @@ export function splitName(label, country) {
   const name = label.replace(/\s*\(.*\)\s*$/, '').trim();
   const parts = name.split(/\s+/);
   if (parts.length === 1) return { first: '', last: name };
-  if (FAMILY_NAME_FIRST.has(country)) return { first: parts.slice(1).join(' '), last: parts[0] };
+  if (FAMILY_NAME_FIRST.has(country)) {
+    const surname = (word) => EAST_ASIAN_SURNAMES.has(word.toLowerCase());
+    // libellé à l'occidentale : le nom de famille est à la fin
+    if (surname(parts.at(-1)) && !surname(parts[0])) return { first: parts.slice(0, -1).join(' '), last: parts.at(-1) };
+    return { first: parts.slice(1).join(' '), last: parts[0] };
+  }
   return { first: parts[0], last: parts.slice(1).join(' ') };
 }
 
@@ -299,8 +377,11 @@ function citedCountries(description) {
 export function pickCountry(sportCodes = [], citizenCodes = [], description = '', birthCodes = []) {
   const clean = (codes) => [...new Set(codes.map((code) => CODE_ALIASES[code] ?? code))];
   const birth = clean(birthCodes).filter((c) => !VANISHED.has(c));
-  // pays disparu (URSS, Yougoslavie, Tchécoslovaquie) : le pays de naissance, tel qu'il est aujourd'hui
-  const modern = (codes) => [...new Set(clean(codes).map((c) => (VANISHED.has(c) ? birth[0] : c)).filter(Boolean))];
+  const citizenNow = clean(citizenCodes).filter((c) => !VANISHED.has(c));
+  // pays disparu (URSS, Yougoslavie, Tchécoslovaquie) : le pays de naissance s'il est aussi une nationalité,
+  // sinon la nationalité d'aujourd'hui (Albert Azarian, né en Azerbaïdjan, est arménien), sinon le pays de naissance
+  const successor = birth.find((c) => citizenNow.includes(c)) ?? citizenNow[0] ?? birth[0];
+  const modern = (codes) => [...new Set(clean(codes).map((c) => (VANISHED.has(c) ? successor : c)).filter(Boolean))];
   const sport = modern(sportCodes);
   const citizen = modern(citizenCodes);
   const cited = modern(citedCountries(description));
@@ -317,35 +398,59 @@ export function pickCountry(sportCodes = [], citizenCodes = [], description = ''
 
 // ───────────── Carrière ─────────────
 
-// Tournures d'une introduction Wikipédia qui disent la carrière finie : « est un ancien footballeur »,
-// « qui évoluait au poste de… », « professionnelle de 1995 à 2022 », « a mis un terme à sa carrière »…
-const RETIRED_CLUES = [
-  /(?<!\p{L})(est|était) (un |une )?(ancien|ancienne) /iu,
-  /(?<!\p{L})(est|était) (un |une )?ex-/iu,
+/**
+ * Définition qui ouvre une introduction Wikipédia en anglais : « is a French former professional
+ * footballer », « was a Brazilian footballer ». Coupée au premier point.
+ */
+function englishDefinition(text = '') {
+  const match = /\b(is|was) (?:an?|the) ([^.]{0,80})/i.exec(text);
+  return match ? { verb: match[1].toLowerCase(), words: match[2] } : null;
+}
+
+/** Décès confirmé par une introduction : « … et mort le … », « disparu en mer » ou « was a … ». */
+export function deathConfirmed(fr = '', en = '') {
+  return /(?<!\p{L})(mort|morte|décédé|décédée|meurt|disparu|disparue)(?!\p{L})/iu.test(fr) || englishDefinition(en)?.verb === 'was';
+}
+
+// Wikipédia en français décrit souvent une carrière finie au présent (« est un footballeur évoluant au
+// poste de… ») : ces tournures ne servent que faute de page en anglais.
+const RETIRED_CLUES_FR = [
+  /(?<!\p{L})(est|était) (un|une) (ancien|ancienne) (?!champion|championne|numéro|n°|recordman|détent|vainqueu)/iu,
+  /(?<!\p{L})(est|était) (un|une) ex-/iu,
   /(?<!\p{L})(évoluait|jouait)(?!\p{L})/iu,
   /(?<!\p{L})(ayant|qui a) (évolué|joué)(?!\p{L})/iu,
-  /(?<!\p{L})professionnel(le)? (de|entre) \d{4} (à|et) \d{4}/iu,
+  /(?<!\p{L})professionnel(le)?[^.]{0,40}? (de|entre) (\p{L}+ )?\d{4} (à|et) (\p{L}+ )?\d{4}/iu,
+  /\(\d{4}-\d{4}\)/u,
   /(?<!\p{L})retraitée?(?!\p{L})/iu,
   /(?<!\p{L})(prend|pris|prenant|prendre|annonce|annoncé|annonçant|depuis|après) sa retraite/iu,
   /(?<!\p{L})(met|mis|mettant|mettre) (un terme|fin) à sa carrière/iu,
   /(?<!\p{L})reconvertie?(?!\p{L})/iu,
+  /(?<!\p{L})(puis|devenu|devenue) (entraîneu|sélectionneu|consultant|commentat|dirigeant)/iu,
+  /(?<!\p{L})(pendant|durant|au cours de) sa carrière/iu,
+  /(?<!\p{L})(des|de la fin des|du début des|du milieu des) années \d{4}/iu,
 ];
-// … et celles qui la disent en cours (« qui évolue au poste de… »).
-const ACTIVE_CLUE = /(?<!\p{L})(évolue|évoluant|joue|jouant) (au|aux|à|en|pour|dans|actuellement|depuis|comme|sous)(?!\p{L})/iu;
-/** Âge à partir duquel un athlète est tenu pour retraité quand son introduction ne dit pas le contraire. */
+/** Âge à partir duquel un athlète sans page en anglais est tenu pour retraité. */
 const RETIREMENT_AGE = 50;
 
 /**
- * Pourquoi la carrière est finie (une carte d'athlète retraité est une Icône), ou null si elle continue.
- * D'abord le décès, puis l'introduction Wikipédia, enfin l'âge : à 50 ans passés, la carrière est finie
- * sauf si l'introduction est au présent (« qui évolue au poste d'attaquant », comme Kazuyoshi Miura).
+ * Pourquoi la carrière est finie (une carte d'athlète retraité est une Icône), ou null si elle continue :
+ * 1. le décès ;
+ * 2. l'introduction en anglais, qui dit « former » pour un retraité (« is a French former professional
+ *    footballer ») et jamais pour un joueur en activité, même à 59 ans (Kazuyoshi Miura) ;
+ * 3. faute de page en anglais, les tournures de l'introduction en français, puis l'âge.
  */
-export function retirementClue(intro = '', born, died, year = new Date().getUTCFullYear()) {
+export function retirementClue({ fr = '', en = '', born, died, year = new Date().getUTCFullYear() } = {}) {
   if (died) return `mort en ${died}`;
-  for (const clue of RETIRED_CLUES) {
-    const match = intro.match(clue);
+  const definition = englishDefinition(en);
+  if (definition) {
+    if (definition.verb === 'was') return '« was a »';
+    const former = /\b(former|retired)\b/i.exec(definition.words);
+    return former ? `« ${former[0]} »` : null;
+  }
+  for (const clue of RETIRED_CLUES_FR) {
+    const match = fr.match(clue);
     if (match) return `« ${match[0].trim()} »`;
   }
-  if (born && year - born >= RETIREMENT_AGE && !ACTIVE_CLUE.test(intro)) return `${year - born} ans`;
+  if (born && year - born >= RETIREMENT_AGE) return `${year - born} ans`;
   return null;
 }

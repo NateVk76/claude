@@ -1,7 +1,7 @@
 import type { CardFace, OwnedCard, SportId, Variant } from './types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS } from '../data/sports';
-import { baseValueOf, canBePrime, dropWeight, primeRecordStart, rarityOf, roundPrice } from './cards';
+import { baseValueOf, canBePrime, displayName, dropWeight, primeRecordStart, rarityOf, roundPrice } from './cards';
 import { hashUnit, makeUid, pick, randInt, weightedPick, type Rng } from './random';
 
 // Marché des transferts simulé : des « managers » IA mettent des cartes en vente, enchérissent
@@ -222,7 +222,7 @@ export function createNews(rng: Rng, t: number): MarketNews {
   const athlete = weightedPick(rng, ATHLETES, (a) => 0.2 + a.fame / 100);
   const up = rng() < 0.62;
   const factor = up ? 1.15 + rng() * 0.25 : 0.75 + rng() * 0.15;
-  const name = athlete.first ? `${athlete.first} ${athlete.last}` : athlete.last;
+  const name = displayName(athlete);
   const text = up
     ? pick(rng, [`Ruée sur les cartes ${name} : ${pct(factor)}`, `La cote de ${name} s’envole : ${pct(factor)}`, `Tout le monde veut ${name} : ${pct(factor)}`])
     : pick(rng, [`Les cartes ${name} se vendent moins cher : ${pct(factor)}`, `Trop de ${name} sur le marché : ${pct(factor)}`]);

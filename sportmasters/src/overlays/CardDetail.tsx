@@ -4,7 +4,7 @@ import { useUi } from '../store/ui';
 import { useNow, formatDuration } from '../hooks/useNow';
 import { ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS, STAT_KEYS, STAT_LABELS } from '../data/sports';
-import { isIcon, overallOf, popularityOf, quickSellValue, rarityOf, statsOf, ultiOf } from '../engine/cards';
+import { displayName, isIcon, overallOf, popularityOf, quickSellValue, rarityOf, statsOf, ultiOf } from '../engine/cards';
 import { MARKET_TAX, marketPrice, netAfterTax, nextMinBid, priceBounds, priceHistory, suggestedPrices } from '../engine/market';
 import type { CardFace, OwnedCard } from '../engine/types';
 import { Card } from '../components/Card';
@@ -242,7 +242,7 @@ export function CardDetail() {
             {isIcon(athlete) && <span className="chip-rarity chip-rarity--icon">Icône</span>}
           </div>
           <h2 id="detail-title">
-            {athlete.first} {athlete.last}
+            {displayName(athlete)}
             {athlete.nick && <small> « {athlete.nick} »</small>}
           </h2>
           <p className="detail__meta">

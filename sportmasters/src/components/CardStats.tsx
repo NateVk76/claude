@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { CardFace } from '../engine/types';
-import { getAthlete, isIcon, overallOf, rarityOf, statsOf, ultiOf } from '../engine/cards';
+import { displayName, getAthlete, isIcon, overallOf, rarityOf, statsOf, ultiOf } from '../engine/cards';
 import { SPORTS, STAT_LABELS } from '../data/sports';
 import { Flag, countryName } from './Flag';
 import { topStats } from './Card';
@@ -29,7 +29,7 @@ export function CardStats({ card, children, className = '' }: CardStatsProps) {
       key={`${card.athleteId}-${card.variant}`}
       className={`card-stats card-stats--${prime ? 'prime' : rarity.id} ${className}`}
       aria-live="polite"
-      aria-label={`${athlete.first} ${athlete.last}`.trim()}
+      aria-label={displayName(athlete)}
     >
       <header className="card-stats__head">
         <div className="card-stats__who">
@@ -38,9 +38,7 @@ export function CardStats({ card, children, className = '' }: CardStatsProps) {
             {prime && <span className="chip-rarity chip-rarity--prime">Prime{athlete.prime ? ` ${athlete.prime.year}` : ''}</span>}
             {isIcon(athlete) && <span className="chip-rarity chip-rarity--icon">Icône</span>}
           </div>
-          <h3 className="card-stats__name">
-            {athlete.first} {athlete.last}
-          </h3>
+          <h3 className="card-stats__name">{displayName(athlete)}</h3>
           <p className="card-stats__meta">
             <Flag code={athlete.country} className="card-stats__flag" />
             <span>

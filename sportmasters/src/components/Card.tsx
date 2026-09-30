@@ -1,6 +1,6 @@
 import { memo, useCallback, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import type { Athlete, CardFace, OwnedCard, StatKey, Stats } from '../engine/types';
-import { POSITION_CODES, getAthlete, isIcon, overallOf, rarityOf, statsOf } from '../engine/cards';
+import { POSITION_CODES, displayName, getAthlete, isIcon, overallOf, rarityOf, statsOf } from '../engine/cards';
 import { SPORTS, STAT_KEYS, STAT_LABELS } from '../data/sports';
 import { usePhoto } from '../photos';
 import { Flag } from './Flag';
@@ -71,7 +71,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
   const record = 'record' in card ? card.record : undefined;
   const photo = usePhoto(athlete);
   const showPhoto = !!photo.src && !photoFailed;
-  const fullName = athlete.first && !compact ? `${athlete.first} ${athlete.last}` : athlete.last;
+  const fullName = compact ? athlete.last : displayName(athlete);
   const label = edition(athlete, prime);
 
   const handleMove = useCallback(
@@ -120,7 +120,7 @@ export const Card = memo(function Card({ card, size = 'md', tilt = false, locked
     .filter(Boolean)
     .join(' ');
 
-  const ariaLabel = `${athlete.first} ${athlete.last}, ${rarity.name}${prime ? ' Prime' : ''}${icon ? ', Icône' : ''}, note ${overallOf(athlete, variant)}`;
+  const ariaLabel = `${displayName(athlete)}, ${rarity.name}${prime ? ' Prime' : ''}${icon ? ', Icône' : ''}, note ${overallOf(athlete, variant)}`;
 
   return (
     <div

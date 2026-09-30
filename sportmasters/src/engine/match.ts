@@ -1,4 +1,4 @@
-import type { CardFace, EventId, StatKey, UltiEffect } from './types';
+import type { CardFace, EventId, SportId, StatKey, UltiEffect } from './types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { EVENTS, EVENT_ORDER, SPORTS } from '../data/sports';
 import { canBePrime, overallOf, popularityOf, primeRecordStart, rarityOf, statsOf, ultiOf } from './cards';
@@ -88,8 +88,16 @@ export function createOpponent(division: number, rng: Rng): { name: string; card
   return { name: pick(rng, CLUB_NAMES), cards };
 }
 
+export const START_ENERGY = 2;
+
+/** Énergie au coup d'envoi : un joueur d'échecs dans l'équipe en apporte une de plus (Préparation). */
+export function startEnergy(cards: CardFace[]): number {
+  const prepared = cards.some((card) => ATHLETES_BY_ID[card.athleteId].sport === 'echecs');
+  return Math.min(MAX_ENERGY, START_ENERGY + (prepared ? 1 : 0));
+}
+
 function newSide(name: string, cards: MatchCard[]): SideState {
-  return { name, cards, used: [], energy: 2, score: 0, wins: 0, buff: 0, wonLast: false };
+  return { name, cards, used: [], energy: startEnergy(cards), score: 0, wins: 0, buff: 0, wonLast: false };
 }
 
 export function createMatch(myCards: MatchCard[], division: number, rng: Rng, myName = 'Mon équipe'): MatchState {
@@ -157,7 +165,10 @@ function passiveBonus(side: SideState, other: SideState, card: CardFace, eventId
       return eventId === 'geste-technique' || eventId === 'bain-de-foule' ? { label, value: 6 } : null;
     case 'us':
       return eventId === 'bain-de-foule' || eventId === 'face-a-face' ? { label, value: 5 } : null;
+    case 'esport':
+      return round === ROUNDS - 1 ? { label, value: 8 } : null;
     default:
+      // tennis de table (malus renvoyés) et échecs (énergie au coup d'envoi) : voir playRound et newSide
       return null;
   }
 }
@@ -298,6 +309,18 @@ export function aiChoose(state: MatchState, rng: Rng): { index: number; ulti: bo
   return { index: best, ulti: wantsUlti };
 }
 
+const passiveDebuff = (sport: SportId) => (sport === 'volley' ? 4 : 0);
+
+/**
+ * Malus subis par un athlète : ceux que l'adversaire lui envoie (received), et ceux qu'il a lui-même
+ * envoyés à un pongiste, qui les renvoie (Remise). Un nageur ne subit rien (Fluidité) ; un pongiste
+ * ne subit rien non plus, et entre deux pongistes l'échange annule tout.
+ */
+export function takenMalus(sport: SportId, otherSport: SportId, received: number, sent: number): { direct: number; returned: number } {
+  if (sport === 'natation' || sport === 'pingpong') return { direct: 0, returned: 0 };
+  return { direct: received, returned: otherSport === 'pingpong' ? sent : 0 };
+}
+
 /** Joue la manche en cours. Le choix de l'IA se fait sans connaître celui du joueur. */
 export function playRound(state: MatchState, myIndex: number, myUlti: boolean, rng: Rng): { state: MatchState; log: RoundLog } {
   if (state.finished) throw new Error('Match terminé');
@@ -318,13 +341,14 @@ export function playRound(state: MatchState, myIndex: number, myUlti: boolean, r
 
   const meSport = ATHLETES_BY_ID[state.me.cards[myIndex].athleteId].sport;
   const oppSport = ATHLETES_BY_ID[state.opp.cards[ai.index].athleteId].sport;
-  const passiveDebuff = (sport: string) => (sport === 'volley' ? 4 : 0);
-  const meTaken = meSport === 'natation' ? 0 : opp.debuff + passiveDebuff(oppSport);
-  const oppTaken = oppSport === 'natation' ? 0 : me.debuff + passiveDebuff(meSport);
-  if (meTaken) me.parts.push({ label: 'Malus adverse', value: -meTaken });
-  if (oppTaken) opp.parts.push({ label: 'Malus adverse', value: -oppTaken });
-  const mePower = Math.max(1, me.power - meTaken);
-  const oppPower = Math.max(1, opp.power - oppTaken);
+  const meMalus = takenMalus(meSport, oppSport, opp.debuff + passiveDebuff(oppSport), me.debuff + passiveDebuff(meSport));
+  const oppMalus = takenMalus(oppSport, meSport, me.debuff + passiveDebuff(meSport), opp.debuff + passiveDebuff(oppSport));
+  if (meMalus.direct) me.parts.push({ label: 'Malus adverse', value: -meMalus.direct });
+  if (meMalus.returned) me.parts.push({ label: 'Malus renvoyé (Remise)', value: -meMalus.returned });
+  if (oppMalus.direct) opp.parts.push({ label: 'Malus adverse', value: -oppMalus.direct });
+  if (oppMalus.returned) opp.parts.push({ label: 'Malus renvoyé (Remise)', value: -oppMalus.returned });
+  const mePower = Math.max(1, me.power - meMalus.direct - meMalus.returned);
+  const oppPower = Math.max(1, opp.power - oppMalus.direct - oppMalus.returned);
 
   let winner: RoundLog['winner'] = 'draw';
   if (Math.abs(mePower - oppPower) >= 0.5) winner = mePower > oppPower ? 'me' : 'opp';
@@ -397,6 +421,7 @@ export function teamSynergies(cards: CardFace[]): string[] {
   const football = cards.filter((c) => ATHLETES_BY_ID[c.athleteId].sport === 'foot').length;
   if (football >= 2) out.push(`Collectif : +${Math.min(8, (football - 1) * 2)} pour chaque footballeur`);
   const sports = new Set(cards.map((c) => ATHLETES_BY_ID[c.athleteId].sport));
+  if (sports.has('echecs')) out.push(`Préparation : ${startEnergy(cards)} points d’énergie au coup d’envoi`);
   if (sports.size >= 4) out.push('Équipe omnisport : chaque épreuve trouve son spécialiste');
   const legend = cards.filter((c) => rarityOf(ATHLETES_BY_ID[c.athleteId]).id === 'legendaire').length;
   if (legend) out.push(`${legend} légende${legend > 1 ? 's' : ''} dans l’équipe`);

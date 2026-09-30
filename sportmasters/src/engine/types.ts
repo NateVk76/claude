@@ -21,7 +21,10 @@ export type SportId =
   | 'gym'
   | 'golf'
   | 'glisse'
-  | 'us';
+  | 'us'
+  | 'pingpong'
+  | 'echecs'
+  | 'esport';
 
 /** Profil de stats : décalages appliqués à la note de l'athlète pour chaque stat physique/mentale. */
 export type ArchetypeId =
@@ -56,7 +59,13 @@ export type ArchetypeId =
   // glisse
   | 'surfeur' | 'skateur' | 'grimpeur-esc'
   // sports US
-  | 'quarterback' | 'receveur' | 'baseball' | 'hockey';
+  | 'quarterback' | 'receveur' | 'baseball' | 'hockey'
+  // tennis de table
+  | 'pong-attaque' | 'pong-defense'
+  // échecs
+  | 'echecs-tacticien' | 'echecs-stratege' | 'echecs-blitz'
+  // esport (le jeu fait le profil)
+  | 'esport-moba' | 'esport-fps' | 'esport-rts' | 'esport-versus' | 'esport-simu';
 
 /** Effet d'un ulti pendant une manche de match. */
 export type UltiEffect =
@@ -95,6 +104,8 @@ export interface Athlete {
   id: string;
   first: string;
   last: string;
+  /** prénom d'abord même dans un pays où le nom de famille se dit en premier (Eileen Gu) */
+  westernName?: boolean;
   nick?: string;
   sport: SportId;
   /** discipline ou poste affiché sur la carte */

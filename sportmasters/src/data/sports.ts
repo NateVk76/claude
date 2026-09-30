@@ -207,11 +207,51 @@ export const SPORTS: Record<SportId, SportDef> = {
       { name: 'Mise en échec', desc: 'L’adversaire perd {v} de puissance.', effect: { kind: 'debuff', value: 0 } },
     ],
   },
+  pingpong: {
+    id: 'pingpong',
+    name: 'Tennis de table',
+    short: 'PING',
+    color: '#4f8cff',
+    passive: { name: 'Remise', desc: 'Renvoie les malus : c’est l’adversaire qui les prend (entre deux pongistes, ils s’annulent).' },
+    ultis: [
+      { name: 'Top spin', desc: 'Coup droit lifté qui plonge sur la table. +{v} de puissance.', effect: { kind: 'boost', value: 0 } },
+      { name: 'Service caché', desc: 'Effet illisible : l’adversaire perd {v} de puissance.', effect: { kind: 'debuff', value: 0 } },
+      { name: 'Contre-bloc', desc: 'Tout revient : annule l’ulti adverse, +{v}.', effect: { kind: 'cancel', value: 0 } },
+      { name: 'Échange à rallonge', desc: 'VIT devient la stat principale, +{v}.', effect: { kind: 'stat-swap', stat: 'vit', value: 0 } },
+    ],
+  },
+  echecs: {
+    id: 'echecs',
+    name: 'Échecs',
+    short: 'ÉCHECS',
+    color: '#e9dfc9',
+    passive: { name: 'Préparation', desc: 'Son équipe commence le match avec 3 points d’énergie au lieu de 2.' },
+    ultis: [
+      { name: 'Échec et mat', desc: 'La manche compte double si elle est gagnée. +{v}.', effect: { kind: 'double', value: 0 } },
+      { name: 'Fourchette', desc: 'Attaque deux pièces à la fois : l’adversaire perd {v} de puissance.', effect: { kind: 'debuff', value: 0 } },
+      { name: 'Sacrifice de la dame', desc: '+{v}, et +8 de plus si l’équipe est menée.', effect: { kind: 'comeback', value: 0, bonus: 8 } },
+      { name: 'Préparation maison', desc: 'INT devient la stat principale, +{v}.', effect: { kind: 'stat-swap', stat: 'int', value: 0 } },
+    ],
+  },
+  esport: {
+    id: 'esport',
+    name: 'Esport',
+    short: 'ESPORT',
+    color: '#b36bff',
+    passive: { name: 'Clutch', desc: '+8 à la dernière manche : c’est là qu’il se réveille.' },
+    ultis: [
+      { name: 'Headshot', desc: 'Une balle, un point. +{v} de puissance.', effect: { kind: 'boost', value: 0 } },
+      { name: 'Pentakill', desc: 'La manche compte double si elle est gagnée. +{v}.', effect: { kind: 'double', value: 0 } },
+      { name: 'Flash', desc: 'Esquive au dernier moment : annule l’ulti adverse, +{v}.', effect: { kind: 'cancel', value: 0 } },
+      { name: 'Baron Nashor', desc: '+{v} maintenant, puis +3 pour toute l’équipe.', effect: { kind: 'team-buff', value: 0, boost: 3 } },
+    ],
+  },
 };
 
 export const SPORT_ORDER: SportId[] = [
   'foot', 'basket', 'tennis', 'athle', 'natation', 'cyclisme', 'auto', 'combat',
   'rugby', 'hand', 'volley', 'hiver', 'gym', 'golf', 'glisse', 'us',
+  'pingpong', 'echecs', 'esport',
 ];
 
 export const EVENTS: Record<EventId, MatchEvent> = {

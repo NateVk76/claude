@@ -71,7 +71,7 @@ La popularité ne s'affiche pas sur la carte : c'est elle qui fixe la rareté, e
 
 ### Sports et particularités
 
-16 sports, chacun avec un passif en match et ses propres ultis :
+19 sports, chacun avec un passif en match et ses propres ultis :
 
 | Sport | Particularité |
 | --- | --- |
@@ -84,9 +84,14 @@ La popularité ne s'affiche pas sur la carte : c'est elle qui fixe la rareté, e
 | Sports mécaniques | Aspiration : +7 quand l'équipe est menée |
 | Sports de combat | Instinct du tueur : +1 énergie après une manche écrasée |
 | Rugby | Rouleau compresseur : +6 en Bras de fer et Décathlon |
+| Tennis de table | Remise : renvoie les malus à l'adversaire (entre deux pongistes, ils s'annulent) |
+| Échecs | Préparation : l'équipe commence le match avec 3 points d'énergie au lieu de 2 |
+| Esport | Clutch : +8 à la dernière manche |
 | Handball, volley, hiver, gym, golf, glisse, sports US | voir l'écran Matchs, section Règles |
 
-Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » pour Duplantis (son record inscrit sur la carte monte d'1 cm à chaque utilisation), « Lightning Bolt » pour Bolt, « SIUUU » pour Ronaldo, « The Block » pour LeBron, « Night Night » pour Curry, « Ippon » pour Riner…
+Les joueurs d'échecs et d'esport ont très peu de force (profils « tout dans la tête ») : ils brillent en Coup de génie, Geste technique et Money time, beaucoup moins en Bras de fer. En esport, le jeu fait le profil : MOBA (League of Legends, Dota 2), tir (Counter-Strike, Valorant, Fortnite), stratégie (StarCraft), combat (Street Fighter) ou simulation (Rocket League, EA Sports FC).
+
+Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » pour Duplantis (son record inscrit sur la carte monte d'1 cm à chaque utilisation), « Lightning Bolt » pour Bolt, « SIUUU » pour Ronaldo, « The Block » pour LeBron, « Night Night » pour Curry, « Ippon » pour Riner, « Guerrier hexagonal » pour Ma Long, « Porte-plume » pour Félix Lebrun, « Grind » pour Carlsen, « Roi démon » pour Faker, « Ace » pour ZywOo…
 
 ### Boosters et boutique
 
@@ -151,10 +156,10 @@ node scripts/wikidata/generer-athletes.mjs --contact "https://github.com/ton-com
 node scripts/wikidata/generer-athletes.mjs --recaler   # sans réseau : recalcule célébrité et note
 ```
 
-- **Qui** : pour chaque sport, un quota (120 footballeurs, 45 basketteurs, 40 joueurs de tennis, 40 athlètes, 30 rugbymen, 30 cyclistes…). Parmi les athlètes les plus présents dans les Wikipédias du monde, on garde ceux dont la description confirme le sport, puis les plus consultés sur Wikipédia en français.
+- **Qui** : pour chaque sport, un quota (120 footballeurs, 45 basketteurs, 40 joueurs de tennis, 40 athlètes, 30 rugbymen, 30 cyclistes, 20 pongistes, 20 joueurs d'échecs, 20 joueurs d'esport…). Parmi les athlètes les plus présents dans les Wikipédias du monde, on garde ceux dont la description confirme le sport (pour l'esport, la description anglaise quand il n'y en a pas en français), puis les plus consultés sur Wikipédia en français.
 - **Écartés** : les doublons de la base manuelle (même identifiant Wikidata ou même nom), les personnes de `scripts/wikidata/exclus.json` (entraîneurs célèbres surtout comme tels, personnalités connues hors du sport…), avec la raison.
 - **Célébrité** : la popularité (vues Wikipédia en français × nombre de Wikipédias au carré, pour mêler audience en France et notoriété mondiale) est comparée à celle des athlètes de la base manuelle : à popularité égale, même célébrité, donc même rareté. Un ancien joueur devenu entraîneur ne dépasse pas « rare ». `scripts/wikidata/celebrite.json` permet de corriger un cas à la main.
-- **Fiche** : pays sportif (y compris Angleterre, Écosse, pays de Galles), poste ou discipline d'après Wikidata, description comme phrase de la carte, noms d'usage dans `scripts/wikidata/noms.json` (Isco, Bernardinho…). Un décès n'est retenu (carte Icône avec les années) que si l'introduction Wikipédia le confirme. Les retraités deviennent aussi des Icônes : l'introduction le dit (« est un ancien footballeur », « qui évoluait au poste de… », « a mis un terme à sa carrière »…), ou l'athlète a 50 ans passés sans « qui évolue… » au présent.
+- **Fiche** : pays sportif (y compris Angleterre, Écosse, pays de Galles), poste ou discipline d'après Wikidata, description comme phrase de la carte, noms d'usage dans `scripts/wikidata/noms.json` (Isco, Bernardinho…). Un décès n'est retenu (carte Icône avec les années) que si l'introduction Wikipédia le confirme. Les retraités deviennent aussi des Icônes : c'est l'introduction en anglais qui tranche, car elle dit toujours « former » pour un retraité (« is a French former professional footballer ») et jamais pour un joueur en activité, même à 59 ans comme Kazuyoshi Miura ; Wikipédia en français décrit souvent une carrière finie au présent. Faute de page en anglais : les tournures françaises (« est un ancien footballeur », « qui évoluait au poste de… », « professionnel de 2003 à 2022 »…), puis l'âge (50 ans). Les noms chinois et coréens s'affichent nom de famille en premier (« Ma Long », « Son Heung-min »).
 - **Recalage hors ligne** : les mesures (vues, nombre de Wikipédias) sont gardées dans le fichier et dans `scripts/wikidata/reperes.json` ; `--recaler` refait le calcul après une retouche, sans réseau.
 - `--contact` est obligatoire : Wikimedia demande un moyen de contact dans les requêtes (l'adresse du dépôt suffit).
 - Le moteur a été testé avec 10 000 athlètes factices : 6 ms par booster, 0,2 s pour rattraper 24 h de marché, et les grilles s'affichent par pages de 120 cartes.

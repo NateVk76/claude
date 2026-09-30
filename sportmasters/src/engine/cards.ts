@@ -111,6 +111,19 @@ const ARCHETYPES: Record<ArchetypeId, Offsets> = {
   receveur: [6, 4, 0, 4, 2, 2],
   baseball: [6, 0, -4, 6, 1, 3],
   hockey: [4, 6, 1, 4, 3, 1],
+  // tennis de table : réflexes et toucher de balle
+  'pong-attaque': [-6, 9, -4, 7, 1, 2],
+  'pong-defense': [-8, 3, 6, 6, 4, 3],
+  // échecs : tout se joue dans la tête, rien dans les bras
+  'echecs-tacticien': [-28, -2, -4, 8, 10, 4],
+  'echecs-stratege': [-28, -8, 6, 5, 12, 4],
+  'echecs-blitz': [-26, 8, -6, 6, 8, 3],
+  // esport : réflexes, mécanique et lecture du jeu
+  'esport-moba': [-22, 3, 0, 6, 9, 3],
+  'esport-fps': [-22, 10, -4, 8, 2, 3],
+  'esport-rts': [-24, 8, 0, 6, 8, 2],
+  'esport-versus': [-20, 8, -4, 8, 2, 4],
+  'esport-simu': [-20, 6, -2, 8, 4, 2],
 };
 
 /** Code court affiché sous la note, comme le poste sur une carte FUT. */
@@ -130,6 +143,9 @@ export const POSITION_CODES: Record<ArchetypeId, string> = {
   skieur: 'SKI', biathlete: 'BIATH', patineur: 'PATIN', gymnaste: 'GYM', golfeur: 'GOLF',
   surfeur: 'SURF', skateur: 'RIDE', 'grimpeur-esc': 'GRIMP',
   quarterback: 'QB', receveur: 'TE', baseball: 'MLB', hockey: 'NHL',
+  'pong-attaque': 'ATT', 'pong-defense': 'DÉF',
+  'echecs-tacticien': 'TAC', 'echecs-stratege': 'STR', 'echecs-blitz': 'BLITZ',
+  'esport-moba': 'MOBA', 'esport-fps': 'FPS', 'esport-rts': 'RTS', 'esport-versus': 'VS', 'esport-simu': 'SIMU',
 };
 
 // ───────────── Note ─────────────
@@ -264,8 +280,13 @@ export function isIcon(athlete: Athlete): boolean {
   return !!athlete.retired;
 }
 
+// Pays où le nom de famille se dit en premier : « Ma Long », « Son Heung-min », « Yao Ming ».
+const FAMILY_NAME_FIRST = new Set(['CN', 'KR', 'KP', 'TW', 'HK', 'MO', 'VN']);
+
+/** Nom complet, dans l'ordre où on le dit (le nom de famille reste dans « last » pour les petites cartes). */
 export function displayName(athlete: Athlete): string {
-  return athlete.first ? `${athlete.first} ${athlete.last}` : athlete.last;
+  if (!athlete.first) return athlete.last;
+  return FAMILY_NAME_FIRST.has(athlete.country) && !athlete.westernName ? `${athlete.last} ${athlete.first}` : `${athlete.first} ${athlete.last}`;
 }
 
 export function athletesByRarity(): Record<RarityId, Athlete[]> {
