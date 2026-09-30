@@ -223,14 +223,6 @@
   "licenseUrl": "",
   "page": "https://commons.wikimedia.org/wiki/File:Muhammad_Ali_NYWTS.jpg"
  },
- "alina-zagitova": {
-  "file": "alina-zagitova.webp",
-  "cutout": true,
-  "author": "Divmel ic",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Alina_Zagitova,_Team_Tutberidze_Show.png"
- },
  "alisson": {
   "file": "alisson.webp",
   "cutout": true,
@@ -943,6 +935,14 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Justine_Braisaz_WC_2018_Oberhof_(cropped).jpg"
  },
+ "brian-joubert": {
+  "file": "brian-joubert.webp",
+  "cutout": true,
+  "author": "Thomas Bresson",
+  "license": "CC BY 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2014-12-27_14-23-39_patinage-place-corbis-belfort_02.jpg"
+ },
  "brian-o-driscoll": {
   "file": "brian-o-driscoll.webp",
   "cutout": true,
@@ -1614,6 +1614,14 @@
   "license": "CC BY-SA 4.0",
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Dani_Olmo_France_v_Spain_7.24.26-176.jpg"
+ },
+ "daniel-castellani": {
+  "file": "daniel-castellani.webp",
+  "cutout": true,
+  "author": "Nula (Anna Kłeczek)",
+  "license": "CC BY-SA 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Daniel_Castellani_2010-05-30.jpg"
  },
  "daniel-narcisse": {
   "file": "daniel-narcisse.webp",
@@ -2396,14 +2404,6 @@
   "license": "CC BY 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Faker_2020_interview.jpg"
- },
- "fallen": {
-  "file": "fallen.webp",
-  "cutout": true,
-  "author": "Esports Kingdom",
-  "license": "CC BY 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:FalleN_IEM_Chicago_(48353708812)_(cropped).jpg"
  },
  "fan-zhendong": {
   "file": "fan-zhendong.webp",
@@ -3909,14 +3909,6 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
   "page": "https://commons.wikimedia.org/wiki/File:260711_Lynx_Liberty_JohnMc157_(55386997877)_(cropped).jpg"
  },
- "john-daly": {
-  "file": "john-daly.webp",
-  "cutout": true,
-  "author": "Carl Lindberg",
-  "license": "CC BY 2.5",
-  "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
-  "page": "https://commons.wikimedia.org/wiki/File:JohnDalyATTNational2.jpg"
- },
  "john-elway": {
   "file": "john-elway.webp",
   "cutout": true,
@@ -4028,14 +4020,6 @@
   "license": "CC BY 3.0",
   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Jorge_Lorenzo_2010_Indianapolis.jpg"
- },
- "jorgen-persson": {
-  "file": "jorgen-persson.webp",
-  "cutout": true,
-  "author": "Zorbedit",
-  "license": "CC BY-SA 3.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-  "page": "https://commons.wikimedia.org/wiki/File:J%C3%B6rgen_Persson_2013.jpg"
  },
  "joshua": {
   "file": "joshua.webp",
@@ -6445,14 +6429,6 @@
   "licenseUrl": "",
   "page": "https://commons.wikimedia.org/wiki/File:0K8A7984_(53451306826)_(cropped).jpg"
  },
- "osmany-juantorena": {
-  "file": "osmany-juantorena.webp",
-  "cutout": true,
-  "author": "CristianNX",
-  "license": "Public domain",
-  "licenseUrl": "",
-  "page": "https://commons.wikimedia.org/wiki/File:Osmany_Juantorena.JPG"
- },
  "ouliana-semionova": {
   "file": "ouliana-semionova.webp",
   "cutout": true,
@@ -6928,10 +6904,10 @@
  "praggnanandhaa-rameshbabu": {
   "file": "praggnanandhaa-rameshbabu.webp",
   "cutout": true,
-  "author": "Vysotsky",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:TataSteelChess2017-79.jpg"
+  "author": "Frans Peeters",
+  "license": "CC BY-SA 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Praggnanandhaa_R,_Tata_Steel_chess_tournament_2025,_Round_1_(02)_(cropped_v2).jpg"
  },
  "prandi": {
   "file": "prandi.webp",
@@ -8541,13 +8517,21 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
   "page": "https://commons.wikimedia.org/wiki/File:2019_Formula_One_tests_Barcelona,_Vettel_(47200008782).jpg"
  },
+ "vijay-singh": {
+  "file": "vijay-singh.webp",
+  "cutout": true,
+  "author": "Flickr user nostalgic_fordisaster / Siyi Chen [2]",
+  "license": "CC BY 2.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vijay_Singh.jpg"
+ },
  "viktor-kortchnoi": {
   "file": "viktor-kortchnoi.webp",
   "cutout": true,
-  "author": "Andreas Kontokanis from Piraeus, Greece",
-  "license": "CC BY-SA 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Viktor_Korchnoi_2011.jpg"
+  "author": "Bart Molendijk / Anefo",
+  "license": "CC0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Max_Euwe_Schaakvierkamp_in_Amsterdam_Kortsjnoj_(close),_Bestanddeelnr_933-9735_(cropped).jpg"
  },
  "vince-carter": {
   "file": "vince-carter.webp",
