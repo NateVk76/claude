@@ -430,8 +430,10 @@ async function finalize() {
       }
     }
     if (!cutout) {
-      // photo entière au format de la fenêtre des cartes (3:4), cadrée sur la zone la plus intéressante
-      await sharp(raw).resize(600, 800, { fit: 'cover', position: sharp.strategy.attention }).webp({ quality: 80 }).toFile(target);
+      // photo entière au format de la fenêtre des cartes (3:4), cadrée sur la zone la plus intéressante,
+      // sauf cadrage imposé dans config.json (« cadrage »: { "messi": "top" }, positions de sharp : top, left, right…)
+      const position = CONFIG.cadrage?.[id] ?? sharp.strategy.attention;
+      await sharp(raw).resize(600, 800, { fit: 'cover', position }).webp({ quality: 80 }).toFile(target);
     }
     credits[id] = { file: `${id}.webp`, cutout, author: info.author, license: info.license, licenseUrl: info.licenseUrl, page: info.page };
   }
