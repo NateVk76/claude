@@ -2,5 +2,8 @@
   "tigran-petrossian": { "country": "AM", "raison": "né à Tbilissi, champion du monde arménien" },
   "patrick-chila": { "retired": true, "raison": "retraité ; sa page anglaise n'a pas été mise à jour" },
   "wang-liqin": { "retired": true, "raison": "retraité ; sa page anglaise n'a pas été mise à jour" },
-  "sasha-hostyn": { "archetype": "esport-rts", "role": "StarCraft II", "raison": "joueuse de StarCraft II (Scarlett)" }
+  "sasha-hostyn": { "archetype": "esport-rts", "role": "StarCraft II", "raison": "joueuse de StarCraft II (Scarlett)" },
+  "donk": { "archetype": "esport-fps", "role": "Counter-Strike", "raison": "joueur de Counter-Strike 2 (Team Spirit), le jeu n'est pas dans Wikidata" },
+  "rekkles": { "archetype": "esport-moba", "role": "League of Legends", "raison": "joueur de League of Legends, le jeu n'est pas dans Wikidata" },
+  "chovy": { "archetype": "esport-moba", "role": "League of Legends", "raison": "joueur de League of Legends, le jeu n'est pas dans Wikidata" }
 }

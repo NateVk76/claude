@@ -119,6 +119,8 @@ describe('générateur d’athlètes (Wikidata)', () => {
     expect(retired({ en: 'Veselin Topalov is a Bulgarian chess grandmaster and former FIDE World Champion.' }, 1975)).toBe(false);
     expect(retired({ en: 'George Weah is a Liberian politician and former professional footballer who served as president.' }, 1966)).toBe(true);
     expect(retired({ en: 'Giacomo Agostini is an Italian former Grand Prix motorcycle road racer.' }, 1942)).toBe(true);
+    expect(retired({ en: 'Billie Jean King is an American former world No. 1 tennis player.' }, 1943)).toBe(true);
+    expect(retired({ en: 'Aksel Lund Svindal is a Norwegian former World Cup alpine ski racer.' }, 1982)).toBe(true);
     // sans page anglaise : les tournures de la page française, puis l'âge
     expect(retired({ fr: 'Franck Ribéry, né le 7 avril 1983, est un ancien footballeur international français.' }, 1983)).toBe(true);
     expect(retired({ fr: 'Marion Bartoli est une joueuse de tennis française, professionnelle de février 2000 à août 2013.' }, 1984)).toBe(true);

@@ -430,11 +430,11 @@ const RETIRED_CLUES_FR = [
 ];
 /** Âge à partir duquel un athlète sans page en anglais est tenu pour retraité. */
 const RETIREMENT_AGE = 50;
-// « former » dit une carrière finie (« French former professional footballer », « and former player »),
-// sauf devant un titre ou un autre métier : « former UFC Lightweight Champion », « former world No. 1 »,
-// « former politician and professional boxer » (Manny Pacquiao boxe encore).
+// « former » dit une carrière finie (« French former professional footballer », « former world No. 1
+// tennis player », « and former player »), sauf devant un titre ou un autre métier : « former UFC
+// Lightweight Champion » (Islam Makhachev combat encore), « former politician and professional boxer ».
 const RETIRED_EN =
-  /\b(former|retired)\s+(?!(?:[\w-]+\s+){0,2}(?:champion|titleholder|world|number|no\.)(?![\w-]))(?!(?:politician|senator|president|minister|governor|mayor|member|owner|chairman|captain|model|coach|manager)\b)/i;
+  /\b(former|retired)\s+(?!(?:[\w-]+\s+){0,2}(?:champion|titleholder)(?![\w-]))(?!(?:politician|senator|president|minister|governor|mayor|member|owner|chairman|captain|model|coach|manager)\b)/i;
 
 /**
  * Pourquoi la carrière est finie (une carte d'athlète retraité est une Icône), ou null si elle continue :
