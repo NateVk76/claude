@@ -16,7 +16,7 @@
 //   node scripts/photos/choisir-action.mjs --prendre messi=2,ali=0
 //     → écrit ces candidates dans choix.json
 
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -33,6 +33,9 @@ const option = (name) => {
   const i = argv.indexOf(`--${name}`);
   return i >= 0 ? argv[i + 1] : undefined;
 };
+
+// --portrait : privilégie les gros plans de l'athlète de face, en tenue (style carte de joueur)
+const PORTRAIT = argv.includes('--portrait');
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, Math.max(0, ms)));
 let pausedUntil = 0;
@@ -112,7 +115,12 @@ function score(page, athlete) {
   if (/podium|trophy|medal/.test(all)) s -= 3;
   if (/magazine|newspaper|scan/.test(all)) s -= 3;
   if (/\bfans?\b/.test(title)) s -= 6;
-  if (/\(cropped\)/.test(title)) s -= 1;
+  if (PORTRAIT) {
+    // gros plan de face en tenue : les recadrages Commons « (cropped) » d'une photo de match en sont souvent
+    if (/\(cropped\)/.test(title)) s += 8;
+    if (info.height > info.width) s += 3;
+    if (info.width / info.height > 1.3) s -= 4;
+  } else if (/\(cropped\)/.test(title)) s -= 1;
   // les mots d'action présents dans le titre lui-même comptent double
   for (const word of [...ACTION, ...(SPORT_WORDS[athlete.sport] ?? [])]) if (` ${title} `.includes(word)) s += 2;
   // l'athlète doit être nommé dans le titre, et son nom complet doit figurer dans le titre ou les catégories
@@ -165,18 +173,21 @@ async function planchesCandidats(ids, report) {
   mkdirSync(out, { recursive: true });
   const [W, H, NAME, ROWS] = [120, 160, 110, 10];
   const cols = Math.max(...ids.map((id) => report[id].length));
-  const tile = async (url, n) => {
+  const labelled = (input, n) => {
+    const label = `<svg width="${W}" height="22"><rect width="26" height="22" fill="#000"/><text x="6" y="16" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ff0">${n}</text></svg>`;
+    return sharp(input)
+      .resize(W, H, { fit: 'contain', background: '#222' })
+      .composite([{ input: Buffer.from(label), left: 0, top: 0 }])
+      .jpeg()
+      .toBuffer();
+  };
+  const tile = async (c, n) => {
+    if (c.local) return labelled(c.local, n);
+    if (!c.thumb) return null;
     for (let attempt = 1; attempt <= 4; attempt++) {
       await sleep(pausedUntil - Date.now());
-      const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } }).catch(() => null);
-      if (response?.ok) {
-        const label = `<svg width="${W}" height="22"><rect width="26" height="22" fill="#000"/><text x="6" y="16" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ff0">${n}</text></svg>`;
-        return sharp(Buffer.from(await response.arrayBuffer()))
-          .resize(W, H, { fit: 'contain', background: '#222' })
-          .composite([{ input: Buffer.from(label), left: 0, top: 0 }])
-          .jpeg()
-          .toBuffer();
-      }
+      const response = await fetch(c.thumb, { headers: { 'User-Agent': USER_AGENT } }).catch(() => null);
+      if (response?.ok) return labelled(Buffer.from(await response.arrayBuffer()), n);
       pausedUntil = Math.max(pausedUntil, Date.now() + 2000 * attempt);
     }
     return null;
@@ -189,7 +200,7 @@ async function planchesCandidats(ids, report) {
       const name = `<svg width="${NAME}" height="${H}"><text x="4" y="20" font-family="sans-serif" font-size="13" fill="#fff">${id}</text></svg>`;
       layers.push({ input: Buffer.from(name), left: 0, top });
       for (const [n, c] of report[id].entries()) {
-        const img = c.thumb ? await tile(c.thumb, n) : null;
+        const img = await tile(c, n);
         if (img) layers.push({ input: img, left: NAME + n * (W + 2), top });
       }
     }
@@ -243,7 +254,11 @@ async function main() {
           .sort((a, b) => b.score - a.score);
         const best = ranked[0];
         if (candidats) {
-          report[athlete.id] = ranked.filter((c) => c.score > -99 && c.file !== choix[athlete.id]).slice(0, candidats);
+          // la photo actuelle en premier (n° 0) pour pouvoir la garder, puis les meilleures candidates
+          const others = ranked.filter((c) => c.score > -99 && c.file !== choix[athlete.id]);
+          const local = path(`public/photos/${athlete.id}.webp`);
+          const first = choix[athlete.id] && existsSync(local) ? [{ file: choix[athlete.id], score: 0, local }] : [];
+          report[athlete.id] = [...first, ...others].slice(0, candidats);
         } else report[athlete.id] = ranked.slice(0, 5);
         if (!candidats && best && best.score >= 6) {
           if (choix[athlete.id] !== best.file) changed += 1;
