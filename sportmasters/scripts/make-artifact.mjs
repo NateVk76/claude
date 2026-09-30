@@ -18,7 +18,8 @@ const styles = [...html.matchAll(/<style[^>]*>[\s\S]*?<\/style>/g)].map((m) => m
 const scripts = [...html.matchAll(/<script[^>]*>[\s\S]*?<\/script>/g)].map((m) => m[0].replace(/<script[^>]*>/, '<script type="module">'));
 if (!scripts.length) throw new Error('Aucun script trouvé dans le build');
 
-const page = [title, ...styles, '<div id="root"></div>', ...scripts].join('\n');
+// l'encodage d'abord : sans lui, un navigateur qui lirait la page en Latin-1 casserait les accents du script
+const page = ['<meta charset="utf-8">', title, ...styles, '<div id="root"></div>', ...scripts].join('\n');
 rmSync('artifact', { recursive: true, force: true });
 mkdirSync('artifact/photos', { recursive: true });
 writeFileSync('artifact/athleticards.html', page);
