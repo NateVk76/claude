@@ -16,6 +16,7 @@ import {
 } from '../engine/market';
 import { createMatch, matchResult, mytheBonus, playRound, rewardFor, TEAM_SIZE, type MatchState } from '../engine/match';
 import { makeUid } from '../engine/random';
+import { checkCode, cleanWord, createCode, isAdminPassword, randomWord } from '../engine/codes';
 
 export const FREE_PACK_INTERVAL = 10 * 60_000;
 export const MAX_FREE_PACKS = 10;
@@ -40,6 +41,16 @@ export interface Opening {
   packName: string;
   tone: PackDef['tone'];
   cards: Array<CardFace & { uid: string; isNew: boolean }>;
+}
+
+/** Résultat d'un code tapé dans la boutique. */
+export type CodeResult = { kind: 'balles'; balles: number } | { kind: 'createur' } | { kind: 'deja-utilise' } | { kind: 'invalide' };
+
+/** Code fabriqué avec le créateur de codes (gardé sur l'appareil pour le recopier plus tard). */
+export interface MadeCode {
+  code: string;
+  balles: number;
+  at: number;
 }
 
 export interface GameStats {
@@ -74,6 +85,11 @@ export interface GameState {
   musicOff: boolean;
   opening: Opening | null;
   toasts: Toast[];
+  /** codes cadeaux déjà utilisés dans cette partie (un code ne sert qu'une fois) */
+  redeemedCodes: string[];
+  /** créateur de codes débloqué sur cet appareil (mot de passe administrateur) */
+  codeMaker: boolean;
+  madeCodes: MadeCode[];
 
   tick: (now?: number) => void;
   openFreePack: () => boolean;
@@ -95,6 +111,11 @@ export interface GameState {
   abandonMatch: () => void;
   toggleLock: (uid: string) => void;
   claimObjective: (id: string) => void;
+  /** code cadeau ou mot de passe administrateur tapé dans la boutique */
+  redeemCode: (input: string) => CodeResult;
+  /** crée un code (mot au hasard si aucun n'est donné) ; réservé au créateur de codes */
+  makeCode: (balles: number, word?: string) => string | null;
+  closeCodeMaker: () => void;
   toggleMute: () => void;
   toggleMusic: () => void;
   toast: (kind: ToastKind, text: string) => void;
@@ -159,6 +180,9 @@ function initialState(now: number) {
     musicOff: false,
     opening: null as Opening | null,
     toasts: [] as Toast[],
+    redeemedCodes: [] as string[],
+    codeMaker: false,
+    madeCodes: [] as MadeCode[],
   };
 }
 
@@ -561,11 +585,39 @@ export const useGame = create<GameState>()(
           pushToast('gold', `Objectif réussi : +${formatBalles(objective.reward)}`);
         },
 
+        redeemCode: (input) => {
+          if (isAdminPassword(input)) {
+            set({ codeMaker: true });
+            return { kind: 'createur' };
+          }
+          const found = checkCode(input);
+          if (!found) return { kind: 'invalide' };
+          if (get().redeemedCodes.includes(found.code)) return { kind: 'deja-utilise' };
+          set((s) => ({ balles: s.balles + found.balles, redeemedCodes: [...s.redeemedCodes, found.code] }));
+          pushToast('gold', `Code cadeau : +${formatBalles(found.balles)}`);
+          return { kind: 'balles', balles: found.balles };
+        },
+
+        makeCode: (balles, word) => {
+          if (!get().codeMaker) return null;
+          let code: string;
+          try {
+            code = createCode(cleanWord(word ?? '') || randomWord(), balles);
+          } catch {
+            return null;
+          }
+          set((s) => ({ madeCodes: [{ code, balles: Math.round(balles), at: Date.now() }, ...s.madeCodes.filter((c) => c.code !== code)].slice(0, 12) }));
+          return code;
+        },
+
+        closeCodeMaker: () => set({ codeMaker: false }),
+
         toggleMute: () => set((s) => ({ muted: !s.muted })),
         toggleMusic: () => set((s) => ({ musicOff: !s.musicOff })),
         toast: pushToast,
         dismissToast: (id) => set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })),
-        resetGame: () => set({ ...initialState(Date.now()) }),
+        // une nouvelle partie garde le créateur de codes et la liste des codes créés (ils sont liés à l'appareil)
+        resetGame: () => set((s) => ({ ...initialState(Date.now()), codeMaker: s.codeMaker, madeCodes: s.madeCodes })),
       };
     },
     {

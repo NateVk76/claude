@@ -105,7 +105,21 @@ Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » 
 - Un booster gratuit toutes les 10 minutes, jusqu'à 10 en réserve.
 - Boutique : Découverte, Pro (1 Rare garantie), Élite (1 Épique garantie), Icônes, Prime (1 Prime de légende garantie, 250 000 Balles), Légende (1 Légendaire garantie) et un pack par sport. Les chances sont affichées sur chaque pack.
 - Les Épiques, Légendaires et Prime ont droit à leur « walkout » : drapeau, puis sport, puis note, puis la carte avec confettis et fanfare.
-- Pendant l'ouverture, chaque carte révélée s'accompagne de sa fiche express : nom, pays, sport, poste, note, ses trois meilleures stats et l'ulti (toucher une carte déjà retournée affiche la sienne).
+- Pendant l'ouverture, chaque carte révélée s'accompagne de sa fiche express : nom, pays, sport, poste, note, ses trois meilleures stats et l'ulti (dans le récapitulatif, toucher une carte affiche la sienne).
+
+### Codes cadeaux
+
+Dans la boutique, la case « Code cadeau » donne des balles. Un code s'écrit `MOT-MONTANT-CLÉ`, par exemple `CADEAU-50000-` suivi de 6 caractères : le montant est écrit dedans et la clé le signe, donc un code inventé ou retouché est refusé. Chaque code ne sert qu'une fois par partie, et marche partout où le jeu est en ligne.
+
+Pour en créer, taper le mot de passe administrateur dans la même case : le créateur de codes s'ouvre sur cet appareil. On choisit un montant (jusqu'à 100 millions) et un mot si on veut (sinon il est tiré au hasard), puis « Créer le code » pour le copier et le partager, ou « Créditer ma partie » pour s'ajouter les balles tout de suite. « Fermer » le cache de nouveau.
+
+Le mot de passe n'est écrit nulle part dans le code, seulement son empreinte (`ADMIN_HASH` dans `src/engine/codes.ts`). Pour le changer, calculer l'empreinte du nouveau mot de passe (écrit en majuscules) et la mettre à la place :
+
+```bash
+node -e "console.log(require('crypto').createHash('sha256').update('athleticards-admin:' + 'NOUVEAU-MOT-DE-PASSE').digest('hex'))"
+```
+
+Changer `SECRET` dans le même fichier rend invalides tous les codes déjà créés. Le jeu tourne entièrement dans le navigateur : c'est un verrou pour jouer entre amis, pas une vraie sécurité (on peut toujours modifier sa sauvegarde à la main).
 
 ### Mercato (marché des transferts)
 
@@ -130,9 +144,9 @@ src/
   data/athletes.ts   base manuelle : 588 athlètes, ultis signatures, versions Prime, 30 cartes Mythe
   data/athletes.generated.json   572 athlètes ajoutés depuis Wikidata (1 160 au total, dont 522 Icônes)
   data/sports.ts     sports, particularités, ultis de sport, épreuves
-  engine/            moteur pur, sans interface : cartes, boosters, marché, matchs
+  engine/            moteur pur, sans interface : cartes, boosters, marché, matchs, codes cadeaux
   store/             état du jeu (sauvegarde locale) et état de l'interface
-  components/        carte, logo, drapeaux, packs
+  components/        carte, logo, drapeaux, packs, fiche express, case des codes cadeaux
   overlays/          ouverture de booster, fiche carte
   screens/           Boosters, Collection, Mercato, Matchs, Boutique
 ```

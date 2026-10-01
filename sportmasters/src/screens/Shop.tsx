@@ -7,6 +7,7 @@ import type { SportId } from '../engine/types';
 import { PackArt } from '../components/PackArt';
 import { Balles } from '../components/Balles';
 import { SportIcon } from '../components/SportIcon';
+import { CodesPanel } from '../components/CodesPanel';
 import { sfx } from '../audio/sfx';
 
 function percent(value: number): string {
@@ -110,6 +111,7 @@ export function ShopScreen() {
           </p>
         </div>
       </header>
+      <CodesPanel />
       <div className="pack-grid">
         {SHOP_PACKS.map((pack) => (
           <PackTile key={pack.id} pack={pack} />
