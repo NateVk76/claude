@@ -1,10 +1,10 @@
-# Athleticards
+# AthletiCards
 
 Jeu de cartes à collectionner de sportifs, jouable dans le navigateur. On ouvre des boosters, on collectionne des athlètes réels (des stars mondiales aux pépites méconnues), on les revend au marché des transferts et on les fait jouer en match.
 
 Inspiré de WikiMasters (les cartes y sont des pages Wikipédia) et du mode Ultimate Team de FIFA.
 
-Le logo (`src/components/Logo.tsx`) écrit « athleticards » en minuscules, et le point du i est une carte verte inclinée. Il est dessiné en tracés, sans police à charger. Les sachets de booster n'affichent que lui, sur la couleur du pack.
+Le logo (`src/components/Logo.tsx`) écrit « athleticards » en minuscules très grasses (police Outfit), et le point du i est une petite carte verte inclinée.
 
 ## Lancer le jeu
 
@@ -23,7 +23,7 @@ npm run build:single # un seul fichier HTML autonome dans artifact/
 
 ### Rareté = célébrité
 
-Chaque athlète a un score de célébrité (0-100), estimé d'après son audience. Plus il est connu, plus sa carte est rare. Le jeu compte 1 152 athlètes dans 19 sports : 580 dans la base manuelle et 572 ajoutés depuis Wikidata.
+Chaque athlète a un score de célébrité (0-100), estimé d'après son audience. Plus il est connu, plus sa carte est rare. Le jeu compte 1 160 athlètes dans 19 sports (588 dans la base manuelle et 572 ajoutés depuis Wikidata), plus 30 cartes Mythe.
 
 | Rareté | Célébrité | Athlètes | Booster gratuit |
 | --- | --- | --- | --- |
@@ -51,12 +51,19 @@ Dans une même rareté, le niveau sportif réel de l'athlète et sa célébrité
 
 ### Versions spéciales
 
-- **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or à partir de Rare, papier ancien mat en dessous (une carte n'a jamais l'air plus précieuse qu'elle n'est rare), années de vie pour les disparus.
+- **Icônes** : les légendes retraitées ou disparues (Pelé, Maradona, Kobe Bryant, Ali, Senna, Lomu…). Carte crème et or, années de vie pour les disparus.
 - **Prime** : la meilleure saison d'une très grande légende, et seulement d'elles : 37 athlètes (Messi 2012, Cristiano Ronaldo 2014, Ronaldo Nazário 2002, LeBron 2016, Bolt 2009, Duplantis 2025…). +3 de note, +4 à toutes les stats, ulti renforcé, liseré irisé. Une de ces légendes tirée dans un booster a 8 % de chances d'être en Prime, soit environ 1 carte sur 1 200 dans le booster gratuit, dix fois plus rare qu'une Légendaire. Valeur ×6 au marché.
+- **Reverse** : n'importe quelle carte peut sortir en finition holographique (environ 1 carte sur 20). Mêmes stats que la classique, valeur ×2,5 au marché.
+
+### Cartes Mythe
+
+30 cartes qui ne sont pas des athlètes : des compétitions (Coupe du monde, Roland-Garros, Tour de France…), des équipes de légende (France 1998, Dream Team 1992, All Blacks…) et des clubs (Real Madrid, PSG, Lakers, Stade toulousain…). Elles sortent dans tous les boosters, environ 1 carte sur 40 (jamais à la place de la carte garantie d'un pack). Design dédié : cadre « trophée » noir et or, photo libre du stade ou du trophée, année et palmarès.
+
+En match, une carte Mythe se place dans l'emplacement « Mythe » de l'équipe et donne un bonus aux athlètes de son sport (tous les athlètes pour les Jeux olympiques), avec un supplément sur certaines épreuves : Roland-Garros donne +5 aux joueurs de tennis, +3 de plus au Marathon. Dans les divisions hautes, l'adversaire aligne parfois lui aussi un Mythe. Les cartes Mythe sont définies à la fin de `src/data/athletes.ts` (fonction `M`).
 
 ### La carte
 
-Style vignette à collectionner : photo de l'athlète en grand (détourée quand c'est possible), fond métallisé selon la rareté, note et poste en haut à gauche avec le drapeau, écusson du sport en haut à droite, surnom écrit à la verticale (« MONDO », « LA PULGA », « KING JAMES »…), les deux meilleures stats en pastilles, le nom dans un bandeau et, dans le coin, la carte verte du logo. La fiche de chaque carte montre les 6 stats utilisées en match :
+Style « cadre métal » : fond métallisé selon le palier (Bronze = Commune, Argent = Peu commune, Or = Rare, Épique en chrome améthyste, Légende en or irisé, Icône en ivoire et or, Prime en feuille irisée façon « reverse »). Cadre sombre avec le code de l'athlète en onglet (« DUP », « WZE »), pastille avec le palier et la note, sport écrit à la verticale, photo dans une fenêtre, médaillon du sport, nom dans un bandeau et poste sur la plaque du bas. La fiche de chaque carte montre les 6 stats utilisées en match :
 
 | Stat | Ce qu'elle mesure |
 | --- | --- |
@@ -120,8 +127,8 @@ Les grandes stars ont un **ulti signature** : « Centimètre par centimètre » 
 
 ```
 src/
-  data/athletes.ts   base manuelle : 580 athlètes, ultis signatures, versions Prime
-  data/athletes.generated.json   572 athlètes ajoutés depuis Wikidata (1 152 au total, dont 522 Icônes)
+  data/athletes.ts   base manuelle : 588 athlètes, ultis signatures, versions Prime, 30 cartes Mythe
+  data/athletes.generated.json   572 athlètes ajoutés depuis Wikidata (1 160 au total, dont 522 Icônes)
   data/sports.ts     sports, particularités, ultis de sport, épreuves
   engine/            moteur pur, sans interface : cartes, boosters, marché, matchs
   store/             état du jeu (sauvegarde locale) et état de l'interface
@@ -134,11 +141,14 @@ Le moteur (`src/engine`) ne dépend pas de l'interface : il prend un état, l'he
 
 ## Photos des athlètes
 
-Les photos viennent de Wikimedia Commons : uniquement des images sous licence libre (CC BY, CC BY-SA, domaine public…), avec l'auteur et la licence affichés dans la fiche de chaque carte. Elles sont récupérées et détourées par la GitHub Action `.github/workflows/photos.yml` :
+Les photos viennent de Wikimedia Commons : uniquement des images sous licence libre (CC BY, CC BY-SA, domaine public…), avec l'auteur et la licence affichés dans la fiche de chaque carte. Elles sont récupérées par la GitHub Action `.github/workflows/photos.yml` :
 
 1. `scripts/photos/telecharger-photos.mjs telecharger` cherche pour chaque athlète une photo libre : l'image principale de sa page Wikipédia en français (en vérifiant que c'est le bon sport), sinon celle de sa page en anglais, sinon son image Wikidata.
-2. `scripts/photos/detourer.py` détoure les athlètes avec rembg (effet « joueur qui sort de la carte ») et efface ce qui ne tient pas à l'athlète (taches, coéquipiers à côté).
-3. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` et met à jour les crédits dans `src/data/photos.json`.
+2. `scripts/photos/telecharger-photos.mjs finaliser` produit `public/photos/<id>.webp` (la photo entière, avec son décor, cadrée au format 3:4 de la fenêtre des cartes) et met à jour les crédits dans `src/data/photos.json`.
+
+Les photos ne sont plus détourées. Pour y revenir : `"detourage": true` dans `scripts/photos/config.json` et lancer `scripts/photos/detourer.py` (rembg) avant « finaliser ».
+
+Sous Windows, si le module `sharp` est bloqué par la politique de sécurité du système, le script garde les images de Commons telles quelles ; lance alors `powershell -ExecutionPolicy Bypass -File scripts/photos/recadrer.ps1` entre les deux étapes pour les recadrer en 540 × 720 (JPEG). Les planches d'exploration demandent sharp : elles ne sont produites que par l'Action.
 
 L'Action se relance à chaque modification de `scripts/photos/`, et ne traite que les athlètes sans photo ou dont la photo a été refusée (`"tout": true` dans `scripts/photos/config.json`, ou l'option « Refaire toutes les photos » au lancement manuel, refait tout). Si un athlète tombe sur la mauvaise page, ajoute le bon titre Wikipédia dans `scripts/photos/titres.json`. Si une photo ne convient pas (plusieurs personnes, athlète de dos…), ajoute son nom de fichier Commons dans `scripts/photos/refus.json` : l'Action prendra la photo suivante. Pour choisir soi-même la photo d'une star, ajoute son identifiant à `"explorer"` dans `config.json` (ou `{ "duplantis": ["Duplantis medal"] }` pour chercher des photos précises) : l'Action enregistre une planche numérotée de ses photos Commons dans `scripts/photos/explorer/`, et il suffit de mettre le nom du fichier retenu dans `scripts/photos/choix.json` (avec au besoin un recadrage : `{ "fichier": "…", "recadrage": [x, y, largeur, hauteur] }`, en fractions de l'image). Sans photo libre, la carte affiche une silhouette en buste aux couleurs du sport.
 
@@ -170,4 +180,4 @@ node scripts/wikidata/generer-athletes.mjs --recaler   # sans réseau : recalcul
 - **Multijoueur** : un vrai marché entre joueurs demande un serveur qui fait autorité sur les soldes, l'ouverture des boosters et les ventes (sinon on peut tricher). Piste simple : Supabase (PostgreSQL, comptes, temps réel), puis Node + PostgreSQL + Redis si le nombre de joueurs explose.
 - **Matchs entre joueurs**, classement, saisons, événements (cartes « Équipe de la semaine »).
 
-Les notes et stats sont une interprétation de jeu. Les noms des athlètes appartiennent à leurs titulaires ; Athleticards est un projet de fan non officiel.
+Les notes et stats sont une interprétation de jeu. Les noms des athlètes appartiennent à leurs titulaires ; AthletiCards est un projet de fan non officiel.

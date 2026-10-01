@@ -1,7 +1,7 @@
 import type { CardFace, OwnedCard, SportId, Variant } from './types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS } from '../data/sports';
-import { baseValueOf, canBePrime, displayName, dropWeight, primeRecordStart, rarityOf, roundPrice } from './cards';
+import { REVERSE_CHANCE, baseValueOf, canBePrime, displayName, dropWeight, isMythe, primeRecordStart, rarityOf, roundPrice } from './cards';
 import { hashUnit, makeUid, pick, randInt, weightedPick, type Rng } from './random';
 
 // Marché des transferts simulé : des « managers » IA mettent des cartes en vente, enchérissent
@@ -169,7 +169,8 @@ function pickListingAthlete(rng: Rng) {
 export function createAiListing(rng: Rng, t: number, news: MarketNews[], forceAthleteId?: string): Listing {
   const athlete = forceAthleteId ? ATHLETES_BY_ID[forceAthleteId] : pickListingAthlete(rng);
   // les grandes légendes passent parfois en version Prime sur le marché, pour faire rêver
-  const variant: Variant = canBePrime(athlete) && rng() < 0.2 ? 'prime' : 'base';
+  // et n'importe quelle carte peut y apparaître en finition Reverse
+  const variant: Variant = isMythe(athlete) ? 'base' : canBePrime(athlete) && rng() < 0.2 ? 'prime' : rng() < REVERSE_CHANCE ? 'reverse' : 'base';
   const record = primeRecordStart(athlete);
   const card: CardFace = { athleteId: athlete.id, variant, ...(record ? { record: record + randInt(rng, 0, 6) } : {}) };
   const price = marketPrice(card, t, news);

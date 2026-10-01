@@ -45,7 +45,7 @@ function FreePackHero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero__pack">
-        <PackArt tone="bronze" name={FREE_PACK.name} className={freePacks > 0 ? 'is-ready' : ''} />
+        <PackArt tone="bronze" name={FREE_PACK.name} size={FREE_PACK.size} className={freePacks > 0 ? 'is-ready' : ''} />
         {freePacks > 0 && <span className="hero__count">×{freePacks}</span>}
       </div>
       <div className="hero__text">
@@ -248,7 +248,7 @@ export function HomeScreen() {
       <MarketNewsPanel />
       <p className="footnote">
         Les notes et stats sont une interprétation de jeu. {ATHLETES.length} athlètes, dont {ATHLETES.filter((a) => a.retired).length} Icônes.
-        Tous les noms appartiennent à leurs titulaires ; Athleticards est un projet de fan non officiel.
+        Tous les noms appartiennent à leurs titulaires ; AthletiCards est un projet de fan non officiel.
       </p>
     </div>
   );

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { ATHLETES, ATHLETES_BY_ID } from '../../data/athletes';
-import { canBePrime, rarityOf, primeRecordStart } from '../cards';
+import { baseValueOf, canBePrime, overallOf, rarityOf, primeRecordStart } from '../cards';
 import { FREE_ODDS, FREE_PACK, SHOP_PACKS, openPack, primeOdds } from '../packs';
 import { advanceMarket, createAiListing, createMarket, createMyListing, marketPrice, netAfterTax, TARGET_LISTINGS, type MarketState } from '../market';
-import { computePower, createMatch, matchResult, playRound, ROUNDS, takenMalus, type MatchCard } from '../match';
+import { computePower, createMatch, matchResult, mytheBonus, playRound, ROUNDS, takenMalus, type MatchCard } from '../match';
 import { mulberry32 } from '../random';
 
 const MINUTE = 60_000;
@@ -31,6 +31,52 @@ describe('boosters', () => {
       expect(rarityOf(ATHLETES_BY_ID[legend.athleteId]).id).toBe('legendaire');
       expect(openPack(prime, rng).some((c) => c.variant === 'prime')).toBe(true);
     }
+  });
+
+  it('sort environ une carte sur 20 en version Reverse, plus chère que la classique', () => {
+    const rng = mulberry32(2026);
+    let reverse = 0;
+    let total = 0;
+    for (let i = 0; i < 4000; i++) {
+      for (const card of openPack(FREE_PACK, rng)) {
+        total += 1;
+        if (card.variant === 'reverse') reverse += 1;
+      }
+    }
+    expect(reverse / total).toBeGreaterThan(0.04);
+    expect(reverse / total).toBeLessThan(0.06);
+    const kante = ATHLETES_BY_ID.kante;
+    expect(baseValueOf(kante, 'reverse')).toBeGreaterThan(baseValueOf(kante));
+    expect(overallOf(kante, 'reverse')).toBe(overallOf(kante));
+  });
+
+  it('sort une carte Mythe environ une fois sur 40, sans toucher à la carte garantie', () => {
+    const rng = mulberry32(99);
+    let mythes = 0;
+    let total = 0;
+    for (let i = 0; i < 4000; i++) {
+      for (const card of openPack(FREE_PACK, rng)) {
+        total += 1;
+        if (ATHLETES_BY_ID[card.athleteId].mythe) mythes += 1;
+      }
+    }
+    expect(mythes / total).toBeGreaterThan(0.018);
+    expect(mythes / total).toBeLessThan(0.032);
+    // la carte garantie reste un athlète Légendaire ; un Mythe tiré en plus peut être classé après elle
+    const legende = SHOP_PACKS.find((p) => p.id === 'legende')!;
+    for (let i = 0; i < 300; i++) {
+      const athletes = openPack(legende, rng).map((card) => ATHLETES_BY_ID[card.athleteId]);
+      expect(athletes.some((athlete) => !athlete.mythe && rarityOf(athlete).id === 'legendaire')).toBe(true);
+    }
+  });
+
+  it('ne donne le bonus d’une carte Mythe qu’aux athlètes de son sport', () => {
+    const side = { mythe: { uid: 'm', athleteId: 'mythe-roland-garros', variant: 'base' as const } };
+    expect(mytheBonus(side, { athleteId: 'nadal', variant: 'base' }, 'sprint')?.value).toBe(5);
+    expect(mytheBonus(side, { athleteId: 'nadal', variant: 'base' }, 'marathon')?.value).toBe(8);
+    expect(mytheBonus(side, { athleteId: 'messi', variant: 'base' }, 'sprint')).toBeNull();
+    const jo = { mythe: { uid: 'j', athleteId: 'mythe-jeux-olympiques', variant: 'base' as const } };
+    expect(mytheBonus(jo, { athleteId: 'messi', variant: 'base' }, 'sprint')?.value).toBe(2);
   });
 
   it('ne donne une version Prime qu’aux très grandes légendes', () => {

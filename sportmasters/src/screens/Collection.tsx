@@ -66,7 +66,7 @@ function Club() {
       return true;
     });
     const level = (g: Group) => overallOf(ATHLETES_BY_ID[g.cards[0].athleteId], g.cards[0].variant);
-    const rank = (g: Group) => rarityOf(ATHLETES_BY_ID[g.cards[0].athleteId]).order * 1000 + (g.cards[0].variant === 'prime' ? 500 : 0) + level(g);
+    const rank = (g: Group) => rarityOf(ATHLETES_BY_ID[g.cards[0].athleteId]).order * 1000 + (g.cards[0].variant === 'prime' ? 500 : g.cards[0].variant === 'reverse' ? 200 : 0) + level(g);
     list = list.sort((a, b) => {
       if (sort === 'rating') return level(b) - level(a);
       if (sort === 'rarity') return rank(b) - rank(a);

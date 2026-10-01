@@ -42,7 +42,7 @@
   font-size: 0.8rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .muted {
@@ -123,7 +123,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px 16px;
-  background: rgba(10, 13, 22, 0.82);
+  background: rgba(7, 16, 12, 0.82);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--line);
@@ -139,10 +139,50 @@
 }
 
 .brand__logo {
-  display: block;
-  width: auto;
-  height: 24px;
+  font-size: 1.6rem;
   color: var(--text);
+}
+
+.brand .brand__mark {
+  display: none;
+  font-size: 1.9rem;
+}
+
+/* ───────────── Logo ───────────── */
+.logo {
+  --logo-card: var(--accent-text);
+  display: inline-block;
+  font-family: 'Outfit', var(--font-body);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+}
+
+.logo__i {
+  position: relative;
+  display: inline-block;
+}
+
+/* le point du i : une petite carte inclinée */
+.logo__card {
+  position: absolute;
+  left: 50%;
+  top: 0.095em;
+  width: 0.16em;
+  height: 0.215em;
+  border-radius: 0.035em;
+  background: var(--logo-card);
+  transform: translateX(-46%) rotate(14deg);
+}
+
+.logo-mark {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.88em;
+  border-radius: 0.12em;
+  background: var(--accent-text);
+  transform: rotate(14deg);
 }
 
 .topbar__right {
@@ -175,7 +215,7 @@
 }
 
 .chip--packs b {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .chip__timer {
@@ -236,9 +276,19 @@
   fill: currentColor;
 }
 
+/* musique coupée : icône barrée et atténuée */
+.icon-btn.is-off {
+  color: var(--text-dim);
+}
+
+.icon-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 @media (max-width: 520px) {
-  .brand__name {
-    font-size: 1.1rem;
+  .brand__logo {
+    font-size: 1.35rem;
   }
   .chip__timer {
     display: none;
@@ -249,8 +299,11 @@
 }
 
 @media (max-width: 380px) {
-  .brand__name {
+  .brand__logo {
     display: none;
+  }
+  .brand .brand__mark {
+    display: inline-block;
   }
 }
 
@@ -265,7 +318,7 @@
   grid-template-columns: repeat(5, 1fr);
   height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: rgba(12, 16, 27, 0.94);
+  background: rgba(9, 19, 14, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--line-2);
@@ -299,7 +352,7 @@
 }
 
 .bottomnav__item.is-active {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .bottomnav__item.is-active::before {
@@ -380,11 +433,11 @@
 .btn--primary {
   background: linear-gradient(180deg, var(--accent-2), var(--accent));
   color: var(--accent-ink);
-  box-shadow: 0 6px 18px rgba(255, 176, 32, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 18px rgba(30, 122, 60, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .btn--primary:hover:not(:disabled) {
-  box-shadow: 0 8px 26px rgba(255, 176, 32, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 26px rgba(30, 122, 60, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .btn--gold {
@@ -404,7 +457,7 @@
 
 .btn--ghost.is-on {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .btn--danger {
@@ -482,9 +535,11 @@
   border-radius: 20px;
   border: 1px solid var(--line-2);
   background:
-    radial-gradient(120% 100% at 15% 0%, rgba(255, 176, 32, 0.18), transparent 55%),
-    radial-gradient(90% 90% at 100% 100%, rgba(98, 140, 255, 0.16), transparent 60%),
-    linear-gradient(180deg, #151b2c, #0e1220);
+    radial-gradient(120% 100% at 15% 0%, rgba(30, 122, 60, 0.18), transparent 55%),
+    radial-gradient(90% 90% at 100% 100%, rgba(150, 230, 110, 0.1), transparent 60%),
+    /* bandes de tonte, comme une pelouse de stade */
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 64px, transparent 64px 128px),
+    linear-gradient(180deg, #122219, #0b150f);
   overflow: hidden;
 }
 
@@ -513,7 +568,7 @@
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 1.4rem;
-  box-shadow: 0 6px 18px rgba(255, 176, 32, 0.4);
+  box-shadow: 0 6px 18px rgba(30, 122, 60, 0.4);
 }
 
 .hero__text {
@@ -719,6 +774,10 @@
   --dot: linear-gradient(90deg, #ff9ad5, #ffe27a, #8dffcf, #8fd3ff);
 }
 
+.rarity-row--reverse {
+  --dot: linear-gradient(135deg, #ff2f8f, #2b4dff 40%, #ffc93a 70%, #10c6ff);
+}
+
 .rarity-row .meter__fill {
   background: var(--dot);
 }
@@ -763,7 +822,7 @@
 }
 
 .objective.is-complete .objective__text span:first-child {
-  color: var(--accent-2);
+  color: var(--accent-text);
 }
 
 @media (min-width: 560px) {
@@ -827,52 +886,222 @@
   gap: 8px;
 }
 
-/* ───────────── Pack ───────────── */
+/* ───────────── Pack (style graphique sportswear) ─────────────
+   1 cqw = 1 % de la largeur du sachet. Couleurs : --c1 fond, --c2 bande, --c3 accents. */
 .pack-art {
   position: relative;
   width: 100%;
-  aspect-ratio: 120 / 170;
+  aspect-ratio: 120 / 172;
   container-type: inline-size;
-  filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.5));
 }
 
-.pack-art__foil {
+.pack-art__sachet {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
 }
 
+.pack-art__sachet > * {
+  position: absolute;
+}
+
+.pack-art__bg,
+.pack-art__streak,
 .pack-art__shine {
-  animation: pack-shine 3.8s ease-in-out infinite;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* trame de points + bandes diagonales sur fond uni */
+.pack-art__bg {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.2) 0.6cqw, transparent 0.8cqw) 0 0 / 4cqw 4cqw,
+    linear-gradient(118deg, transparent 52%, var(--c2) 52% 66%, var(--c3) 66% 71%, transparent 71%),
+    var(--c1);
+}
+
+.pack-art--prime .pack-art__bg {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.2) 0.6cqw, transparent 0.8cqw) 0 0 / 4cqw 4cqw,
+    linear-gradient(118deg, transparent 50%, #ff4fa3 50% 56%, #ffd84f 56% 62%, #4fffb0 62% 67%, #4fd6ff 67% 72%, #a66bff 72% 76%, transparent 76%),
+    var(--c1);
+}
+
+.pack-art__streak {
+  background: linear-gradient(118deg, transparent 30%, rgba(255, 255, 255, 0.12) 30% 34%, transparent 34%);
+}
+
+/* nombre de cartes en grand chiffre détouré */
+.pack-art__big {
+  right: 4%;
+  top: 17%;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 30cqw;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 0.5cqw var(--c3);
+  opacity: 0.9;
+}
+
+/* trois cartes en éventail, la dernière inclinée comme dans le logo */
+.pack-art__emblem {
+  left: 0;
+  right: 0;
+  top: 22%;
+  height: 50%;
+}
+
+.pack-art__emblem i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 32cqw;
+  height: 45cqw;
+  margin: -22.5cqw 0 0 -16cqw;
+  border-radius: 3.2cqw;
+}
+
+.pack-art__emblem i:nth-child(1) {
+  transform: translateX(-12cqw) rotate(-18deg);
+  border: 0.8cqw solid var(--c3);
+}
+
+.pack-art__emblem i:nth-child(2) {
+  transform: translateX(-2cqw) rotate(-3deg);
+  background: var(--c2);
+}
+
+.pack-art__emblem i:nth-child(3) {
+  transform: translateX(9cqw) rotate(14deg);
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--c1) 35%, transparent) 0.7cqw, transparent 0.9cqw) 0 0 / 3.2cqw 3.2cqw,
+    #fff;
+  border: 1.4cqw solid var(--c1);
+  box-shadow: 2cqw 2cqw 0 var(--c3);
+}
+
+.pack-art__logo {
+  left: 0;
+  right: 0;
+  top: 8%;
+  text-align: center;
+  z-index: 3;
+}
+
+.pack-art__logo .logo {
+  --logo-card: var(--c3);
+  font-size: 10cqw;
+  color: #fff;
+}
+
+.pack-art__series {
+  left: 0;
+  right: 0;
+  top: 15.5%;
+  text-align: center;
+  font-family: 'Outfit', var(--font-body);
+  font-weight: 800;
+  font-size: 3.6cqw;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  z-index: 3;
+}
+
+.pack-art__name {
+  left: 7%;
+  right: 4%;
+  bottom: 14%;
+  font-family: var(--font-data);
+  font-style: italic;
+  font-weight: 900;
+  font-size: var(--pk-title);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: rotate(-4deg);
+  transform-origin: left bottom;
+  text-shadow: 1.2cqw 1.2cqw 0 var(--c1);
+  z-index: 3;
+}
+
+/* garantie ou nombre de cartes, dans une étiquette pleine pour rester lisible sur les bandes */
+.pack-art__line {
+  left: 8%;
+  bottom: 7.5%;
+  z-index: 3;
+}
+
+.pack-art__line span {
+  display: inline-block;
+  padding: 0.9cqw 2cqw 0.7cqw;
+  background: var(--c1);
+  color: var(--c3);
+  font-family: 'Outfit', var(--font-body);
+  font-weight: 800;
+  font-size: 3.8cqw;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* soudures nervurées */
+.pack-art__seal {
+  left: 0;
+  right: 0;
+  height: 5.5%;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.28) 0 1px, rgba(0, 0, 0, 0.12) 1px 3px), rgba(0, 0, 0, 0.18);
+  z-index: 4;
+}
+
+.pack-art__seal--top {
+  top: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.pack-art__seal--bottom {
+  bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+/* reflet qui balaie le sachet */
+.pack-art__shine {
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.45) 48%, transparent 60%);
+  background-size: 250% 100%;
+  animation: pack-shine 4.5s ease-in-out infinite;
+  mix-blend-mode: overlay;
+  z-index: 5;
 }
 
 @keyframes pack-shine {
   0%,
-  55% {
-    transform: rotate(20deg) translateX(0);
+  45% {
+    background-position: 120% 0;
   }
   100% {
-    transform: rotate(20deg) translateX(220px);
+    background-position: -120% 0;
   }
 }
 
-/* le logo, seul sur le sachet */
-.pack-art__logo {
-  position: absolute;
-  left: 13%;
-  top: 50%;
-  width: 74%;
-  height: auto;
-  transform: translateY(-50%);
-}
-
-.pack-art__logo .logo__card {
-  stroke: var(--pack-trim);
+@media (prefers-reduced-motion: reduce) {
+  .pack-art__shine {
+    animation: none;
+  }
 }
 
 .pack-art.is-ready {
-  animation: pack-float 3.2s ease-in-out infinite;
+  animation: pack-breathe 5s ease-in-out infinite;
+}
+
+@keyframes pack-breathe {
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 @keyframes pack-float {
@@ -1095,8 +1324,8 @@
   gap: 10px;
   padding: 10px 14px;
   border-radius: 12px;
-  background: rgba(255, 176, 32, 0.08);
-  border: 1px solid rgba(255, 176, 32, 0.25);
+  background: rgba(30, 122, 60, 0.08);
+  border: 1px solid rgba(30, 122, 60, 0.25);
   font-size: 0.92rem;
 }
 
@@ -1357,6 +1586,11 @@
 .chip-rarity--prime {
   background: linear-gradient(90deg, #ff9ad5, #ffe27a, #8dffcf, #8fd3ff, #d9a2ff);
 }
+.chip-rarity--reverse {
+  background: linear-gradient(115deg, #ff2f8f, #2b4dff 35%, #ffc93a 65%, #10c6ff);
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+}
 .chip-rarity--icon {
   background: #f5eedd;
   color: #6f5420;
@@ -1384,7 +1618,7 @@
   overflow-y: auto;
   border-radius: 20px;
   border: 1px solid var(--line-2);
-  background: linear-gradient(180deg, #161c2d, #0f1320);
+  background: linear-gradient(180deg, #13231a, #0c1610);
   box-shadow: var(--shadow);
   padding: 22px 18px;
   animation: pop-in 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2);
@@ -1582,7 +1816,7 @@
   font-size: 0.76rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   margin-bottom: 4px !important;
 }
 
@@ -1677,8 +1911,8 @@
   gap: 12px;
   padding: 14px;
   border-radius: 14px;
-  background: rgba(255, 176, 32, 0.06);
-  border: 1px solid rgba(255, 176, 32, 0.25);
+  background: rgba(30, 122, 60, 0.06);
+  border: 1px solid rgba(30, 122, 60, 0.25);
 }
 
 .sell-form p {
@@ -1746,7 +1980,7 @@
 
 .pill.is-active {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .pill:focus-within {
@@ -1812,10 +2046,18 @@
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(60% 50% at 50% 45%, rgba(255, 255, 255, 0.07), transparent 70%),
-    radial-gradient(120% 90% at 50% 120%, rgba(98, 140, 255, 0.18), transparent 60%),
-    #05070d;
-  animation: fade-in 0.3s ease-out;
+    radial-gradient(55% 45% at 50% 42%, rgba(39, 194, 108, 0.08), transparent 70%),
+    #030705;
+  animation: fade-in 0.5s ease-out;
+}
+
+/* un simple faisceau de lumière douce venu d'en haut */
+.opening__rays {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(40% 60% at 50% -10%, rgba(255, 255, 255, 0.06), transparent 70%);
+  animation: fade-in 1.2s ease-out;
 }
 
 .opening__stage {
@@ -1826,42 +2068,314 @@
   padding: 24px;
 }
 
-.opening__pack {
+/* ───── scène 3D : sol en perspective et particules de lumière ───── */
+.opening__floor {
+  position: fixed;
+  left: 50%;
+  bottom: -12vh;
+  width: 180vmax;
+  height: 70vh;
+  margin-left: -90vmax;
+  pointer-events: none;
+  transform: perspective(700px) rotateX(74deg);
+  transform-origin: 50% 100%;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(39, 194, 108, 0.22), transparent 55%),
+    repeating-linear-gradient(90deg, rgba(198, 243, 107, 0.06) 0 1px, transparent 1px 90px),
+    repeating-linear-gradient(0deg, rgba(198, 243, 107, 0.06) 0 1px, transparent 1px 90px);
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 15%, transparent 62%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 15%, transparent 62%);
+  animation: fade-in 1.2s ease-out;
+}
+
+.opening__dust {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.opening__dust i {
+  position: absolute;
+  bottom: -12px;
+  border-radius: 50%;
+  background: rgba(198, 243, 107, 0.7);
+  box-shadow: 0 0 8px rgba(198, 243, 107, 0.7);
+  opacity: 0;
+  animation: dust-rise linear infinite;
+}
+
+@keyframes dust-rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.6;
+  }
+  85% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate3d(24px, -105vh, 0);
+    opacity: 0;
+  }
+}
+
+.opening__stage {
+  perspective: 1100px;
+}
+
+/* ───── le sachet en volume ───── */
+.opening__pack3d {
+  position: relative;
   width: min(250px, 60vw);
+  aspect-ratio: 120 / 172;
   border: 0;
   padding: 0;
   background: none;
-  animation: pack-float 2.6s ease-in-out infinite;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  animation: pack3d-enter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-.opening--tearing .opening__pack {
-  animation: pack-shake 0.55s ease-in-out, pack-burst 0.5s 0.55s ease-in forwards;
+/* il arrive du fond de la scène en tournant sur lui-même */
+@keyframes pack3d-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -12%, -900px) rotateY(-320deg) rotateX(18deg);
+  }
+  55% {
+    opacity: 1;
+  }
 }
 
-@keyframes pack-shake {
+/* puis il flotte en pivotant doucement */
+.pack3d-float {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: pack3d-sway 6s 1.2s ease-in-out infinite;
+}
+
+@keyframes pack3d-sway {
   0%,
   100% {
-    transform: rotate(0);
+    transform: rotateY(-12deg) rotateX(4deg) translateY(0);
   }
-  20% {
-    transform: rotate(-6deg) scale(1.03);
-  }
-  40% {
-    transform: rotate(6deg) scale(1.05);
-  }
-  60% {
-    transform: rotate(-4deg) scale(1.07);
-  }
-  80% {
-    transform: rotate(3deg) scale(1.08);
+  50% {
+    transform: rotateY(12deg) rotateX(-3deg) translateY(-10px);
   }
 }
 
-@keyframes pack-burst {
-  to {
-    transform: scale(1.6);
+/* inclinaison qui suit la souris ou le doigt */
+.pack3d {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg));
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.pack3d__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.pack3d__front {
+  transform: translateZ(6px);
+  transform-style: preserve-3d;
+}
+
+.pack3d__body,
+.pack3d__strip {
+  position: absolute;
+  inset: 0;
+}
+
+.pack3d__body {
+  clip-path: inset(11.5% 0 0 0);
+}
+
+.pack3d__strip {
+  clip-path: inset(0 0 88.5% 0);
+  transform-origin: 0% 11.5%;
+}
+
+.pack3d__back {
+  transform: rotateY(180deg) translateZ(6px);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  border-radius: 3%;
+  color: #fff;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.14) 1px, transparent 1.5px) 0 0 / 9px 9px,
+    linear-gradient(160deg, #123a24, #07140d);
+  box-shadow: inset 0 0 0 2px rgba(198, 243, 107, 0.35);
+}
+
+.pack3d__back .logo {
+  --logo-card: #c6f36b;
+  font-size: 26px;
+}
+
+.pack3d__back small {
+  font-family: 'Outfit', var(--font-body);
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* tranches du sachet */
+.pack3d__side {
+  position: absolute;
+  top: 3%;
+  bottom: 3%;
+  width: 12px;
+  background: linear-gradient(90deg, #07140d, #2c4a38 50%, #07140d);
+}
+
+.pack3d__side--left {
+  left: -6px;
+  transform: rotateY(-90deg);
+}
+
+.pack3d__side--right {
+  right: -6px;
+  transform: rotateY(90deg);
+}
+
+/* cartes cachées dans le sachet, entre les deux faces */
+.pack3d__cards {
+  position: absolute;
+  left: 13%;
+  right: 13%;
+  top: 7%;
+  height: 72%;
+  transform-style: preserve-3d;
+  opacity: 0;
+}
+
+.pack3d__cards > * {
+  position: absolute;
+  inset: 0;
+}
+
+.pack3d__cards > :nth-child(1) {
+  transform: translateZ(-2px) rotateZ(-5deg);
+}
+
+.pack3d__cards > :nth-child(3) {
+  transform: translateZ(2px) rotateZ(5deg);
+}
+
+/* lumière qui jaillit de l'ouverture */
+.pack3d__light {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 2%;
+  height: 20%;
+  transform: translateZ(8px) scaleY(0.3);
+  transform-origin: 50% 100%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 100%, #fff 0%, var(--teaser) 35%, transparent 70%);
+  filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ───── ouverture ───── */
+.opening--tearing .pack3d-float {
+  animation-play-state: paused;
+}
+
+.opening--tearing .opening__pack3d {
+  animation: pack3d-open 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* il se soulève vers nous, tremble à peine, garde la pose pendant que les cartes sortent, puis s'efface */
+@keyframes pack3d-open {
+  0% {
+    transform: none;
+  }
+  22% {
+    transform: translate3d(0, 0, 90px);
+  }
+  26% {
+    transform: translate3d(0, 0, 90px) rotateZ(-1.2deg);
+  }
+  30% {
+    transform: translate3d(0, 0, 90px) rotateZ(1.2deg);
+  }
+  34% {
+    transform: translate3d(0, 0, 90px);
+  }
+  82% {
+    opacity: 1;
+    transform: translate3d(0, 4%, 70px);
+  }
+  100% {
     opacity: 0;
-    filter: brightness(3) blur(4px);
+    transform: translate3d(0, 28%, -120px) rotateX(28deg);
+  }
+}
+
+.opening--tearing .pack3d__strip {
+  animation: strip3d 0.8s 0.36s cubic-bezier(0.5, 0, 0.3, 1) forwards;
+}
+
+@keyframes strip3d {
+  to {
+    transform: translate3d(38%, -110%, 80px) rotateX(-75deg) rotateZ(-30deg);
+    opacity: 0;
+  }
+}
+
+.opening--tearing .pack3d__light {
+  animation: light3d 1s 0.45s ease-out forwards;
+}
+
+@keyframes light3d {
+  0% {
+    opacity: 0;
+    transform: translateZ(8px) scaleY(0.3);
+  }
+  30% {
+    opacity: 1;
+    transform: translateZ(8px) scaleY(1.8) translateY(-25%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateZ(8px) scaleY(2.4) translateY(-40%);
+  }
+}
+
+.opening--tearing .pack3d__cards {
+  animation: cards3d 0.8s 0.6s cubic-bezier(0.3, 0.7, 0.2, 1) forwards;
+}
+
+@keyframes cards3d {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, -62%, 30px) rotateX(-8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack3d-float,
+  .opening__dust i {
+    animation: none;
   }
 }
 
@@ -1882,7 +2396,7 @@
     opacity: 0;
   }
   35% {
-    opacity: 0.95;
+    opacity: 0.22;
   }
   100% {
     opacity: 0;
@@ -1897,7 +2411,7 @@
   text-transform: uppercase;
   color: var(--text-dim);
   min-height: 1.4em;
-  animation: blink 1.6s ease-in-out infinite;
+  animation: blink 3s ease-in-out infinite;
 }
 
 @keyframes blink {
@@ -1915,9 +2429,6 @@
   width: 100%;
   max-width: 1160px;
   padding: 24px 16px 40px;
-  /* centré s'il y a la place, sinon aligné en haut et l'écran défile */
-  align-self: start;
-  margin-block: auto;
 }
 
 .opening__progress {
@@ -1936,28 +2447,90 @@
   gap: 14px;
 }
 
-/* cinq cartes sur une ligne tant que l'écran le permet, trois par ligne sur téléphone */
 .flip {
-  --flip-w: clamp(100px, calc((100vw - 88px) / 5), 196px);
-  width: var(--flip-w);
+  --card-w: 196px;
+  position: relative;
+  width: var(--card-w);
   aspect-ratio: 100 / 140;
   perspective: 1200px;
-  animation: deal-in 0.5s both cubic-bezier(0.2, 0.9, 0.3, 1.1);
+  animation: deal-in 0.8s both cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-@media (max-width: 640px) {
+/* halo de la couleur de la rareté, qui éclate quand la carte se retourne */
+.flip::before {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 65%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flip.is-flipped {
+  animation: flip-lift 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.flip.is-flipped::before {
+  animation: glow-burst 1.4s ease-out;
+}
+
+/* reflet qui traverse la carte juste après le retournement */
+.flip.is-flipped .flip__front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 5%;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.3) 50%, transparent 65%) 0 0 / 250% 100% no-repeat;
+  mix-blend-mode: overlay;
+  animation: card-sweep 1.2s 0.5s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes flip-lift {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes glow-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  40% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes card-sweep {
+  from {
+    background-position: 130% 0;
+  }
+  to {
+    background-position: -130% 0;
+  }
+}
+
+@media (max-width: 700px) {
   .flip {
-    --flip-w: calc((100vw - 52px) / 3);
+    --card-w: 140px;
   }
-  .opening__row {
-    gap: 16px 10px;
+  .flip .card {
+    --card-w: 140px !important;
   }
 }
 
+/* les cartes apparaissent une à une, en fondu avec une légère montée */
 @keyframes deal-in {
   from {
     opacity: 0;
-    transform: translateY(40px) rotate(-6deg) scale(0.8);
+    transform: translateY(24px);
   }
 }
 
@@ -1966,7 +2539,7 @@
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.7s cubic-bezier(0.3, 0.9, 0.3, 1.05);
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .flip.is-flipped .flip__inner {
@@ -1987,63 +2560,333 @@
   transform: rotateY(180deg);
 }
 
-/* une vraie largeur (et non 100 %) : tout le texte de la carte est dimensionné en em d'après elle */
+/* la carte garde une largeur en px (sa taille interne en dépend) : même largeur que .flip */
 .flip__front .card {
-  --card-w: var(--flip-w) !important;
+  --card-w: 196px !important;
 }
 
-.flip.is-next,
-.flip.is-flipped {
-  cursor: pointer;
-}
-
-.flip.is-focus .flip__front .card,
-.opening__cell.is-focus .card {
-  filter: drop-shadow(0 0 0.7em var(--glow, var(--accent))) drop-shadow(0 0.7em 0.9em rgba(0, 0, 0, 0.45));
-}
-
-.flip.is-next .flip__back {
-  animation: next-pulse 1.4s ease-in-out infinite;
-}
-
-.flip.is-special.is-next .flip__back {
-  filter: drop-shadow(0 0 18px var(--glow));
-}
-
-@keyframes next-pulse {
-  50% {
-    transform: translateY(-6px);
-    filter: drop-shadow(0 0 16px rgba(255, 176, 32, 0.6));
+@media (max-width: 700px) {
+  .flip__front .card {
+    --card-w: 140px !important;
   }
 }
 
+.flip.is-next {
+  cursor: pointer;
+}
+
+/* la prochaine carte à retourner se soulève légèrement */
+.flip.is-next .flip__back {
+  transform: translateY(-6px);
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.5s;
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.45));
+}
+
+.flip.is-special.is-next .flip__back {
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--glow) 55%, transparent));
+}
+
+/* ───── une carte à la fois, en grand et en 3D ───── */
+.opening__cards--single {
+  gap: 14px;
+}
+
+.opening__spot {
+  --stage-w: 300px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: calc(var(--stage-w) * 1.4 + 30px);
+  perspective: 1400px;
+}
+
+.stage-card {
+  --stage-w: 300px;
+  position: relative;
+  width: var(--stage-w);
+  aspect-ratio: 100 / 140;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  animation: stage-in3d 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (max-width: 520px) {
+  .opening__spot,
+  .stage-card {
+    --stage-w: 240px;
+  }
+}
+
+.stage-card .flip__front .card {
+  --card-w: var(--stage-w) !important;
+}
+
+/* elle arrive de la profondeur en pivotant, et repart de l'autre côté */
+@keyframes stage-in3d {
+  from {
+    opacity: 0;
+    transform: translate3d(60%, -4%, -520px) rotateY(62deg) rotateZ(6deg);
+  }
+}
+
+.stage-card.is-leaving {
+  animation: stage-out3d 0.5s cubic-bezier(0.6, 0, 0.4, 1) forwards;
+}
+
+@keyframes stage-out3d {
+  to {
+    opacity: 0;
+    transform: translate3d(-70%, 0, -520px) rotateY(-62deg) rotateZ(-6deg);
+  }
+}
+
+.stage-card__tilt,
+.stage-card__float {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.stage-card__tilt {
+  transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg));
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.stage-card__float {
+  animation: card-float 5s ease-in-out infinite;
+}
+
+@keyframes card-float {
+  50% {
+    transform: translateY(-8px) rotateY(4deg) rotateX(-2deg);
+  }
+}
+
+/* retournement : la carte vient vers nous à mi-rotation puis repart en arrière */
+.stage-card .flip__inner {
+  transition: none;
+}
+
+.stage-card.is-flipped .flip__inner {
+  transform: rotateY(180deg);
+  animation: flip3d 1s cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+@keyframes flip3d {
+  0% {
+    transform: translateZ(0) rotateY(0);
+  }
+  45% {
+    transform: translateZ(170px) rotateY(110deg) rotateX(-6deg);
+  }
+  100% {
+    transform: translateZ(0) rotateY(180deg);
+  }
+}
+
+/* halo de la couleur de la rareté, derrière la carte */
+.stage-card::before {
+  content: '';
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 62%);
+  opacity: 0;
+  transform: translateZ(-60px);
+  pointer-events: none;
+}
+
+.stage-card.is-flipped::before {
+  animation: stage-glow 1.6s 0.3s ease-out forwards;
+}
+
+@keyframes stage-glow {
+  0% {
+    opacity: 0;
+    transform: translateZ(-60px) scale(0.85);
+  }
+  40% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0.15;
+    transform: translateZ(-60px) scale(1);
+  }
+}
+
+.stage-card.is-flipped .flip__front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 5%;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.35) 50%, transparent 65%) 0 0 / 250% 100% no-repeat;
+  mix-blend-mode: overlay;
+  animation: card-sweep 1.2s 0.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.stage-card:not(.is-flipped) .flip__back {
+  filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.5));
+}
+
+.stage-card.is-special:not(.is-flipped) .flip__back {
+  filter: drop-shadow(0 0 26px color-mix(in srgb, var(--glow) 60%, transparent));
+}
+
+/* ombre au sol, qui s'éloigne quand la carte monte vers nous */
+.opening__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: calc(var(--stage-w) * 0.8);
+  height: 28px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.65), transparent 70%);
+  pointer-events: none;
+}
+
+.stage-card.is-flipped ~ .opening__shadow {
+  animation: shadow-flip 1s cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+@keyframes shadow-flip {
+  45% {
+    transform: translateX(-50%) scale(0.55);
+    opacity: 0.4;
+  }
+}
+
+.opening__hint--cards {
+  animation: none;
+  opacity: 0.8;
+}
+
+/* miniatures du paquet sous la carte */
+.opening__tray {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.tray-slot {
+  width: 46px;
+  aspect-ratio: 100 / 140;
+  opacity: 0.45;
+  transition: opacity 0.4s, transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.tray-slot.is-revealed {
+  opacity: 0.85;
+}
+
+.tray-slot.is-current {
+  opacity: 1;
+  transform: translateY(-4px);
+}
+
+.tray-slot .card {
+  --card-w: 46px !important;
+  filter: none;
+}
+
+.tray-slot .card-back {
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-card__float {
+    animation: none;
+  }
+}
+
+/* Dos des cartes, même langage que les boosters : fond vert tramé, bandes diagonales,
+   carte blanche à pois avec ombre décalée. 1 cqw = 1 % de la largeur de la carte. */
 .card-back {
   position: relative;
   width: 100%;
   height: 100%;
+  container-type: inline-size;
   border-radius: 8% / 5.7%;
   overflow: hidden;
-  background:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 3px),
-    radial-gradient(90% 70% at 50% 40%, #243052 0%, #0c1120 70%);
-  box-shadow: inset 0 0 0 2px rgba(255, 176, 32, 0.75), inset 0 0 0 7px #0c1120, inset 0 0 0 8px rgba(255, 176, 32, 0.3), 0 10px 16px rgba(0, 0, 0, 0.5);
+  isolation: isolate;
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
 }
 
-.card-back__rings {
+.card-back > * {
   position: absolute;
   inset: 0;
-  background: repeating-radial-gradient(circle at 50% 42%, rgba(255, 176, 32, 0.16) 0 6%, transparent 6% 12%);
 }
 
-.card-back__logo {
-  position: absolute;
-  left: 13%;
-  top: 50%;
-  width: 74%;
-  height: auto;
-  transform: translateY(-50%);
+.card-back__bg {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.2) 0.6cqw, transparent 0.8cqw) 0 0 / 4cqw 4cqw,
+    linear-gradient(118deg, transparent 18%, #27c26c 18% 30%, #c6f36b 30% 34%, transparent 34% 66%, #c6f36b 66% 70%, #27c26c 70% 82%, transparent 82%),
+    #0b5a31;
+}
+
+.card-back__streak {
+  background: linear-gradient(118deg, transparent 44%, rgba(255, 255, 255, 0.1) 44% 56%, transparent 56%);
+}
+
+/* reflets holographiques : rayons irisés qui changent lentement de couleur */
+.card-back__holo {
+  pointer-events: none;
+  background:
+    repeating-radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.12) 0 0.4cqw, transparent 0.4cqw 5cqw),
+    repeating-conic-gradient(from 0deg at 50% 50%, #ff5fb8 0 5deg, #ffe45f 5deg 10deg, #5fffc0 10deg 15deg, #5fc3ff 15deg 20deg, #c05fff 20deg 25deg);
+  mix-blend-mode: color-dodge;
+  opacity: 0.14;
+  animation: back-holo 8s linear infinite;
+}
+
+@keyframes back-holo {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-back__holo,
+  .opening__rays {
+    animation: none;
+  }
+}
+
+.card-back__crest {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 5cqw;
+  z-index: 2;
+}
+
+.card-back__mark {
+  display: block;
+  width: 22cqw;
+  height: 31cqw;
+  border-radius: 3cqw;
+  transform: rotate(14deg);
+  background:
+    radial-gradient(circle, rgba(11, 90, 49, 0.35) 0.7cqw, transparent 0.9cqw) 0 0 / 3.2cqw 3.2cqw,
+    #fff;
+  border: 1.4cqw solid #0b5a31;
+  box-shadow: 2cqw 2cqw 0 #c6f36b;
+}
+
+.card-back__crest .logo {
+  --logo-card: #c6f36b;
+  font-size: 11cqw;
   color: #fff;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+  text-shadow: 0.8cqw 0.8cqw 0 #0b5a31;
+}
+
+.card-back__frame {
+  inset: 3.5cqw;
+  border: 0.6cqw solid #c6f36b;
+  border-radius: 5cqw;
+  pointer-events: none;
+  z-index: 3;
 }
 
 .tag {
@@ -2073,6 +2916,12 @@
   border: 1px solid var(--line-2);
 }
 
+.tag--reverse {
+  background: linear-gradient(115deg, #ff2f8f, #2b4dff 35%, #ffc93a 65%, #10c6ff);
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+}
+
 .opening__actions {
   display: flex;
   flex-wrap: wrap;
@@ -2096,283 +2945,6 @@
   position: relative;
 }
 
-.opening__stats {
-  display: grid;
-  justify-items: center;
-  width: 100%;
-  scroll-margin: 16px;
-}
-
-/* fiche express : nom et stats de la carte qu'on vient de révéler */
-.card-stats {
-  --tier: var(--r-commune);
-  position: relative;
-  /* les stats passent en abrégé quand la fiche est étroite (téléphone, walkout) */
-  container-type: inline-size;
-  width: min(640px, 100%);
-  display: grid;
-  gap: 12px;
-  padding: 14px 16px 16px;
-  border-radius: 16px;
-  border: 1px solid var(--line-2);
-  border-top: 3px solid var(--tier);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 10%, transparent), transparent 60%), var(--bg-2);
-  box-shadow: var(--shadow);
-  text-align: left;
-  animation: stats-in 0.35s ease-out both;
-}
-
-.card-stats--peu-commune {
-  --tier: var(--r-peu-commune);
-}
-.card-stats--rare {
-  --tier: var(--r-rare);
-}
-.card-stats--epique {
-  --tier: var(--r-epique);
-}
-.card-stats--legendaire {
-  --tier: var(--r-legendaire);
-}
-.card-stats--prime {
-  --tier: var(--prime);
-}
-
-@keyframes stats-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-
-.card-stats__head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.card-stats__who {
-  display: grid;
-  gap: 5px;
-  min-width: 0;
-}
-
-.card-stats__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.card-stats__name {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(1.45rem, 5vw, 2rem);
-  line-height: 1.02;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  text-wrap: balance;
-}
-
-.card-stats__meta {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--text-dim);
-  font-size: 0.92rem;
-}
-
-.card-stats__flag {
-  flex: none;
-  width: 22px;
-  height: auto;
-  border-radius: 3px;
-}
-
-.card-stats__ovr {
-  flex: none;
-  display: grid;
-  justify-items: center;
-  min-width: 66px;
-  padding: 6px 10px 5px;
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--tier) 50%, transparent);
-  background: color-mix(in srgb, var(--tier) 16%, transparent);
-}
-
-.card-stats__ovr b {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 2.4rem;
-  line-height: 1;
-  color: var(--tier);
-  font-variant-numeric: tabular-nums;
-}
-
-.card-stats__ovr span {
-  font-family: var(--font-data);
-  font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-/* les trois meilleures stats du joueur, en tuiles */
-.card-stats__grid {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.card-stats__stat {
-  --stat: #8791a8;
-  display: grid;
-  gap: 4px;
-  padding: 10px 12px 12px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--line);
-}
-
-.card-stats__stat--vit {
-  --stat: #0ea5d6;
-}
-.card-stats__stat--for {
-  --stat: #e23b3b;
-}
-.card-stats__stat--end {
-  --stat: #1fa35a;
-}
-.card-stats__stat--tec {
-  --stat: #7c4dff;
-}
-.card-stats__stat--int {
-  --stat: #2f6fe4;
-}
-.card-stats__stat--aur {
-  --stat: #e28a00;
-}
-
-.card-stats__label {
-  color: var(--text-dim);
-  font-family: var(--font-data);
-  font-weight: 700;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.card-stats__short {
-  display: none;
-}
-
-.card-stats__stat b {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 2.1rem;
-  line-height: 1;
-  color: color-mix(in srgb, var(--stat) 55%, #fff);
-  font-variant-numeric: tabular-nums;
-}
-
-.card-stats__track {
-  height: 6px;
-  border-radius: 99px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-.card-stats__track span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--stat);
-  transform-origin: left;
-  animation: bar-grow 0.7s 0.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-@keyframes bar-grow {
-  from {
-    transform: scaleX(0);
-  }
-}
-
-.card-stats__ulti {
-  margin: 0;
-  display: grid;
-  gap: 2px;
-  padding-top: 10px;
-  border-top: 1px solid var(--line);
-}
-
-.card-stats__ulti-label {
-  font-family: var(--font-data);
-  font-weight: 800;
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.card-stats__ulti b {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.15rem;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.card-stats__ulti small {
-  color: var(--text-dim);
-  font-size: 0.86rem;
-}
-
-.card-stats__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-@container (max-width: 420px) {
-  .card-stats__grid {
-    gap: 8px;
-  }
-  .card-stats__stat {
-    padding: 8px 10px 10px;
-  }
-  .card-stats__stat b {
-    font-size: 1.8rem;
-  }
-  .card-stats__long {
-    display: none;
-  }
-  .card-stats__short {
-    display: inline;
-  }
-}
-
-@media (max-width: 520px) {
-  .card-stats {
-    padding: 12px 12px 14px;
-    gap: 10px;
-  }
-  .card-stats__ovr {
-    min-width: 56px;
-  }
-  .card-stats__ovr b {
-    font-size: 2rem;
-  }
-}
-
 /* walkout : la mise en scène des grosses cartes */
 .walkout {
   position: fixed;
@@ -2380,14 +2952,13 @@
   z-index: 90;
   display: grid;
   place-items: center;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   background: radial-gradient(70% 60% at 50% 50%, color-mix(in srgb, var(--beam) 18%, #04050a), #020308 70%);
   cursor: pointer;
 }
 
 .walkout__beams {
-  position: fixed;
+  position: absolute;
   inset: -60%;
   background: repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--beam) 55%, transparent) 0deg 4deg, transparent 4deg 22deg);
   mask-image: radial-gradient(circle, #000 5%, transparent 55%);
@@ -2412,7 +2983,7 @@
 }
 
 .walkout__floor {
-  position: fixed;
+  position: absolute;
   left: 50%;
   bottom: -25vh;
   width: 140vw;
@@ -2483,43 +3054,7 @@
   justify-items: center;
   gap: 14px;
   padding: 16px;
-  /* centré s'il y a la place, sinon aligné en haut et l'écran défile */
-  align-self: start;
-  margin-block: auto;
   animation: shake 0.5s 0.1s;
-}
-
-.walkout__body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-}
-
-/* largeur fixe : la fiche ne se dimensionne pas d'après son contenu (container-type) */
-.walkout__stats {
-  flex: none;
-  width: 420px;
-  max-width: calc(100vw - 32px);
-  cursor: default;
-}
-
-.walkout__stats .card-stats {
-  animation-delay: 0.5s;
-}
-
-@media (max-width: 760px) {
-  .walkout__body {
-    flex-direction: column;
-    gap: 16px;
-    width: min(420px, calc(100vw - 32px));
-  }
-  .walkout__card {
-    --card-w: min(250px, 62vw) !important;
-  }
-  .walkout__stats {
-    width: 100%;
-  }
 }
 
 .walkout__card {
@@ -2581,6 +3116,19 @@
     opacity: 0;
     transform: scale(3);
   }
+}
+
+.walkout__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.walkout__name span {
+  color: var(--beam);
 }
 
 .walkout__skip {
@@ -2671,7 +3219,7 @@
 .team-slot__empty span {
   font-size: 2.2rem;
   line-height: 1;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .synergies {
@@ -2710,7 +3258,7 @@
   float: right;
   font-size: 1.4rem;
   line-height: 1;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .rules[open] summary::after {
@@ -2742,7 +3290,7 @@
 .rules__sports svg {
   width: 20px;
   height: 20px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 @media (min-width: 760px) {
@@ -2764,7 +3312,7 @@
   align-items: center;
   padding: 14px;
   border-radius: 18px;
-  background: linear-gradient(180deg, #19213a, #10152a);
+  background: linear-gradient(180deg, #16291e, #0d1a13);
   border: 1px solid var(--line-2);
 }
 
@@ -2828,9 +3376,9 @@
 }
 
 .scoreboard__rounds li.is-current {
-  background: rgba(255, 176, 32, 0.18);
-  color: var(--accent);
-  box-shadow: inset 0 0 0 1px rgba(255, 176, 32, 0.5);
+  background: rgba(30, 122, 60, 0.18);
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 1px rgba(30, 122, 60, 0.5);
 }
 
 .scoreboard__rounds li.is-me {
@@ -2864,9 +3412,9 @@
   padding: 16px 18px;
   border-radius: 16px;
   background:
-    radial-gradient(90% 120% at 0% 0%, rgba(255, 176, 32, 0.2), transparent 60%),
+    radial-gradient(90% 120% at 0% 0%, rgba(30, 122, 60, 0.2), transparent 60%),
     var(--bg-2);
-  border: 1px solid rgba(255, 176, 32, 0.3);
+  border: 1px solid rgba(30, 122, 60, 0.3);
 }
 
 .event-banner h2 {
@@ -2909,7 +3457,7 @@
 }
 
 .hand__card.is-selected .card {
-  filter: drop-shadow(0 0 14px rgba(255, 176, 32, 0.9));
+  filter: drop-shadow(0 0 14px rgba(30, 122, 60, 0.9));
 }
 
 .hand__card.is-used {
@@ -2958,7 +3506,7 @@
   justify-items: center;
   padding: 18px 12px;
   border-radius: 20px;
-  background: radial-gradient(80% 60% at 50% 0%, rgba(255, 176, 32, 0.12), transparent 70%), var(--bg-2);
+  background: radial-gradient(80% 60% at 50% 0%, rgba(30, 122, 60, 0.12), transparent 70%), var(--bg-2);
   border: 1px solid var(--line-2);
 }
 
@@ -3322,7 +3870,7 @@
   gap: 10px;
   padding: 11px 12px 11px 16px;
   border-radius: 12px;
-  background: #1b2336;
+  background: #18291f;
   border: 1px solid var(--line-2);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
   font-size: 0.92rem;
@@ -3347,10 +3895,10 @@
 }
 .toast--gold {
   border-color: rgba(255, 215, 106, 0.6);
-  background: linear-gradient(90deg, rgba(255, 215, 106, 0.16), rgba(255, 215, 106, 0.04)), #1b2336;
+  background: linear-gradient(90deg, rgba(255, 215, 106, 0.16), rgba(255, 215, 106, 0.04)), #18291f;
 }
 .toast--warn {
-  border-color: rgba(255, 176, 32, 0.5);
+  border-color: rgba(30, 122, 60, 0.5);
 }
 .toast--error {
   border-color: rgba(255, 100, 100, 0.55);
@@ -3363,5 +3911,428 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ───────────── Emplacement Mythe de l'équipe ───────────── */
+.mythe-slot {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(224, 184, 90, 0.35);
+  background: radial-gradient(120% 140% at 0% 0%, rgba(224, 184, 90, 0.12), transparent 60%), var(--bg-2);
+}
+
+.mythe-slot__card {
+  flex: none;
+  width: 140px;
+}
+
+.mythe-slot__card .team-slot__empty {
+  width: 140px;
+  aspect-ratio: 100 / 140;
+  color: #e0b85a;
+  border-color: rgba(224, 184, 90, 0.45);
+}
+
+.mythe-slot__text {
+  display: grid;
+  gap: 6px;
+}
+
+.mythe-slot__text .eyebrow {
+  color: #e0b85a;
+}
+
+.mythe-slot__text p {
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .mythe-slot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.chip-rarity--mythe {
+  background: linear-gradient(180deg, #fff1bf, #e0b85a 60%, #a8801e);
+  color: #140e02;
+}
+
+.tag--mythe {
+  background: linear-gradient(180deg, #fff1bf, #e0b85a 60%, #a8801e);
+  color: #140e02;
+}
+
+.rarity-row--mythe {
+  --dot: linear-gradient(180deg, #fff1bf, #e0b85a);
+}
+
+/* ───────────── Fiche express pendant l’ouverture ─────────────
+   Nom, pays, sport, note, les trois meilleures stats et l’ulti de la carte révélée
+   (sous la carte, à côté du walkout et sous le récapitulatif). */
+
+.opening__cell.is-focus .card {
+  filter: drop-shadow(0 0 0.7em var(--glow, var(--accent))) drop-shadow(0 0.7em 0.9em rgba(0, 0, 0, 0.45));
+}
+
+.opening__stats {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  scroll-margin: 16px;
+}
+
+/* fiche express : nom et stats de la carte qu'on vient de révéler */
+.card-stats {
+  --tier: var(--r-commune);
+  position: relative;
+  /* les stats passent en abrégé quand la fiche est étroite (téléphone, walkout) */
+  container-type: inline-size;
+  width: min(640px, 100%);
+  display: grid;
+  gap: 12px;
+  padding: 14px 16px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--line-2);
+  border-top: 3px solid var(--tier);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 10%, transparent), transparent 60%), var(--bg-2);
+  box-shadow: var(--shadow);
+  text-align: left;
+  animation: stats-in 0.35s ease-out both;
+}
+
+.card-stats--peu-commune {
+  --tier: var(--r-peu-commune);
+}
+.card-stats--rare {
+  --tier: var(--r-rare);
+}
+.card-stats--epique {
+  --tier: var(--r-epique);
+}
+.card-stats--legendaire {
+  --tier: var(--r-legendaire);
+}
+.card-stats--prime {
+  --tier: var(--prime);
+}
+.card-stats--mythe {
+  --tier: #e0b85a;
+}
+
+@keyframes stats-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.card-stats__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-stats__who {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.card-stats__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.card-stats__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.45rem, 5vw, 2rem);
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+}
+
+.card-stats__meta {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+
+.card-stats__flag {
+  flex: none;
+  width: 22px;
+  height: auto;
+  border-radius: 3px;
+}
+
+.card-stats__ovr {
+  flex: none;
+  display: grid;
+  justify-items: center;
+  min-width: 66px;
+  padding: 6px 10px 5px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--tier) 50%, transparent);
+  background: color-mix(in srgb, var(--tier) 16%, transparent);
+}
+
+.card-stats__ovr b {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--tier);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-stats__ovr span {
+  font-family: var(--font-data);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* les trois meilleures stats du joueur, en tuiles */
+.card-stats__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.card-stats__stat {
+  --stat: #8791a8;
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+}
+
+.card-stats__stat--vit {
+  --stat: #0ea5d6;
+}
+.card-stats__stat--for {
+  --stat: #e23b3b;
+}
+.card-stats__stat--end {
+  --stat: #1fa35a;
+}
+.card-stats__stat--tec {
+  --stat: #7c4dff;
+}
+.card-stats__stat--int {
+  --stat: #2f6fe4;
+}
+.card-stats__stat--aur {
+  --stat: #e28a00;
+}
+
+.card-stats__label {
+  color: var(--text-dim);
+  font-family: var(--font-data);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-stats__short {
+  display: none;
+}
+
+.card-stats__stat b {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.1rem;
+  line-height: 1;
+  color: color-mix(in srgb, var(--stat) 55%, #fff);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-stats__track {
+  height: 6px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.card-stats__track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--stat);
+  transform-origin: left;
+  animation: bar-grow 0.7s 0.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.card-stats__ulti {
+  margin: 0;
+  display: grid;
+  gap: 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.card-stats__ulti-label {
+  font-family: var(--font-data);
+  font-weight: 800;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.card-stats__ulti b {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.card-stats__ulti small {
+  color: var(--text-dim);
+  font-size: 0.86rem;
+}
+
+.card-stats__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@container (max-width: 420px) {
+  .card-stats__grid {
+    gap: 8px;
+  }
+  .card-stats__stat {
+    padding: 8px 10px 10px;
+  }
+  .card-stats__stat b {
+    font-size: 1.8rem;
+  }
+  .card-stats__long {
+    display: none;
+  }
+  .card-stats__short {
+    display: inline;
+  }
+}
+
+@media (max-width: 520px) {
+  .card-stats {
+    padding: 12px 12px 14px;
+    gap: 10px;
+  }
+  .card-stats__ovr {
+    min-width: 56px;
+  }
+  .card-stats__ovr b {
+    font-size: 2rem;
+  }
+}
+
+/* ouverture carte par carte : sur grand écran, la fiche se place à droite de la carte sans la décaler ;
+   plus étroit, elle passe juste sous la carte, avant les miniatures et les boutons */
+.opening__cards,
+.opening__summary {
+  /* centré s'il y a la place, sinon aligné en haut (rien n'est coupé quand l'écran défile) */
+  align-self: start;
+  margin-block: auto;
+}
+
+@media (min-width: 1100px) {
+  .opening__cards--single > .opening__stats {
+    position: absolute;
+    top: 64px;
+    left: calc(50% + 175px);
+    width: min(420px, calc(50% - 195px));
+    justify-items: stretch;
+  }
+}
+
+@media (max-width: 1099px) {
+  .opening__cards--single > .opening__hint,
+  .opening__cards--single > .opening__tray,
+  .opening__cards--single > .opening__actions {
+    order: 1;
+  }
+}
+
+/* walkout avec sa fiche : l’écran défile si la carte et la fiche ne tiennent pas en hauteur */
+.walkout {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.walkout__beams,
+.walkout__floor {
+  position: fixed;
+}
+
+.walkout__reveal {
+  /* centré s'il y a la place, sinon aligné en haut */
+  align-self: start;
+  margin-block: auto;
+}
+
+.walkout__body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+/* largeur fixe : la fiche ne se dimensionne pas d'après son contenu (container-type) */
+.walkout__stats {
+  flex: none;
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  cursor: default;
+}
+
+.walkout__stats .card-stats {
+  animation-delay: 0.5s;
+}
+
+@media (max-width: 760px) {
+  .walkout__body {
+    flex-direction: column;
+    gap: 16px;
+    width: min(420px, calc(100vw - 32px));
+  }
+  .walkout__card {
+    --card-w: min(250px, 62vw) !important;
+  }
+  .walkout__stats {
+    width: 100%;
   }
 }

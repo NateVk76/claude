@@ -1,6 +1,7 @@
-/* ───────────── Carte (style vignette) ─────────────
+/* ───────────── Carte (style cadre métal) ─────────────
    Toutes les tailles internes sont en em : 1em = largeur de la carte / 24.
-   La matière (fond métallisé, anneaux, textes) dépend de la rareté ; Icône et Prime s'y superposent. */
+   Les positions en % suivent le cadre SVG (100 × 140) dessiné dans Card.tsx.
+   La matière (fond, cadre, liserés, textes métallisés) dépend du palier ; Icône et Prime s'y superposent. */
 
 .card {
   --w: var(--card-w, 196px);
@@ -19,20 +20,14 @@
   -webkit-tap-highlight-color: transparent;
 
   /* matière par défaut : bronze (commune) */
-  --foil: linear-gradient(160deg, #f6d3ad 0%, #d69a67 28%, #a8683c 62%, #6e3f1f 100%);
-  --ring: rgba(62, 30, 8, 0.55);
-  --ring-opacity: 0.5;
-  --ghost: rgba(255, 238, 220, 0.2);
-  --lines: rgba(255, 255, 255, 0.08);
-  --edition: #fff1df;
-  --edition-stroke: #3a1f0b;
-  --tile-bg: #fffaf4;
-  --tile-ink: #2b170a;
-  --banner-bg: #1c1008;
-  --banner-ink: #fff4e6;
-  --trim: rgba(255, 228, 200, 0.75);
-  --gem: #c98b5e;
-  --glow: rgba(255, 238, 215, 0.4);
+  --foil: linear-gradient(125deg, #a86a45 0%, #e6b28a 18%, #c58459 34%, #f3c9a6 52%, #b0714a 70%, #e2a67e 86%, #9a5d3a 100%);
+  --panel: #1e110a;
+  --trim: #d99c72;
+  --metal: linear-gradient(180deg, #fff1e4 0%, #f2c29c 38%, #b5744c 58%, #eab690 100%);
+  --metal-edge: #3a1e0e;
+  --plate-ink: #2a150a;
+  --tier-bg: linear-gradient(180deg, #ffe2c9, #d8996e 60%, #a8663f);
+  --tier-ink: #2a150a;
 }
 
 .card[data-active='true'] {
@@ -54,121 +49,130 @@
   border-radius: 1.3em;
 }
 
+/* argent */
 .r-peu-commune {
-  --foil: linear-gradient(160deg, #ffffff 0%, #dfe5ec 30%, #aab5c2 65%, #6f7c8c 100%);
-  --ring: rgba(18, 28, 44, 0.5);
-  --ghost: rgba(255, 255, 255, 0.35);
-  --edition: #ffffff;
-  --edition-stroke: #18222f;
-  --tile-bg: #ffffff;
-  --tile-ink: #141c27;
-  --banner-bg: #121a26;
-  --banner-ink: #ffffff;
-  --trim: rgba(255, 255, 255, 0.85);
-  --gem: #e2e8ef;
-  --glow: rgba(255, 255, 255, 0.55);
+  --foil: linear-gradient(125deg, #c9c9c9 0%, #f7f7f7 20%, #d6d6d6 38%, #ffffff 55%, #c2c2c2 72%, #eeeeee 88%, #b9b9b9 100%);
+  --panel: #141414;
+  --trim: #d6d6d6;
+  --metal: linear-gradient(180deg, #ffffff 0%, #ececec 38%, #9c9c9c 58%, #f4f4f4 100%);
+  --metal-edge: #1a1a1a;
+  --plate-ink: #1c1c1c;
+  --tier-bg: linear-gradient(180deg, #ffffff, #cfcfcf 60%, #9a9a9a);
+  --tier-ink: #161616;
 }
 
+/* or */
 .r-rare {
-  --foil: linear-gradient(160deg, #fff6c9 0%, #f4d168 26%, #d9a632 58%, #9c6f12 100%);
-  --ring: rgba(22, 15, 2, 0.78);
-  --ring-opacity: 0.45;
-  --ghost: rgba(255, 246, 205, 0.3);
-  --edition: #fff4c4;
-  --edition-stroke: #1b1302;
-  --tile-bg: #fffbea;
-  --tile-ink: #241902;
-  --banner-bg: #140e02;
-  --banner-ink: #ffe9a6;
-  --trim: rgba(255, 244, 196, 0.9);
-  --gem: #f2c94c;
-  --glow: rgba(255, 252, 225, 0.6);
+  --foil: linear-gradient(125deg, #e3c885 0%, #fbefc6 20%, #e6cd8e 38%, #fff6d8 55%, #d9bb72 72%, #f6e5b0 88%, #d2b066 100%);
+  --panel: #17110a;
+  --trim: #d9b25e;
+  --metal: linear-gradient(180deg, #fff6d2 0%, #f3d073 38%, #b8892a 58%, #f7de90 100%);
+  --metal-edge: #2a1d05;
+  --plate-ink: #2a1e08;
+  --tier-bg: linear-gradient(180deg, #fff3c4, #e2b957 60%, #a87b1d);
+  --tier-ink: #221703;
 }
 
+/* épique : chrome améthyste */
 .r-epique {
-  --foil: linear-gradient(160deg, #e7d4ff 0%, #a877ff 26%, #6b2ee0 58%, #2c0a7a 100%);
-  --ring: rgba(14, 0, 48, 0.58);
-  --ghost: rgba(255, 255, 255, 0.16);
-  --edition: #ffffff;
-  --edition-stroke: #22064f;
-  --tile-bg: #ffffff;
-  --tile-ink: #26075a;
-  --banner-bg: #16043b;
-  --banner-ink: #ffffff;
-  --trim: rgba(236, 222, 255, 0.85);
-  --gem: #c4a0ff;
-  --glow: rgba(255, 200, 255, 0.38);
+  --foil: linear-gradient(125deg, #6a3fc9 0%, #c9b0ff 20%, #8a5ce8 38%, #e8ddff 55%, #6d44cf 72%, #b99cff 88%, #5b33b5 100%);
+  --panel: #120824;
+  --trim: #c4a8ff;
+  --metal: linear-gradient(180deg, #ffffff 0%, #e2d4ff 38%, #8a64e0 58%, #f1e9ff 100%);
+  --metal-edge: #1d0b45;
+  --plate-ink: #1d0d42;
+  --tier-bg: linear-gradient(180deg, #f3ecff, #b594ff 60%, #6c43d4);
+  --tier-ink: #1d0b45;
 }
 
-/* légendaire : noir et or, anneaux dorés et paillettes */
+/* légende : or irisé, cadre noir */
 .r-legendaire {
-  --foil: radial-gradient(120% 90% at 55% 30%, #2c2311 0%, #0c0905 58%, #000 100%);
-  --glow: rgba(255, 196, 80, 0.42);
-  --ring: rgba(250, 212, 118, 0.95);
-  --ring-opacity: 0.58;
-  --ghost: rgba(250, 214, 120, 0.16);
-  --lines: rgba(255, 215, 120, 0.06);
-  --edition: #ffd978;
-  --edition-stroke: #000000;
-  --tile-bg: linear-gradient(160deg, #fff3c6, #e2b448 55%, #b8841c);
-  --tile-ink: #1a1203;
-  --banner-bg: linear-gradient(90deg, #f7d77e, #d6a43a);
-  --banner-ink: #1a1203;
-  --trim: rgba(247, 215, 126, 0.95);
-  --gem: conic-gradient(from 0deg, #ff4fa3, #ffd84f, #5bffb0, #4fc3ff, #b44fff, #ff4fa3);
+  --foil:
+    conic-gradient(from 210deg at 35% 30%, rgba(255, 90, 180, 0.32), rgba(255, 230, 90, 0.28), rgba(90, 255, 190, 0.3), rgba(90, 170, 255, 0.32), rgba(200, 90, 255, 0.3), rgba(255, 90, 180, 0.32)),
+    linear-gradient(125deg, #d9b25e 0%, #fff0b8 22%, #e0bb62 40%, #fff7da 58%, #cfa449 76%, #f5dd95 100%);
+  --panel: #0a0703;
+  --trim: #f0c860;
+  --metal: linear-gradient(180deg, #fffbe6 0%, #ffd970 36%, #c28f22 58%, #ffe9a3 100%);
+  --metal-edge: #000000;
+  --plate-ink: #1c1303;
+  --tier-bg: linear-gradient(180deg, #fff6cf, #f0c24a 60%, #b07f14);
+  --tier-ink: #1c1303;
 }
 
 /* Icônes : ivoire et or, façon carte vintage */
 .card.is-icon {
-  --foil: linear-gradient(160deg, #fffdf7 0%, #f3ead3 40%, #dccb9f 100%);
-  --glow: rgba(255, 255, 255, 0.75);
-  --ring: rgba(176, 134, 52, 0.5);
-  --ghost: rgba(176, 134, 52, 0.16);
-  --lines: rgba(176, 134, 52, 0.07);
-  --edition: #fff8e6;
-  --edition-stroke: #6b4c12;
-  --tile-bg: #2a2215;
-  --tile-ink: #f5d98a;
-  --banner-bg: #2a2215;
-  --banner-ink: #f5e3b0;
-  --trim: rgba(201, 162, 74, 0.95);
+  --foil: linear-gradient(125deg, #eadcb8 0%, #fffaf0 25%, #e6d7b1 50%, #fff8e6 75%, #dccb9c 100%);
+  --panel: #271d10;
+  --trim: #cfa650;
+  --metal: linear-gradient(180deg, #fff8dc 0%, #f0d27e 38%, #b08630 58%, #f5e1a2 100%);
+  --metal-edge: #1a1206;
+  --plate-ink: #3a2a10;
+  --tier-bg: linear-gradient(180deg, #fffaf0, #e5cf97 60%, #b8964a);
+  --tier-ink: #2e210b;
 }
 
-/* Icônes communes et peu communes : papier ancien mat, sans dorure. L'or reste aux Icônes rares et au-delà,
-   pour qu'une carte ait toujours l'air aussi précieuse qu'elle est rare. */
-.card.is-icon.r-commune,
-.card.is-icon.r-peu-commune {
-  --foil: linear-gradient(160deg, #f5f0e6 0%, #e4d9c4 45%, #c7b79a 100%);
-  --glow: rgba(255, 255, 255, 0.45);
-  --ring: rgba(112, 94, 66, 0.42);
-  --ghost: rgba(112, 94, 66, 0.14);
-  --lines: rgba(112, 94, 66, 0.06);
-  --edition: #faf6ee;
-  --edition-stroke: #54462f;
-  --tile-bg: #3b3327;
-  --tile-ink: #efe5cf;
-  --banner-bg: #3b3327;
-  --banner-ink: #efe5cf;
-  --trim: rgba(150, 132, 104, 0.9);
+/* Icônes communes et peu communes : même ivoire, mais liserés, textes et pastille en bronze ou en argent.
+   L'or reste aux Icônes rares et au-delà : une carte n'a pas l'air plus précieuse qu'elle n'est rare. */
+.card.is-icon.r-commune:not(.is-prime, .is-reverse, .is-mythe) {
+  --trim: #c08560;
+  --metal: linear-gradient(180deg, #fff1e4 0%, #f2c29c 38%, #b5744c 58%, #eab690 100%);
+  --metal-edge: #3a1e0e;
+  --plate-ink: #3a2414;
+  --tier-bg: linear-gradient(180deg, #ffe2c9, #d8996e 60%, #a8663f);
+  --tier-ink: #2a150a;
 }
 
-/* Prime : reflets arc-en-ciel */
+.card.is-icon.r-peu-commune:not(.is-prime, .is-reverse, .is-mythe) {
+  --trim: #b9b9b9;
+  --metal: linear-gradient(180deg, #ffffff 0%, #ececec 38%, #9c9c9c 58%, #f4f4f4 100%);
+  --metal-edge: #1a1a1a;
+  --plate-ink: #2b2b2b;
+  --tier-bg: linear-gradient(180deg, #ffffff, #cfcfcf 60%, #9a9a9a);
+  --tier-ink: #161616;
+}
+
+/* Prime : effet « reverse », feuille irisée froissée */
 .card.is-prime {
-  --foil: linear-gradient(135deg, #ffd1ec 0%, #fff1b3 22%, #c4ffe6 45%, #bfe4ff 68%, #e5cbff 100%);
-  --glow: rgba(255, 255, 255, 0.7);
-  --ring: rgba(40, 24, 90, 0.42);
-  --ghost: rgba(255, 255, 255, 0.4);
-  --edition: #ffffff;
-  --edition-stroke: #2a1b58;
-  --tile-bg: #1b1438;
-  --tile-ink: #ffffff;
-  --banner-bg: #1b1438;
-  --banner-ink: #ffffff;
-  --trim: rgba(255, 255, 255, 0.95);
+  --foil:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.8) 0 0.05em, transparent 0.12em) 0 0 / 1.3em 1.7em,
+    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.6) 0 0.05em, transparent 0.1em) 0 0 / 0.9em 1.1em,
+    repeating-linear-gradient(115deg, #ffd3ea 0%, #fff1b0 6%, #c7ffe6 12%, #c3e4ff 18%, #ead0ff 24%, #ffd3ea 30%),
+    linear-gradient(160deg, #f6e7bf, #e9d49a);
+  --panel: #0f0b05;
+  --trim: #ead07e;
+  --metal: linear-gradient(180deg, #fffbe8 0%, #ffd873 36%, #c08e22 58%, #ffe8a0 100%);
+  --metal-edge: #000000;
+  --plate-ink: #22180a;
+  --tier-bg: #120d05;
+  --tier-ink: #ffffff;
 }
 
-.card.is-prime.is-icon {
-  --foil: linear-gradient(135deg, #fff7df 0%, #ffe3f1 30%, #e3f6ff 60%, #f3e3c2 100%);
+/* Reverse : feuille holographique argent et or, froissée et pailletée, qui scintille lentement */
+.card.is-reverse {
+  --foil:
+    radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.95) 0 0.04em, transparent 0.1em) 0 0 / 0.7em 0.9em,
+    radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.7) 0 0.05em, transparent 0.11em) 0 0 / 1.1em 1.3em,
+    repeating-linear-gradient(28deg, rgba(0, 0, 0, 0.07) 0 0.05em, transparent 0.05em 0.6em),
+    repeating-linear-gradient(-52deg, rgba(255, 255, 255, 0.35) 0 0.04em, transparent 0.04em 0.9em),
+    repeating-linear-gradient(110deg, rgba(255, 110, 190, 0.35) 0 0.9em, rgba(255, 230, 120, 0.35) 0.9em 1.8em, rgba(120, 255, 210, 0.35) 1.8em 2.7em, rgba(120, 190, 255, 0.35) 2.7em 3.6em, rgba(200, 140, 255, 0.35) 3.6em 4.5em),
+    linear-gradient(160deg, #f4efe3, #d9ccb0 45%, #f7f1e4 70%, #cbbd9c);
+  --panel: #0c0a06;
+  --trim: #d9b25e;
+  --metal: linear-gradient(180deg, #fffbe8 0%, #ffd873 36%, #b8841c 58%, #ffe8a0 100%);
+  --metal-edge: #000000;
+  --plate-ink: #1c1406;
+  --tier-bg: #0c0a06;
+  --tier-ink: #ffffff;
+}
+
+.is-reverse .card__bg {
+  animation: reverse-shimmer 9s linear infinite;
+}
+
+@keyframes reverse-shimmer {
+  to {
+    filter: hue-rotate(40deg) brightness(1.06);
+  }
 }
 
 /* ─── structure ─── */
@@ -176,14 +180,12 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  border-radius: 1.1em;
+  border-radius: 0.9em;
   isolation: isolate;
   background: #111;
 }
 
 .card__bg,
-.card__rings,
-.card__lines,
 .card__frame,
 .card__holo,
 .card__shine {
@@ -193,41 +195,210 @@
 }
 
 .card__bg {
-  background: radial-gradient(58% 42% at 62% 40%, var(--glow), transparent 72%), var(--foil);
+  background: var(--foil);
 }
 
-/* quelques grands arcs derrière l'athlète, comme sur les vignettes */
-.card__rings {
-  background: repeating-radial-gradient(circle at 66% 40%, transparent 0 3.2em, var(--ring) 3.2em 4.6em, transparent 4.6em 7.4em);
-  opacity: var(--ring-opacity, 0.55);
-  mask-image: linear-gradient(115deg, transparent 12%, #000 42%, #000 70%, transparent 96%);
-  -webkit-mask-image: linear-gradient(115deg, transparent 12%, #000 42%, #000 70%, transparent 96%);
-}
-
-.card__lines {
-  background: repeating-linear-gradient(0deg, var(--lines) 0 1px, transparent 1px 3px);
-}
-
-.card__ghost {
+/* métal brossé + reflet doux */
+.card__bg::after {
+  content: '';
   position: absolute;
-  right: -3%;
-  top: 4%;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 15em;
-  line-height: 0.8;
-  letter-spacing: -0.04em;
-  color: var(--ghost);
-  pointer-events: none;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.28) 45%, transparent 60%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, rgba(0, 0, 0, 0.04) 1px 2px, transparent 2px 4px);
 }
 
-/* ─── athlète ─── */
+/* ─── fenêtre photo ─── */
+.card__window {
+  position: absolute;
+  left: 9.4%;
+  right: 5.8%;
+  top: 3.3%;
+  bottom: 17.1%;
+  overflow: hidden;
+  border-radius: 0.6em;
+  background: #0b0f18;
+}
+
+/* décor derrière les athlètes détourés : stade flou façon photo de match
+   (foule, panneaux lumineux aux couleurs du sport, sol propre à chaque sport) */
+.card__scene {
+  --floor: #2f7a3a;
+  --floor-far: #1f5528;
+  --floor-pattern: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1.4em, transparent 1.4em 2.8em);
+  position: absolute;
+  inset: -6%;
+  background:
+    var(--floor-pattern) 0 100% / 100% 36% no-repeat,
+    linear-gradient(180deg, transparent 64%, var(--floor-far) 64%, var(--floor) 84%, color-mix(in srgb, var(--floor) 65%, #000) 100%),
+    linear-gradient(
+      180deg,
+      transparent 57.5%,
+      color-mix(in srgb, var(--sport) 55%, #fff) 57.5%,
+      var(--sport) 60%,
+      color-mix(in srgb, var(--sport) 55%, #000) 64%,
+      transparent 64%
+    ),
+    linear-gradient(180deg, #151a27 0%, #262d40 28%, #343244 48%, #24232d 58%);
+  filter: blur(0.25em);
+}
+
+/* la foule : grosses taches floues (lumières, maillots, visages), sans motif répété */
+.card__scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 14% 8%, rgba(255, 255, 255, 0.6) 0 0.35em, transparent 1.1em),
+    radial-gradient(circle at 48% 4%, rgba(255, 244, 214, 0.55) 0 0.45em, transparent 1.3em),
+    radial-gradient(circle at 83% 9%, rgba(255, 255, 255, 0.55) 0 0.35em, transparent 1.1em),
+    radial-gradient(circle at 7% 30%, rgba(215, 70, 70, 0.55) 0 0.6em, transparent 1.4em),
+    radial-gradient(circle at 26% 22%, rgba(240, 225, 205, 0.45) 0 0.5em, transparent 1.2em),
+    radial-gradient(circle at 37% 38%, rgba(70, 120, 215, 0.55) 0 0.7em, transparent 1.5em),
+    radial-gradient(circle at 58% 20%, rgba(250, 200, 70, 0.4) 0 0.5em, transparent 1.2em),
+    radial-gradient(circle at 70% 33%, rgba(240, 240, 240, 0.4) 0 0.6em, transparent 1.3em),
+    radial-gradient(circle at 92% 27%, rgba(70, 120, 215, 0.55) 0 0.65em, transparent 1.4em),
+    radial-gradient(circle at 18% 47%, rgba(240, 225, 205, 0.4) 0 0.55em, transparent 1.2em),
+    radial-gradient(circle at 80% 48%, rgba(215, 70, 70, 0.45) 0 0.6em, transparent 1.3em),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--sport) 60%, transparent) 0 0.7em, transparent 1.6em),
+    radial-gradient(circle at 4% 52%, color-mix(in srgb, var(--sport) 55%, transparent) 0 0.5em, transparent 1.2em),
+    radial-gradient(circle at 64% 44%, rgba(255, 170, 90, 0.35) 0 0.45em, transparent 1.1em),
+    radial-gradient(circle at 96% 42%, rgba(240, 240, 240, 0.35) 0 0.45em, transparent 1.1em),
+    radial-gradient(45% 22% at 22% 30%, rgba(190, 70, 70, 0.28), transparent),
+    radial-gradient(45% 22% at 78% 38%, rgba(60, 100, 200, 0.32), transparent),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0 0.5em, transparent 0.5em 1.5em);
+  filter: blur(0.4em);
+  mask-image: linear-gradient(180deg, #000 0 54%, transparent 58%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0 54%, transparent 58%);
+}
+
+/* éclairage des projecteurs et assombrissement des bords */
+.card__scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(75% 45% at 50% 35%, rgba(255, 250, 235, 0.14), transparent 70%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent 22%, transparent 78%, rgba(0, 0, 0, 0.35)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, transparent 22%, transparent 72%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+/* sol de chaque sport */
+.s-rugby .card__scene,
+.s-us .card__scene {
+  --floor: #357f38;
+  --floor-far: #22592a;
+}
+
+.s-golf .card__scene {
+  --floor: #5aa347;
+  --floor-far: #3a7a31;
+  --floor-pattern: none;
+}
+
+.s-basket .card__scene {
+  --floor: #c08850;
+  --floor-far: #8a5a2e;
+  --floor-pattern: repeating-linear-gradient(90deg, rgba(60, 30, 10, 0.18) 0 0.12em, transparent 0.12em 0.9em);
+}
+
+.s-tennis .card__scene {
+  --floor: #c0613b;
+  --floor-far: #8e4326;
+  --floor-pattern: linear-gradient(180deg, transparent 40%, rgba(255, 255, 255, 0.55) 40% 44%, transparent 44%);
+}
+
+.s-athle .card__scene {
+  --floor: #b8442e;
+  --floor-far: #862f1f;
+  --floor-pattern: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0 0.09em, transparent 0.09em 1.3em);
+}
+
+.s-natation .card__scene {
+  --floor: #1f97c9;
+  --floor-far: #0f6390;
+  --floor-pattern: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0 0.12em, transparent 0.12em 0.8em);
+}
+
+.s-cyclisme .card__scene,
+.s-auto .card__scene {
+  --floor: #4b4c52;
+  --floor-far: #2f3035;
+  --floor-pattern: linear-gradient(90deg, transparent 46%, rgba(255, 255, 255, 0.6) 46% 54%, transparent 54%);
+}
+
+.s-combat .card__scene {
+  --floor: #2f5595;
+  --floor-far: #1e3a6c;
+  --floor-pattern: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0 0.15em, transparent 0.15em);
+}
+
+.s-hand .card__scene,
+.s-gym .card__scene {
+  --floor: #2f64ad;
+  --floor-far: #1f4680;
+  --floor-pattern: linear-gradient(180deg, transparent 50%, rgba(255, 255, 255, 0.45) 50% 54%, transparent 54%);
+}
+
+.s-volley .card__scene {
+  --floor: #d98b3c;
+  --floor-far: #a8632a;
+  --floor-pattern: linear-gradient(180deg, transparent 50%, rgba(255, 255, 255, 0.5) 50% 54%, transparent 54%);
+}
+
+.s-hiver .card__scene {
+  --floor: #e3edf6;
+  --floor-far: #aebfd2;
+  --floor-pattern: none;
+}
+
+.s-glisse .card__scene {
+  --floor: #2d93bd;
+  --floor-far: #1c6689;
+  --floor-pattern: repeating-linear-gradient(175deg, rgba(255, 255, 255, 0.25) 0 0.14em, transparent 0.14em 1em);
+}
+
+/* tennis de table : sol de salle rouge et table bleue au filet blanc */
+.s-pingpong .card__scene {
+  --floor: #9b3036;
+  --floor-far: #6c2025;
+  --floor-pattern: linear-gradient(180deg, transparent 18%, #2c5fb8 18% 46%, rgba(255, 255, 255, 0.8) 46% 50%, #23509e 50% 78%, transparent 78%);
+}
+
+/* échecs : les colonnes d'un échiquier */
+.s-echecs .card__scene {
+  --floor: #d9ccae;
+  --floor-far: #a8987a;
+  --floor-pattern: repeating-linear-gradient(90deg, rgba(35, 29, 20, 0.62) 0 1.3em, transparent 1.3em 2.6em);
+}
+
+/* esport : scène sombre éclairée au néon */
+.s-esport .card__scene {
+  --floor: #241a4a;
+  --floor-far: #150f2e;
+  --floor-pattern: repeating-linear-gradient(90deg, rgba(179, 107, 255, 0.45) 0 0.1em, transparent 0.1em 1.6em);
+}
+
+.is-prime .card__scene {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.35) 0 0.06em, transparent 0.14em) 0 0 / 0.7em 0.9em,
+    repeating-linear-gradient(135deg, #ff3d9a 0 1.6em, #2a5cff 1.6em 3.4em, #ffcf3a 3.4em 4.6em, #8a2cff 4.6em 6.2em, #1fc2ff 6.2em 7.6em, #ff5a3d 7.6em 8.8em);
+  filter: saturate(1.1) contrast(1.05) blur(0.05em);
+}
+
+.is-prime .card__scene::before {
+  display: none;
+}
+
+.is-prime .card__scene::after {
+  background:
+    repeating-linear-gradient(35deg, rgba(0, 0, 0, 0.18) 0 0.08em, transparent 0.08em 0.5em),
+    linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.35) 100%);
+}
+
 .card__player {
   position: absolute;
-  left: 8%;
-  right: -2%;
-  top: 9%;
-  bottom: 17%;
+  inset: 5% 0 0;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -250,263 +421,377 @@
 }
 
 .has-cutout .card__photo {
-  filter: drop-shadow(0 0.25em 0.45em rgba(0, 0, 0, 0.45)) saturate(1.08) contrast(1.04);
+  filter: drop-shadow(0 0.2em 0.5em rgba(0, 0, 0, 0.5)) saturate(1.08) contrast(1.04);
 }
 
-/* photo non détourée : cadrée dans une arche qui se fond dans la carte */
+/* photo non détourée : elle remplit toute la fenêtre */
 .has-photo .card__player {
-  left: 17%;
-  right: 5%;
-  top: 7%;
-  bottom: 18%;
+  inset: 0;
+}
+
+.has-photo .card__scene {
+  display: none;
 }
 
 .has-photo .card__photo {
   object-fit: cover;
   object-position: 50% 18%;
-  border-radius: 45% 45% 0.6em 0.6em / 26% 26% 0.6em 0.6em;
-  mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
-  box-shadow: 0 0 0 0.25em var(--trim);
+}
+
+/* Prime avec photo : bandes de couleur texturées par-dessus, façon « reverse » */
+.is-prime.has-photo .card__window::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.5) 0 0.05em, transparent 0.12em) 0 0 / 0.6em 0.8em,
+    repeating-linear-gradient(35deg, rgba(0, 0, 0, 0.25) 0 0.06em, transparent 0.06em 0.45em),
+    repeating-linear-gradient(135deg, #ff3d9a 0 1.6em, #2a5cff 1.6em 3.4em, #ffcf3a 3.4em 4.6em, #8a2cff 4.6em 6.2em, #1fc2ff 6.2em 7.6em, #ff5a3d 7.6em 8.8em);
+  mix-blend-mode: overlay;
+  opacity: 0.75;
+}
+
+/* Reverse : la photo est repeinte de larges bandes de couleur, avec grain, rayures et éclats */
+.is-reverse .card__photo {
+  filter: saturate(1.25) contrast(1.08);
+}
+
+/* peinture : larges bandes aux transitions fondues, légèrement floutées comme des coups de pinceau */
+.is-reverse .card__window::before {
+  content: '';
+  position: absolute;
+  inset: -6%;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    135deg,
+    #ff2f8f 0,
+    #2b4dff 2.2em,
+    #ffc93a 3.8em,
+    #7a2cff 5.8em,
+    #10c6ff 7.6em,
+    #ff4a2f 9.2em,
+    #ff2f8f 11em
+  );
+  filter: blur(0.25em) saturate(1.2);
+  mix-blend-mode: overlay;
+  opacity: 0.85;
+}
+
+/* texture par-dessus : grain, éclats blancs et fines rayures, bien nets */
+.is-reverse .card__window::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 0 0.035em, transparent 0.09em) 0 0 / 0.45em 0.6em,
+    radial-gradient(circle, rgba(0, 0, 0, 0.35) 0 0.05em, transparent 0.12em) 0.2em 0.3em / 0.8em 0.7em,
+    repeating-linear-gradient(62deg, transparent 0 2.6em, rgba(255, 255, 255, 0.45) 2.6em 2.64em, transparent 2.64em 5.3em),
+    repeating-linear-gradient(-28deg, transparent 0 3.4em, rgba(255, 255, 255, 0.3) 3.4em 3.43em, transparent 3.43em 7em),
+    repeating-linear-gradient(20deg, rgba(0, 0, 0, 0.12) 0 0.05em, transparent 0.05em 0.35em);
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+}
+
+.is-reverse .card__tier i {
+  background: linear-gradient(90deg, #ff5fb8, #ffd84f, #62ffb4, #4fc3ff, #c46bff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.is-reverse .card__holo {
+  opacity: 0.22;
+  mix-blend-mode: color-dodge;
+  animation: holo-drift 6s linear infinite;
 }
 
 /* pas de photo : silhouette en buste */
 .card__bust {
-  width: 92%;
-  height: 100%;
+  width: 88%;
+  height: 92%;
   filter: drop-shadow(0 0.3em 0.5em rgba(0, 0, 0, 0.45));
 }
 
-/* ─── haut de carte ─── */
-.card__tile {
+/* ─── cadre SVG ─── */
+.card__frame {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.card__panel {
+  fill: var(--panel);
+}
+
+.card__trim {
+  fill: none;
+  stroke: var(--trim);
+  stroke-width: 0.45;
+}
+
+.card__trim--thin {
+  stroke-width: 0.25;
+  opacity: 0.75;
+}
+
+.card__trim--window {
+  stroke-width: 0.6;
+}
+
+.card__rail path {
+  fill: none;
+  stroke: var(--trim);
+  stroke-width: 0.3;
+  opacity: 0.8;
+}
+
+.card__rail .card__diamond {
+  fill: var(--trim);
+  stroke: none;
+  opacity: 1;
+}
+
+/* ─── textes métallisés ─── */
+.metal-text {
+  background: var(--metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0.06em 0 var(--metal-edge)) drop-shadow(0 0.1em 0.12em rgba(0, 0, 0, 0.55));
+}
+
+/* onglet : code de l'athlète */
+.card__code {
   position: absolute;
-  left: 5%;
-  top: 3.6%;
-  width: 5.4em;
-  padding: 0.35em 0 0.3em;
-  display: grid;
-  justify-items: center;
-  border-radius: 0.8em;
-  background: var(--tile-bg);
-  color: var(--tile-ink);
-  box-shadow: 0 0.15em 0.4em rgba(0, 0, 0, 0.35), inset 0 0 0 0.08em rgba(0, 0, 0, 0.12);
-  z-index: 2;
-}
-
-.card__ovr {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 3.3em;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-}
-
-.card__pos {
-  font-family: var(--font-data);
-  font-weight: 800;
-  font-size: 1em;
-  letter-spacing: 0.06em;
-  line-height: 1.1;
-}
-
-.card__flag {
-  position: absolute;
-  left: 6.8%;
-  top: calc(3.6% + 6.95em);
-  width: 4.1em;
-  height: 2.73em;
-  border-radius: 0.3em;
-  overflow: hidden;
-  box-shadow: 0 0.12em 0.3em rgba(0, 0, 0, 0.4), 0 0 0 0.12em rgba(255, 255, 255, 0.85);
-  z-index: 2;
-}
-
-.card__crest {
-  position: absolute;
-  right: 5%;
-  top: 3.4%;
-  width: 4.3em;
-  height: 4.9em;
+  left: 4.4%;
+  top: 2.5%;
+  width: 21%;
+  height: 5.6%;
   display: grid;
   place-items: center;
-  padding-bottom: 0.5em;
-  color: var(--sport-ink, #fff);
-  background: var(--sport);
-  clip-path: polygon(0 0, 100% 0, 100% 64%, 50% 100%, 0 64%);
-  box-shadow: inset 0 0 0 0.2em rgba(255, 255, 255, 0.55);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.3em;
+  line-height: 0.85;
+  letter-spacing: 0.01em;
   z-index: 2;
 }
 
-.card__crest svg {
-  width: 2.6em;
-  height: 2.6em;
-  filter: drop-shadow(0 0.08em 0.1em rgba(0, 0, 0, 0.4));
+/* ─── pastille de note ─── */
+.card__badge {
+  position: absolute;
+  left: 11.2%;
+  top: 10.2%;
+  width: 19.5%;
+  display: grid;
+  justify-items: center;
+  z-index: 2;
+  filter: drop-shadow(0 0.15em 0.25em rgba(0, 0, 0, 0.5));
 }
 
-/* ─── texte vertical (surnom, Prime, Icône) ─── */
-.card__vertical {
-  position: absolute;
-  left: 4.2%;
-  bottom: 24%;
-  max-height: 44%;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-family: var(--font-display);
+.card__tier {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 0.12em 0 0.06em;
+  text-align: center;
+  font-family: var(--font-data);
+  font-style: italic;
   font-weight: 900;
+  font-size: 1.12em;
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
+  color: var(--tier-ink);
+  background: var(--tier-bg);
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+}
+
+.card__tier i {
+  font-style: inherit;
+}
+
+.is-prime .card__tier i {
+  background: linear-gradient(90deg, #ff5fb8, #ffd84f, #62ffb4, #4fc3ff, #c46bff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card__rating {
+  position: relative;
+  width: 100%;
+  height: 3.35em;
+  margin-top: -0.05em;
+  display: grid;
+  place-items: start center;
+  background: var(--trim);
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 50% 100%, 0 40%);
+}
+
+.card__rating::before {
+  content: '';
+  position: absolute;
+  inset: 0.12em 0.14em 0.2em;
+  background: var(--panel);
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 50% 100%, 0 40%);
+}
+
+.card__rating::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0.45em;
+  width: 0.45em;
+  height: 0.45em;
+  transform: translateX(-50%) rotate(45deg);
+  background: var(--trim);
+}
+
+.card__rating b {
+  position: relative;
+  margin-top: 0.02em;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.35em;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.card__flag {
+  position: absolute;
+  right: 8%;
+  top: 5.6%;
+  width: 2.5em;
+  height: 1.67em;
+  border-radius: 0.2em;
   overflow: hidden;
-  color: var(--edition);
-  -webkit-text-stroke: 0.07em var(--edition-stroke);
-  paint-order: stroke fill;
-  text-shadow: 0.08em 0.08em 0 var(--edition-stroke);
+  box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.5), 0 0 0 0.1em var(--trim);
   z-index: 2;
 }
 
-/* ─── bas de carte ─── */
-.card__pills {
+/* ─── sport à la verticale (rail gauche) ─── */
+.card__sport {
   position: absolute;
-  left: 5%;
-  bottom: 14.2%;
+  left: 6.5%;
+  top: 27.5%;
+  height: 21%;
+  transform: translateX(-50%);
   display: flex;
-  gap: 0.4em;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  font-family: var(--font-body);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--trim);
+  z-index: 2;
+}
+
+/* ─── médaillon du sport ─── */
+.card__medal {
+  position: absolute;
+  left: 4.6%;
+  top: 81.2%;
+  width: 20.8%;
+  aspect-ratio: 1;
+  padding: 0.3em;
+  border-radius: 50%;
+  background: var(--foil);
+  box-shadow: 0 0 0 0.12em var(--panel), 0 0.2em 0.4em rgba(0, 0, 0, 0.45);
   z-index: 3;
 }
 
-.stat-pill {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.25em;
-  padding: 0.18em 0.55em 0.14em;
-  border-radius: 0.75em;
-  background: var(--pill, #555);
-  color: #fff;
-  border: 0.13em solid #fff;
-  box-shadow: 0 0.12em 0.3em rgba(0, 0, 0, 0.35);
-  font-family: var(--font-data);
-  line-height: 1;
+.card__medal span {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--panel) 70%, #fff), var(--panel) 70%);
+  box-shadow: inset 0 0 0 0.12em var(--trim), inset 0 0 0 0.3em var(--panel), inset 0 0 0 0.36em var(--trim);
+  color: var(--trim);
 }
 
-.stat-pill small {
-  font-size: 0.78em;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  opacity: 0.9;
+.card__medal svg {
+  width: 62%;
+  height: 62%;
+  stroke-width: 1.6;
+  filter: drop-shadow(0 0.05em 0.08em rgba(0, 0, 0, 0.6));
 }
 
-.stat-pill b {
-  font-size: 1.65em;
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-}
-
-.stat-pill--vit {
-  --pill: #0ea5d6;
-}
-.stat-pill--for {
-  --pill: #e23b3b;
-}
-.stat-pill--end {
-  --pill: #1fa35a;
-}
-.stat-pill--tec {
-  --pill: #7c4dff;
-}
-.stat-pill--int {
-  --pill: #2f6fe4;
-}
-.stat-pill--aur {
-  --pill: #e28a00;
-}
-
+/* ─── bandeau du nom ─── */
 .card__banner {
   position: absolute;
-  left: 0;
-  right: 21%;
-  bottom: 4.6%;
-  min-height: 3.1em;
-  padding: 0.35em 1.2em 0.3em 5.5%;
+  left: 25.5%;
+  right: 5.8%;
+  top: 84%;
+  height: 6.6%;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  background: var(--banner-bg);
-  color: var(--banner-ink);
-  clip-path: polygon(0 0, 100% 0, calc(100% - 1.1em) 100%, 0 100%);
-  box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.35);
-  z-index: 3;
+  padding: 0 0.5em 0 0.9em;
+  z-index: 2;
 }
 
 .card__name {
-  font-family: var(--font-display);
+  max-width: 100%;
+  font-family: var(--font-data);
+  font-style: italic;
   font-weight: 900;
-  line-height: 1.02;
+  line-height: 1.1;
+  padding-right: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.card__record {
-  font-family: var(--font-data);
-  font-weight: 700;
-  font-size: 0.8em;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.85;
-  white-space: nowrap;
-}
-
-.card__mark {
+/* ─── plaque du poste ─── */
+.card__subtitle {
   position: absolute;
-  right: 5%;
-  bottom: 5.4%;
+  left: 25%;
+  right: 7.5%;
+  top: 91.6%;
+  height: 4.7%;
   display: flex;
   align-items: center;
-  gap: 0.35em;
-  z-index: 3;
+  gap: 0.6em;
+  color: var(--plate-ink);
+  z-index: 2;
 }
 
-/* la carte verte du logo Athleticards */
-.card__brand {
-  display: block;
-  width: 0.95em;
-  height: 1.3em;
-  border-radius: 0.2em;
-  transform: rotate(14deg);
-  background: var(--brand-green, #3fd06f);
-  border: 0.12em solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.35);
+.card__subtitle::before,
+.card__subtitle::after {
+  content: '';
+  flex: 1 1 0;
+  min-width: 0.6em;
+  height: 0.07em;
+  background: currentColor;
+  opacity: 0.7;
 }
 
-.card__gem {
-  display: block;
-  width: 1em;
-  height: 1em;
-  transform: rotate(45deg);
-  background: var(--gem);
-  border: 0.1em solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 0.3em rgba(0, 0, 0, 0.35);
-}
-
-/* liseré intérieur */
-.card__frame {
-  inset: 0.45em;
-  border-radius: 0.8em;
-  border: 0.1em solid var(--trim);
-  opacity: 0.8;
-  z-index: 4;
-}
-
-.is-prime .card__frame {
-  border-width: 0.16em;
-  border-color: transparent;
-  background: linear-gradient(120deg, #ff7ac8, #ffe27a, #7dffc9, #7cc8ff, #d38bff, #ff7ac8) border-box;
-  /* seule la syntaxe standard : le build ajoute la version -webkit- correcte (mélanger les deux la casse) */
-  mask: linear-gradient(#000 0 0) padding-box exclude, linear-gradient(#000 0 0) border-box;
-  opacity: 1;
+.card__subtitle span {
+  flex: none;
+  max-width: 82%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.72em;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
 }
 
 /* ─── reflets ─── */
@@ -528,9 +813,8 @@
   z-index: 5;
 }
 
-.r-rare .card__holo,
 .r-epique .card__holo {
-  opacity: 0.14;
+  opacity: 0.12;
   animation: holo-drift 9s linear infinite;
 }
 
@@ -540,28 +824,13 @@
 }
 
 .is-prime .card__holo {
-  opacity: 0.35;
+  opacity: 0.3;
   mix-blend-mode: overlay;
   animation: holo-drift 5s linear infinite;
 }
 
 .has-tilt[data-active='true'] .card__holo {
   animation: none;
-}
-
-/* paillettes des légendaires */
-.r-legendaire .card__lines {
-  background:
-    radial-gradient(circle at 20% 30%, rgba(255, 232, 160, 0.9) 0 0.06em, transparent 0.1em) 0 0 / 3.1em 3.7em,
-    radial-gradient(circle at 70% 60%, rgba(255, 232, 160, 0.7) 0 0.05em, transparent 0.09em) 0 0 / 2.3em 2.9em,
-    repeating-linear-gradient(0deg, var(--lines) 0 1px, transparent 1px 3px);
-  animation: sparkle 3.2s ease-in-out infinite;
-}
-
-@keyframes sparkle {
-  50% {
-    opacity: 0.55;
-  }
 }
 
 .card__shine {
@@ -585,44 +854,46 @@
   }
 }
 
-/* ─── petites tailles ─── */
-.card.is-compact .card__banner {
-  right: 0;
-  min-height: 3.6em;
-  padding-left: 6%;
-  clip-path: none;
+/* ─── petites tailles : on garde l'essentiel lisible ─── */
+.card.is-compact .card__badge {
+  width: 22%;
 }
 
-.card.is-compact .card__mark {
-  display: none;
+.card.is-compact .card__tier {
+  font-size: 1.25em;
 }
 
-.card.is-compact .card__pills {
-  bottom: 16%;
+.card.is-compact .card__rating {
+  height: 3.7em;
 }
 
-.card.is-tiny .card__player {
-  left: 4%;
-  bottom: 16%;
+.card.is-compact .card__rating b {
+  font-size: 2.6em;
 }
 
-.card.is-tiny .card__tile {
-  width: 6em;
+.card.is-compact .card__subtitle span {
+  font-size: 0.85em;
+  letter-spacing: 0.14em;
 }
 
-.card.is-tiny .card__ovr {
-  font-size: 3.7em;
+.card.is-tiny .card__badge {
+  width: 25%;
 }
 
-.card.is-tiny .card__flag {
-  width: 4.6em;
-  height: 3.07em;
-  top: calc(3.6% + 7.8em);
+.card.is-tiny .card__tier {
+  font-size: 1.4em;
 }
 
-.card.is-tiny .card__crest {
-  width: 5em;
-  height: 5.6em;
+.card.is-tiny .card__rating {
+  height: 4.1em;
+}
+
+.card.is-tiny .card__rating b {
+  font-size: 2.9em;
+}
+
+.card.is-tiny .card__code {
+  font-size: 2.5em;
 }
 
 /* ─── album : carte pas encore obtenue ─── */
@@ -635,8 +906,59 @@
   .card[data-active='true'] {
     transition: none;
   }
-  .card__holo,
-  .card__lines {
+  .card__holo {
     animation: none !important;
   }
+}
+/* ───────────── Cartes Mythe : compétitions, équipes de légende, clubs ─────────────
+   Même structure que les athlètes, matière propre : noir et or gravé, pastille « Mythe » avec le bonus. */
+.card.is-mythe {
+  --foil:
+    repeating-linear-gradient(45deg, rgba(240, 200, 96, 0.1) 0 0.05em, transparent 0.05em 0.55em),
+    repeating-linear-gradient(-45deg, rgba(240, 200, 96, 0.1) 0 0.05em, transparent 0.05em 0.55em),
+    radial-gradient(90% 55% at 50% 18%, rgba(240, 200, 96, 0.28), transparent 70%),
+    linear-gradient(160deg, #3a2f18 0%, #120e07 45%, #0b0906 70%, #2a2213 100%);
+  --panel: #070604;
+  --trim: #e3bd62;
+  --metal: linear-gradient(180deg, #fffbe6 0%, #f3d27a 36%, #b8862a 58%, #ffe9a3 100%);
+  --metal-edge: #000000;
+  --plate-ink: #f3e2b8;
+  --tier-bg: linear-gradient(180deg, #fff1bf, #e0b85a 60%, #a8801e);
+  --tier-ink: #140e02;
+}
+
+.is-mythe .card__scene {
+  background:
+    radial-gradient(55% 45% at 50% 45%, rgba(240, 200, 96, 0.3), transparent 72%),
+    linear-gradient(180deg, #1c170d, #0a0805);
+}
+
+.is-mythe .card__scene::before {
+  display: none;
+}
+
+/* sans photo : l'emblème du sport, en or */
+.card__emblem {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: #e3bd62;
+}
+
+.card__emblem svg {
+  width: 48%;
+  height: 48%;
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 0.6em rgba(240, 200, 96, 0.55));
+}
+
+.is-mythe .card__photo {
+  filter: saturate(0.92) contrast(1.06);
+}
+
+.is-mythe .card__holo {
+  opacity: 0.12;
+  mix-blend-mode: color-dodge;
+  animation: holo-drift 9s linear infinite;
 }

@@ -3,7 +3,7 @@ import { useGame } from '../store/game';
 import { useUi } from '../store/ui';
 import { ATHLETES_BY_ID } from '../data/athletes';
 import { EVENTS, EVENT_ORDER, SPORTS, SPORT_ORDER, STAT_LABELS } from '../data/sports';
-import { displayName, overallOf, ultiOf } from '../engine/cards';
+import { displayName, isMythe, overallOf, ultiOf } from '../engine/cards';
 import { MAX_ENERGY, ROUNDS, TEAM_SIZE, divisionTarget, estimatePower, matchResult, rewardFor, teamRating, teamSynergies, type MatchState, type RoundLog } from '../engine/match';
 import type { OwnedCard } from '../engine/types';
 import { Card } from '../components/Card';
@@ -18,17 +18,19 @@ function eventFormula(eventId: MatchState['events'][number]): string {
   return `${STAT_LABELS[event.primary].name} 70 % · ${STAT_LABELS[event.secondary].name} 30 %`;
 }
 
-function Picker({ onPick, onClose, exclude }: { onPick: (uid: string) => void; onClose: () => void; exclude: string[] }) {
+function Picker({ onPick, onClose, exclude, mythes = false }: { onPick: (uid: string) => void; onClose: () => void; exclude: string[]; mythes?: boolean }) {
   const collection = useGame((s) => s.collection);
   const [query, setQuery] = useState('');
   const cards = useMemo(() => {
     const q = query.trim().toLowerCase();
     return collection
       .filter((c) => !exclude.includes(c.uid))
+      // athlètes dans les 5 places, cartes Mythe dans leur emplacement à part
+      .filter((c) => isMythe(ATHLETES_BY_ID[c.athleteId]) === mythes)
       .filter((c) => !q || displayName(ATHLETES_BY_ID[c.athleteId]).toLowerCase().includes(q))
       .sort((a, b) => overallOf(ATHLETES_BY_ID[b.athleteId], b.variant) - overallOf(ATHLETES_BY_ID[a.athleteId], a.variant))
       .slice(0, 80);
-  }, [collection, exclude, query]);
+  }, [collection, exclude, query, mythes]);
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
@@ -42,13 +44,17 @@ function Picker({ onPick, onClose, exclude }: { onPick: (uid: string) => void; o
         <button type="button" className="modal__close" onClick={onClose} aria-label="Fermer">
           ×
         </button>
-        <h2 id="picker-title">Choisir un athlète</h2>
+        <h2 id="picker-title">{mythes ? 'Choisir une carte Mythe' : 'Choisir un athlète'}</h2>
         <label className="field">
           <span className="visually-hidden">Rechercher</span>
           <input id="picker-search" type="search" placeholder="Rechercher dans ton club" value={query} onChange={(e) => setQuery(e.target.value)} autoFocus />
         </label>
         {cards.length === 0 ? (
-          <p className="muted">Aucune carte disponible. Ouvre des boosters pour recruter.</p>
+          <p className="muted">
+            {mythes
+              ? 'Aucune carte Mythe pour l’instant. Elles sortent rarement des boosters : compétitions, équipes de légende et clubs.'
+              : 'Aucune carte disponible. Ouvre des boosters pour recruter.'}
+          </p>
         ) : (
           <div className="card-grid">
             {cards.map((card) => (
@@ -70,10 +76,16 @@ function TeamBuilder() {
   const division = useGame((s) => s.division);
   const points = useGame((s) => s.divisionPoints);
   const openDetail = useUi((s) => s.openDetail);
+  const mytheUid = useGame((s) => s.mythe);
+  const setMythe = useGame((s) => s.setMythe);
   const [picking, setPicking] = useState<number | null>(null);
+  const [pickingMythe, setPickingMythe] = useState(false);
 
   const slots: Array<OwnedCard | null> = Array.from({ length: TEAM_SIZE }, (_, i) => collection.find((c) => c.uid === team[i]) ?? null);
   const filled = slots.filter((s): s is OwnedCard => !!s);
+  const mytheCard = collection.find((c) => c.uid === mytheUid) ?? null;
+  const mytheInfo = mytheCard ? ATHLETES_BY_ID[mytheCard.athleteId].mythe : undefined;
+  const boosted = mytheInfo ? filled.filter((c) => mytheInfo.bonus.sport === 'all' || ATHLETES_BY_ID[c.athleteId].sport === mytheInfo.bonus.sport).length : 0;
   const rating = teamRating(filled);
   const target = Math.round(divisionTarget(division));
 
@@ -130,6 +142,44 @@ function TeamBuilder() {
               )}
             </div>
           ))}
+        </div>
+        {/* emplacement Mythe : une compétition, une équipe de légende ou un club qui booste ses athlètes */}
+        <div className="mythe-slot">
+          <div className="mythe-slot__card">
+            {mytheCard ? (
+              <Card card={mytheCard} size="sm" onClick={() => openDetail({ card: mytheCard })} />
+            ) : (
+              <button type="button" className="team-slot__empty" onClick={() => setPickingMythe(true)}>
+                <span>★</span>
+                Mythe
+              </button>
+            )}
+          </div>
+          <div className="mythe-slot__text">
+            <p className="eyebrow">Carte Mythe</p>
+            {mytheCard && mytheInfo ? (
+              <p>
+                <b>{ATHLETES_BY_ID[mytheCard.athleteId].last}</b> : +{mytheInfo.bonus.value}{' '}
+                {mytheInfo.bonus.sport === 'all' ? 'pour tous les athlètes' : `pour les athlètes de ${SPORTS[mytheInfo.bonus.sport].name.toLowerCase()}`}
+                {mytheInfo.bonus.events?.length
+                  ? `, +${mytheInfo.bonus.eventBonus} de plus en ${mytheInfo.bonus.events.map((e) => EVENTS[e].name).join(', ')}`
+                  : ''}
+                . <span className="muted">{boosted ? `${boosted} athlète${boosted > 1 ? 's' : ''} en profite${boosted > 1 ? 'nt' : ''}.` : 'Aucun athlète de ton équipe n’en profite.'}</span>
+              </p>
+            ) : (
+              <p className="muted">Ajoute une compétition, une équipe de légende ou un club : elle donne un bonus à tous les athlètes de son sport.</p>
+            )}
+            <div className="team-slot__actions">
+              <button type="button" className="btn btn--ghost btn--xs" onClick={() => setPickingMythe(true)}>
+                {mytheCard ? 'Changer' : 'Choisir'}
+              </button>
+              {mytheCard && (
+                <button type="button" className="btn btn--ghost btn--xs" onClick={() => setMythe(null)} aria-label="Retirer la carte Mythe">
+                  ×
+                </button>
+              )}
+            </div>
+          </div>
         </div>
         {filled.length > 0 && (
           <ul className="synergies">
@@ -188,6 +238,17 @@ function TeamBuilder() {
           onPick={(uid) => {
             setTeamSlot(picking, uid);
             setPicking(null);
+          }}
+        />
+      )}
+      {pickingMythe && (
+        <Picker
+          mythes
+          exclude={[]}
+          onClose={() => setPickingMythe(false)}
+          onPick={(uid) => {
+            setMythe(uid);
+            setPickingMythe(false);
           }}
         />
       )}

@@ -52,6 +52,26 @@ export const PRIME_STAT_BOOST = 4;
 export const PRIME_ULTI_BOOST = 4;
 export const PRIME_VALUE_MULTIPLIER = 6;
 
+// ───────────── Reverse ─────────────
+// Finition holographique : n'importe quelle carte peut sortir en Reverse (environ 1 carte sur 20),
+// avec la même note et les mêmes stats que la classique, mais une cote plus élevée.
+export const REVERSE_CHANCE = 0.05;
+export const REVERSE_VALUE_MULTIPLIER = 2.5;
+
+// ───────────── Mythes ─────────────
+// Compétitions, équipes de légende et clubs : environ 1 carte sur 40 dans les boosters.
+export const MYTHE_CHANCE = 0.025;
+
+export function isMythe(athlete: Athlete): boolean {
+  return !!athlete.mythe;
+}
+
+/** Poids de tirage d'un Mythe selon sa rareté : les Légendes sortent six fois moins que les Or. */
+export function mytheWeight(athlete: Athlete): number {
+  const order = rarityOf(athlete).order;
+  return order >= 4 ? 1 : order === 3 ? 3 : 6;
+}
+
 // ───────────── Stats ─────────────
 // Décalages par profil : vitesse, force, endurance, technique, intelligence, sang-froid.
 // Le sang-froid ne s'affiche pas seul : il nourrit l'Aura avec la note et la célébrité.
@@ -253,7 +273,8 @@ export function baseValueOf(athlete: Athlete, variant: Variant = 'base'): number
   const withinTier = (athlete.fame - lo) / (hi - lo); // 0 → 1
   const fameFactor = 1 + withinTier * 1.5;
   const levelFactor = 0.7 + Math.max(0, baseRating(athlete) - 58) / 70;
-  const value = rarity.baseValue * fameFactor * levelFactor * (variant === 'prime' ? PRIME_VALUE_MULTIPLIER : 1);
+  const multiplier = variant === 'prime' ? PRIME_VALUE_MULTIPLIER : variant === 'reverse' ? REVERSE_VALUE_MULTIPLIER : 1;
+  const value = rarity.baseValue * fameFactor * levelFactor * multiplier;
   return roundPrice(value);
 }
 

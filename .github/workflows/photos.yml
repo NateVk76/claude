@@ -1,5 +1,7 @@
 # Récupère les photos des athlètes sur Wikimedia Commons (licences libres, auteurs crédités),
-# les détoure, puis enregistre le résultat dans le dépôt.
+# les cadre au format des cartes (photo entière, sans détourage), puis enregistre le résultat dans le dépôt.
+# Pour revenir au détourage : "detourage": true dans scripts/photos/config.json et remettre les étapes
+# Python (setup-python, pip install "rembg[cpu]" pillow scipy, python scripts/photos/detourer.py) avant « finaliser ».
 name: Photos des athlètes
 
 on:
@@ -42,20 +44,13 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: sportmasters/package-lock.json
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
       - name: Installer les dépendances
-        run: |
-          npm ci
-          pip install "rembg[cpu]" pillow scipy
+        run: npm ci
       - name: Trouver et télécharger les photos
         run: node scripts/photos/telecharger-photos.mjs telecharger
         env:
           PHOTOS_TOUT: ${{ inputs.tout }}
           PHOTOS_SEULEMENT: ${{ inputs.seulement }}
-      - name: Détourer les athlètes
-        run: python scripts/photos/detourer.py
       - name: Préparer les images du jeu
         run: node scripts/photos/telecharger-photos.mjs finaliser
       - name: Enregistrer dans le dépôt

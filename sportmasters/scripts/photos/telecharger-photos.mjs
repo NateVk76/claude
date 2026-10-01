@@ -13,15 +13,26 @@
 // --tout (ou "tout": true dans config.json) les refait tous. Pour les athlètes listés dans
 // "explorer" (config.json), une planche numérotée de leurs photos Commons est enregistrée dans
 // scripts/photos/explorer/ pour aider à choisir.
-// Étape « finaliser » : produit public/photos/<id>.webp (détourée si le détourage est propre,
-// sinon cadrée en portrait) et met à jour src/data/photos.json (crédits affichés dans le jeu).
+// Étape « finaliser » : produit public/photos/<id>.webp, la photo entière avec son décor cadrée au format
+// 3:4 de la fenêtre des cartes (ou détourée si "detourage": true dans config.json et que le détourage est
+// propre), et met à jour src/data/photos.json (crédits affichés dans le jeu).
+// Sous Windows, si sharp est bloqué par la politique de sécurité, les images sont gardées telles quelles :
+// lancer scripts/photos/recadrer.ps1 entre les deux étapes (voir le README).
 // Tourne dans la GitHub Action .github/workflows/photos.yml (il faut un accès à Wikimedia).
 
-import { existsSync, mkdirSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import sharp from 'sharp';
 import { SEARCH_WORDS, SPORT_KEYWORDS } from '../wikidata/helpers.mjs';
+
+// sharp (module natif) peut être bloqué par la politique de sécurité de Windows : on garde alors les
+// images de Commons telles quelles (jpg), sans recadrage ni planches d'exploration.
+let sharp = null;
+try {
+  sharp = (await import('sharp')).default;
+} catch {
+  console.warn('sharp indisponible : images gardées telles quelles, sans recadrage ni conversion.');
+}
 
 // chemins en texte : sharp n'accepte pas les objets URL
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
@@ -44,7 +55,7 @@ const choiceOf = (id) => {
 };
 const EXPLORE_DIR = path('scripts/photos/explorer');
 const REPO = process.env.GITHUB_REPOSITORY ?? 'NateVk76/claude';
-const USER_AGENT = `AthleticardsPhotos/1.0 (https://github.com/${REPO}; jeu de fan non commercial)`;
+const USER_AGENT = `AthletiCardsPhotos/1.0 (https://github.com/${REPO}; jeu de fan non commercial)`;
 
 const argv = process.argv.slice(2);
 const step = argv[0];
@@ -94,6 +105,9 @@ function readAthletes() {
     ids.add(a.id);
     out.push({ id: a.id, first: a.first, last: a.last, sport: a.sport, fame: a.fame, wikidata: a.wikidata, wiki: a.wiki });
   }
+  // cartes Mythe : M('id', 'Nom', 'sport', 'type', 'PAYS', célébrité, …) → identifiant « mythe-id »
+  const mythes = /^\s*M\('([^']+)', '([^']*)', '([a-z]+)', '[a-z]+', '[A-Z-]+', (\d+)/gm;
+  for (const m of source.matchAll(mythes)) out.push({ id: `mythe-${m[1]}`, first: '', last: m[2], sport: m[3], fame: Number(m[4]) });
   return out.sort((a, b) => b.fame - a.fame);
 }
 
@@ -312,7 +326,7 @@ async function download() {
   let athletes = readAthletes();
   // "explorer" : une liste d'identifiants, ou { "identifiant": ["recherche", …] } pour chercher autre chose que le nom
   const explorer = Array.isArray(CONFIG.explorer) ? Object.fromEntries(CONFIG.explorer.map((id) => [id, []])) : (CONFIG.explorer ?? {});
-  for (const athlete of athletes.filter((a) => a.id in explorer)) {
+  for (const athlete of athletes.filter((a) => sharp && a.id in explorer)) {
     const queries = [explorer[athlete.id]].flat().filter(Boolean);
     const search = queries.length ? queries : [`${athlete.first} ${athlete.last}`.trim()];
     await explore(athlete, search).catch((error) => console.warn(`  ${athlete.id} : ${error.message}`));
@@ -347,9 +361,10 @@ async function download() {
             log.push(`« ${file} » introuvable au téléchargement`);
             continue;
           }
-          const upright = await sharp(Buffer.from(await response.arrayBuffer())).rotate().toBuffer();
-          let image = sharp(upright);
-          if (crop) {
+          const buffer = Buffer.from(await response.arrayBuffer());
+          // sans sharp, l'image est gardée telle quelle (ni redressée ni recadrée)
+          let image = sharp ? sharp(await sharp(buffer).rotate().toBuffer()) : null;
+          if (image && crop) {
             // recadrage choisi à la main : on ne garde que l'athlète (sans caméra ni voisin)
             const { width, height } = await image.metadata();
             const left = Math.round(crop[0] * width);
@@ -357,8 +372,10 @@ async function download() {
             image = image.extract({ left, top, width: Math.min(width - left, Math.round(crop[2] * width)), height: Math.min(height - top, Math.round(crop[3] * height)) });
           }
           // assez grand pour que les athlètes pris de loin restent nets une fois détourés
-          await image.resize({ width: 1200, withoutEnlargement: true }).jpeg({ quality: 90 }).toFile(join(RAW_DIR, `${athlete.id}.jpg`));
-          photos[athlete.id] = { file, source, ...(crop ? { crop } : {}), ...info };
+          const raw = join(RAW_DIR, `${athlete.id}.jpg`);
+          if (image) await image.resize({ width: 1200, withoutEnlargement: true }).jpeg({ quality: 90 }).toFile(raw);
+          else writeFileSync(raw, buffer);
+          photos[athlete.id] = { file, source, ...(crop && image ? { crop } : {}), ...info };
           break;
         }
         if (!photos[athlete.id]) {
@@ -393,10 +410,15 @@ async function finalize() {
   for (const [id, info] of Object.entries(photos)) {
     const raw = join(RAW_DIR, `${id}.jpg`);
     if (!existsSync(raw)) continue;
+    if (!sharp) {
+      copyFileSync(raw, join(OUT_DIR, `${id}.jpg`));
+      credits[id] = { file: `${id}.jpg`, cutout: false, author: info.author, license: info.license, licenseUrl: info.licenseUrl, page: info.page };
+      continue;
+    }
     const target = join(OUT_DIR, `${id}.webp`);
     const cut = join(CUT_DIR, `${id}.png`);
     let cutout = false;
-    if (existsSync(cut)) {
+    if (CONFIG.detourage && existsSync(cut)) {
       // on ne garde le détourage que s'il a vraiment isolé l'athlète
       const { channels } = await sharp(cut).stats();
       const coverage = channels[3] ? channels[3].mean / 255 : 1;
@@ -411,7 +433,10 @@ async function finalize() {
       }
     }
     if (!cutout) {
-      await sharp(raw).resize(480, 640, { fit: 'cover', position: sharp.strategy.attention }).webp({ quality: 78 }).toFile(target);
+      // photo entière au format de la fenêtre des cartes (3:4), cadrée sur la zone la plus intéressante,
+      // sauf cadrage imposé dans config.json (« cadrage »: { "messi": "top" }, positions de sharp : top, left, right…)
+      const position = CONFIG.cadrage?.[id] ?? sharp.strategy.attention;
+      await sharp(raw).resize(600, 800, { fit: 'cover', position }).webp({ quality: 80 }).toFile(target);
     }
     credits[id] = {
       file: `${id}.webp`,

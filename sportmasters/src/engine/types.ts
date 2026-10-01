@@ -97,8 +97,11 @@ export interface SportUltiTemplate {
   effect: UltiEffect;
 }
 
-/** Version d'une carte : classique, ou Prime (meilleure saison de l'athlète, plus rare et plus forte). */
-export type Variant = 'base' | 'prime';
+/**
+ * Version d'une carte : classique, Prime (meilleure saison de l'athlète, plus rare et plus forte)
+ * ou Reverse (même carte que la classique, en finition holographique : plus rare, plus chère).
+ */
+export type Variant = 'base' | 'prime' | 'reverse';
 
 export interface Athlete {
   id: string;
@@ -131,6 +134,28 @@ export interface Athlete {
   wikidata?: string;
   /** titre de la page Wikipédia en français (athlètes générés automatiquement) */
   wiki?: string;
+  /** carte « Mythe » : une compétition, une équipe de légende ou un club, et non un athlète */
+  mythe?: MytheInfo;
+}
+
+export type MytheKind = 'competition' | 'equipe' | 'club';
+
+/** Bonus d'une carte Mythe pendant un match, pour les athlètes du sport concerné (ou tous). */
+export interface MytheBonus {
+  sport: SportId | 'all';
+  value: number;
+  /** bonus supplémentaire sur certaines épreuves */
+  events?: EventId[];
+  eventBonus?: number;
+}
+
+export interface MytheInfo {
+  kind: MytheKind;
+  /** année de création, de la première édition ou de l'épopée */
+  year: string;
+  /** palmarès ou chiffre marquant, affiché sur la carte */
+  palmares: string;
+  bonus: MytheBonus;
 }
 
 export interface Rarity {

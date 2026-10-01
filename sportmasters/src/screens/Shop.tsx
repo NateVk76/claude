@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useGame } from '../store/game';
 import { SPORTS, SPORT_ORDER } from '../data/sports';
 import { RARITIES, RARITY_ORDER } from '../engine/cards';
-import { SHOP_PACKS, primeOdds, primePool, sportPack, type PackDef } from '../engine/packs';
+import { SHOP_PACKS, mytheOdds, primeOdds, primePool, reverseOdds, sportPack, type PackDef } from '../engine/packs';
 import type { SportId } from '../engine/types';
 import { PackArt } from '../components/PackArt';
 import { Balles } from '../components/Balles';
@@ -38,6 +38,18 @@ function Odds({ pack }: { pack: PackDef }) {
             <b>{percent(prime)}</b>
           </li>
         )}
+        <li className="rarity-row rarity-row--reverse">
+          <span className="rarity-dot" />
+          <span>Version Reverse</span>
+          <b>{percent(reverseOdds(pack))}</b>
+        </li>
+        {mytheOdds(pack) > 0 && (
+          <li className="rarity-row rarity-row--mythe">
+            <span className="rarity-dot" />
+            <span>Carte Mythe</span>
+            <b>{percent(mytheOdds(pack))}</b>
+          </li>
+        )}
       </ul>
       {pack.guaranteed && (
         <p className="small muted">
@@ -57,7 +69,13 @@ function PackTile({ pack }: { pack: PackDef }) {
   const affordable = balles >= pack.price;
   return (
     <article className={`pack-tile pack-tile--${pack.tone}`}>
-      <PackArt tone={pack.tone} name={pack.name} sport={pack.sport} />
+      <PackArt
+        tone={pack.tone}
+        name={pack.name}
+        sport={pack.sport}
+        size={pack.size}
+        guarantee={pack.guaranteed && (pack.guaranteed.prime ? '1 Prime garantie' : `1 ${RARITIES[pack.guaranteed.min].name} garantie`)}
+      />
       <div className="pack-tile__body">
         <h3>{pack.name}</h3>
         <p className="muted small">{pack.tagline}</p>

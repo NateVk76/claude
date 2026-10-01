@@ -3,7 +3,7 @@ import { createJSONStorage, persist, type StateStorage } from 'zustand/middlewar
 import type { CardFace, OwnedCard } from '../engine/types';
 import { ATHLETES, ATHLETES_BY_ID } from '../data/athletes';
 import { SPORTS, SPORT_ORDER } from '../data/sports';
-import { canBePrime, overallOf, quickSellValue, rarityOf } from '../engine/cards';
+import { canBePrime, isMythe, overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import { FREE_PACK, SHOP_PACKS, openPack, sportPack, type PackDef } from '../engine/packs';
 import {
   MAX_MY_LISTINGS,
@@ -14,7 +14,7 @@ import {
   type MarketEvent,
   type MarketState,
 } from '../engine/market';
-import { createMatch, matchResult, playRound, rewardFor, TEAM_SIZE, type MatchState } from '../engine/match';
+import { createMatch, matchResult, mytheBonus, playRound, rewardFor, TEAM_SIZE, type MatchState } from '../engine/match';
 import { makeUid } from '../engine/random';
 
 export const FREE_PACK_INTERVAL = 10 * 60_000;
@@ -62,12 +62,16 @@ export interface GameState {
   market: MarketState;
   watchlist: string[];
   team: string[];
+  /** carte Mythe de l'équipe (uid), ou chaîne vide */
+  mythe: string;
   division: number;
   divisionPoints: number;
   match: MatchState | null;
   stats: GameStats;
   claimed: string[];
   muted: boolean;
+  /** musique de fond coupée (les effets sonores restent) */
+  musicOff: boolean;
   opening: Opening | null;
   toasts: Toast[];
 
@@ -83,6 +87,7 @@ export interface GameState {
   placeBid: (listingId: string, amount: number) => boolean;
   toggleWatch: (listingId: string) => void;
   setTeamSlot: (slot: number, uid: string | null) => void;
+  setMythe: (uid: string | null) => void;
   autoTeam: () => void;
   startMatch: () => boolean;
   playMatchRound: (index: number, ulti: boolean) => void;
@@ -91,6 +96,7 @@ export interface GameState {
   toggleLock: (uid: string) => void;
   claimObjective: (id: string) => void;
   toggleMute: () => void;
+  toggleMusic: () => void;
   toast: (kind: ToastKind, text: string) => void;
   dismissToast: (id: string) => void;
   resetGame: () => void;
@@ -143,12 +149,14 @@ function initialState(now: number) {
     market: createMarket(now, Math.random),
     watchlist: [] as string[],
     team: [] as string[],
+    mythe: '',
     division: 10,
     divisionPoints: 0,
     match: null as MatchState | null,
     stats: { packsOpened: 0, cardsSold: 0, cardsBought: 0, matchesPlayed: 0, matchesWon: 0 } as GameStats,
     claimed: [] as string[],
     muted: false,
+    musicOff: false,
     opening: null as Opening | null,
     toasts: [] as Toast[],
   };
@@ -218,7 +226,7 @@ export const useGame = create<GameState>()(
           if (face.variant === 'prime') primesFound[face.athleteId] = (primesFound[face.athleteId] ?? 0) + 1;
           owned.push({ ...face, uid: card.uid, isNew });
           newCards.push(card);
-          const rank = (c: CardFace) => rarityOf(ATHLETES_BY_ID[c.athleteId]).order * 100 + (c.variant === 'prime' ? 50 : 0) + ATHLETES_BY_ID[c.athleteId].fame;
+          const rank = (c: CardFace) => rarityOf(ATHLETES_BY_ID[c.athleteId]).order * 100 + (c.variant === 'prime' ? 50 : c.variant === 'reverse' ? 20 : 0) + ATHLETES_BY_ID[c.athleteId].fame;
           if (!best || rank(face) > rank(best)) best = face;
         }
         set((s) => ({
@@ -334,6 +342,7 @@ export const useGame = create<GameState>()(
             balles: s.balles + total,
             collection: s.collection.filter((c) => !sold.has(c.uid)),
             team: s.team.filter((uid) => !sold.has(uid)),
+            mythe: sold.has(s.mythe) ? '' : s.mythe,
           }));
           pushToast('success', `${sellable.length} carte${sellable.length > 1 ? 's' : ''} vendue${sellable.length > 1 ? 's' : ''} au club pour ${formatBalles(total)}`);
           return total;
@@ -356,6 +365,7 @@ export const useGame = create<GameState>()(
           set((s) => ({
             collection: s.collection.filter((c) => c.uid !== uid),
             team: s.team.filter((t) => t !== uid),
+            mythe: s.mythe === uid ? '' : s.mythe,
             market: { ...s.market, myListings: [listing, ...s.market.myListings] },
           }));
           pushToast('info', `${ATHLETES_BY_ID[card.athleteId].last} est en vente sur le marché`);
@@ -453,10 +463,13 @@ export const useGame = create<GameState>()(
             return { team };
           }),
 
+        setMythe: (uid) => set({ mythe: uid ?? '' }),
+
         autoTeam: () =>
           set((s) => {
             const seen = new Set<string>();
-            const best = s.collection
+            const athletes = s.collection.filter((c) => !isMythe(ATHLETES_BY_ID[c.athleteId]));
+            const best = athletes
               .slice()
               .sort((a, b) => {
                 const la = overallOf(ATHLETES_BY_ID[a.athleteId], a.variant);
@@ -470,7 +483,12 @@ export const useGame = create<GameState>()(
               })
               .slice(0, TEAM_SIZE)
               .map((c) => c.uid);
-            return { team: best };
+            // le Mythe qui donne le plus de bonus à cette équipe
+            const picked = best.map((uid) => s.collection.find((c) => c.uid === uid)!);
+            const gain = (card: OwnedCard) =>
+              picked.reduce((sum, c) => sum + (mytheBonus({ mythe: { ...card } }, c, 'sprint')?.value ?? 0), 0);
+            const mythes = s.collection.filter((c) => isMythe(ATHLETES_BY_ID[c.athleteId])).sort((a, b) => gain(b) - gain(a));
+            return { team: best, mythe: mythes[0] && gain(mythes[0]) > 0 ? mythes[0].uid : s.mythe };
           }),
 
         startMatch: () => {
@@ -480,10 +498,13 @@ export const useGame = create<GameState>()(
             pushToast('error', `Il faut ${TEAM_SIZE} athlètes dans ton équipe pour jouer`);
             return false;
           }
+          const mythe = state.collection.find((c) => c.uid === state.mythe && isMythe(ATHLETES_BY_ID[c.athleteId]));
           const match = createMatch(
             cards.map((c) => ({ uid: c.uid, athleteId: c.athleteId, variant: c.variant, ...(c.record ? { record: c.record } : {}) })),
             state.division,
             Math.random,
+            undefined,
+            mythe ? { uid: mythe.uid, athleteId: mythe.athleteId, variant: 'base' } : undefined,
           );
           set({ match });
           return true;
@@ -541,6 +562,7 @@ export const useGame = create<GameState>()(
         },
 
         toggleMute: () => set((s) => ({ muted: !s.muted })),
+        toggleMusic: () => set((s) => ({ musicOff: !s.musicOff })),
         toast: pushToast,
         dismissToast: (id) => set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })),
         resetGame: () => set({ ...initialState(Date.now()) }),

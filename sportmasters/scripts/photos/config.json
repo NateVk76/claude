@@ -1,5 +1,13 @@
 {
   "limite": 0,
   "tout": false,
-  "explorer": []
+  "detourage": false,
+  "explorer": {
+    "duplantis": ["Armand Duplantis medal", "Duplantis gold medal", "Duplantis podium", "Duplantis 2025", "Duplantis 2026"]
+  },
+  "cadrage": {
+    "canelo": "centre",
+    "mauresmo": "top",
+    "yaya-toure": "top"
+  }
 }

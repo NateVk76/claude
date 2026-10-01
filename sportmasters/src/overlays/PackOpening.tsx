@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
 import { useGame, formatBalles } from '../store/game';
 import { useUi } from '../store/ui';
 import { ATHLETES_BY_ID } from '../data/athletes';
@@ -6,10 +6,10 @@ import { SPORTS } from '../data/sports';
 import { isIcon, overallOf, quickSellValue, rarityOf } from '../engine/cards';
 import type { CardFace } from '../engine/types';
 import { Card } from '../components/Card';
-import { CardStats } from '../components/CardStats';
-import { Logo } from '../components/Logo';
 import { PackArt } from '../components/PackArt';
+import { Logo } from '../components/Logo';
 import { Flag, countryName } from '../components/Flag';
+import { CardStats } from '../components/CardStats';
 import { SportIcon } from '../components/SportIcon';
 import { Confetti, type ConfettiHandle } from '../components/Confetti';
 import { sfx } from '../audio/sfx';
@@ -30,11 +30,15 @@ function tierOf(card: CardFace): number {
 }
 
 function isSpecial(card: CardFace): boolean {
+  // les Mythes n'ont pas de révélation « athlète » (drapeau, note) : ils se retournent sur place
+  if (ATHLETES_BY_ID[card.athleteId].mythe) return false;
   return tierOf(card) >= 3 || card.variant === 'prime';
 }
 
 function glowOf(card: CardFace): string {
   if (card.variant === 'prime') return '#ff9ad5';
+  if (card.variant === 'reverse') return '#7fd6ff';
+  if (ATHLETES_BY_ID[card.athleteId].mythe) return '#e0b85a';
   return RARITY_GLOW[rarityOf(ATHLETES_BY_ID[card.athleteId]).id];
 }
 
@@ -44,11 +48,49 @@ function confettiColors(card: CardFace): string[] {
   return ['#b98cff', '#e3d2ff', '#ffd66b', '#ffffff'];
 }
 
+// Particules de lumière qui flottent dans la scène (positions fixes, pour un rendu stable).
+const DUST = Array.from({ length: 16 }, (_, i) => ({
+  x: (i * 37 + 11) % 100,
+  delay: -((i * 1.7) % 9),
+  dur: 9 + ((i * 2.3) % 7),
+  size: 2 + (i % 3),
+}));
+
+/** Inclinaison 3D qui suit le pointeur : pilote --tx / --ty sur l'élément .tilt3d du conteneur. */
+function tilt3d(event: PointerEvent<HTMLElement>) {
+  const el = event.currentTarget.querySelector<HTMLElement>('.tilt3d');
+  if (!el) return;
+  const rect = event.currentTarget.getBoundingClientRect();
+  const x = (event.clientX - rect.left) / rect.width - 0.5;
+  const y = (event.clientY - rect.top) / rect.height - 0.5;
+  el.style.setProperty('--tx', `${(-y * 18).toFixed(2)}deg`);
+  el.style.setProperty('--ty', `${(x * 26).toFixed(2)}deg`);
+}
+
+function untilt3d(event: PointerEvent<HTMLElement>) {
+  const el = event.currentTarget.querySelector<HTMLElement>('.tilt3d');
+  el?.style.setProperty('--tx', '0deg');
+  el?.style.setProperty('--ty', '0deg');
+}
+
+/** Étiquette sous une carte révélée : Reverse, sinon Nouveau ou Doublon. */
+function CardTag({ card }: { card: CardFace & { isNew?: boolean } }) {
+  if (ATHLETES_BY_ID[card.athleteId].mythe) return <span className="tag tag--mythe">{card.isNew ? 'Nouveau mythe' : 'Mythe'}</span>;
+  if (card.variant === 'reverse') return <span className="tag tag--reverse">Reverse</span>;
+  return <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>;
+}
+
 export function CardBack({ className = '' }: { className?: string }) {
   return (
     <div className={`card-back ${className}`}>
-      <div className="card-back__rings" />
-      <Logo className="card-back__logo" decorative />
+      <div className="card-back__bg" />
+      <div className="card-back__streak" />
+      <div className="card-back__holo" />
+      <div className="card-back__crest">
+        <i className="card-back__mark" />
+        <Logo />
+      </div>
+      <div className="card-back__frame" />
     </div>
   );
 }
@@ -83,7 +125,7 @@ function Walkout({ card, onDone }: { card: CardFace; onDone: () => void }) {
 
   useEffect(() => {
     if (!shadow) return;
-    sfx.whoosh();
+    sfx.burst();
     const id = window.setTimeout(() => setStep(3), 1100);
     return () => window.clearTimeout(id);
   }, [shadow]);
@@ -91,9 +133,9 @@ function Walkout({ card, onDone }: { card: CardFace; onDone: () => void }) {
   useEffect(() => {
     if (step === 3) {
       sfx.fanfare();
-      confetti.current?.burst(confettiColors(card), rarity.order === 4 || prime ? 220 : 140);
+      confetti.current?.burst(confettiColors(card), rarity.order === 4 || prime ? 70 : 40);
     } else if (step > 0) {
-      sfx.hit();
+      sfx.pulse();
     }
   }, [step, card, prime, rarity.order]);
 
@@ -180,9 +222,12 @@ export function PackOpening() {
   const openDetail = useUi((s) => s.openDetail);
   const [stage, setStage] = useState<Stage>('pack');
   const [revealed, setRevealed] = useState(0);
+  // carte affichée en grand (une seule à la fois) et sortie en cours vers la suivante
+  const [current, setCurrent] = useState(0);
+  const [leaving, setLeaving] = useState(false);
   const [walkoutIndex, setWalkoutIndex] = useState<number | null>(null);
   const [soldDupes, setSoldDupes] = useState(false);
-  // carte dont la fiche est affichée (par défaut : la dernière révélée, puis la meilleure)
+  // récapitulatif : carte dont la fiche express est affichée (par défaut la meilleure, la dernière)
   const [focus, setFocus] = useState<number | null>(null);
   const summaryStats = useRef<HTMLDivElement>(null);
   const confetti = useRef<ConfettiHandle>(null);
@@ -192,6 +237,8 @@ export function PackOpening() {
     if (opening) {
       setStage('pack');
       setRevealed(0);
+      setCurrent(0);
+      setLeaving(false);
       setWalkoutIndex(null);
       setSoldDupes(false);
       setFocus(null);
@@ -210,11 +257,28 @@ export function PackOpening() {
       return;
     }
     sfx.flip();
-    window.setTimeout(() => sfx.reveal(tierOf(card)), 120);
-    if (tierOf(card) === 2) confetti.current?.burst(['#f2c94c', '#fff3c4', '#ffffff'], 60);
-    setFocus(null);
+    window.setTimeout(() => sfx.reveal(tierOf(card)), 250);
     setRevealed((r) => r + 1);
   }, [opening, revealed, cards]);
+
+  // un clic : retourne la carte affichée ; clic suivant : elle sort et la suivante entre
+  const advance = useCallback(() => {
+    if (stage !== 'cards' || leaving || !cards.length) return;
+    if (revealed <= current) {
+      revealNext();
+      return;
+    }
+    if (current >= cards.length - 1) {
+      setStage('summary');
+      return;
+    }
+    setLeaving(true);
+    sfx.deal();
+    window.setTimeout(() => {
+      setCurrent((c) => c + 1);
+      setLeaving(false);
+    }, 480);
+  }, [stage, leaving, cards.length, revealed, current, revealNext]);
 
   const revealAll = useCallback(() => {
     // révèle tout jusqu'à la prochaine carte spéciale (qui a droit à sa mise en scène)
@@ -223,103 +287,177 @@ export function PackOpening() {
     if (next > revealed) {
       sfx.flip();
       sfx.reveal(tierOf(cards[next - 1]));
-      setFocus(null);
       setRevealed(next);
+      setCurrent(next - 1);
     }
     if (next < cards.length) {
-      window.setTimeout(() => {
-        setWalkoutIndex(next);
-        setStage('walkout');
-      }, next > revealed ? 500 : 0);
+      window.setTimeout(
+        () => {
+          setCurrent(next);
+          setWalkoutIndex(next);
+          setStage('walkout');
+        },
+        next > revealed ? 600 : 0,
+      );
+    } else {
+      window.setTimeout(() => setStage('summary'), 900);
     }
   }, [revealed, cards]);
-
-  useEffect(() => {
-    if (stage === 'cards' && cards.length && revealed >= cards.length) {
-      const id = window.setTimeout(() => setStage('summary'), 700);
-      return () => window.clearTimeout(id);
-    }
-  }, [stage, revealed, cards.length]);
 
   useEffect(() => {
     if (!opening) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && stage === 'summary' && !useUi.getState().detail) close();
+      const onButton = event.target instanceof HTMLElement && event.target.closest('button');
+      if (stage === 'cards' && !onButton && (event.key === ' ' || event.key === 'Enter' || event.key === 'ArrowRight')) {
+        event.preventDefault();
+        advance();
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [opening, stage, close]);
+  }, [opening, stage, close, advance]);
 
   if (!opening) return null;
 
   const tear = () => {
     if (stage !== 'pack') return;
+    // en 3D : le sachet se soulève, la bande s'arrache et bascule en arrière, la lumière jaillit,
+    // les cartes montent hors du sachet, puis le sachet s'éloigne vers le bas
     sfx.tear();
     setStage('tearing');
-    window.setTimeout(() => setStage('cards'), 1150);
+    window.setTimeout(() => sfx.burst(), 500);
+    window.setTimeout(() => sfx.deal(), 700);
+    window.setTimeout(() => {
+      setStage('cards');
+      sfx.deal();
+    }, 1500);
   };
 
-  const lastRevealed = Math.min(revealed, cards.length) - 1;
-  const focusIndex = stage === 'summary' ? (focus ?? cards.length - 1) : focus !== null && focus <= lastRevealed ? focus : lastRevealed;
-  const focusCard = focusIndex >= 0 ? cards[focusIndex] : undefined;
-  const focusOwned = focusCard ? collection.find((c) => c.uid === focusCard.uid) : undefined;
-  const dupes = cards.filter((c) => !c.isNew);
+  // une Reverse n'est jamais comptée comme doublon à revendre
+  const dupes = cards.filter((c) => !c.isNew && c.variant !== 'reverse');
   const ownedDupes = dupes.filter((c) => collection.some((o) => o.uid === c.uid && !o.locked));
   const dupesValue = ownedDupes.reduce((sum, c) => sum + quickSellValue(ATHLETES_BY_ID[c.athleteId], c.variant), 0);
   const isFree = opening.packName === 'Booster gratuit';
+  const focusIndex = focus ?? cards.length - 1;
+  const focusCard = cards[focusIndex];
+  const focusOwned = focusCard ? collection.find((c) => c.uid === focusCard.uid) : undefined;
 
   return (
     <div className={`opening opening--${stage}`} style={{ ['--teaser' as string]: best ? glowOf(best) : '#fff' }}>
       <div className="opening__backdrop" aria-hidden="true" />
+      <div className="opening__rays" aria-hidden="true" />
+      <div className="opening__floor" aria-hidden="true" />
+      <div className="opening__dust" aria-hidden="true">
+        {DUST.map((d, i) => (
+          <i key={i} style={{ left: `${d.x}%`, animationDelay: `${d.delay}s`, animationDuration: `${d.dur}s`, width: d.size, height: d.size }} />
+        ))}
+      </div>
       {(stage === 'pack' || stage === 'tearing') && (
-        <div className="opening__stage">
-          <button type="button" className="opening__pack" onClick={tear} aria-label={`Ouvrir le ${opening.packName}`}>
-            <PackArt tone={opening.tone} name={opening.packName} />
+        <div className="opening__stage" onPointerMove={tilt3d} onPointerLeave={untilt3d}>
+          <button type="button" className="opening__pack3d" onClick={tear} aria-label={`Ouvrir le ${opening.packName}`}>
+            {/* sachet en volume : face avant (corps + bande du haut qui s'arrache), face arrière, tranches */}
+            <span className="pack3d-float">
+              <span className="pack3d tilt3d">
+                <span className="pack3d__cards" aria-hidden="true">
+                  <CardBack />
+                  <CardBack />
+                  <CardBack />
+                </span>
+                <span className="pack3d__face pack3d__front">
+                  <span className="pack3d__body">
+                    <PackArt tone={opening.tone} name={opening.packName} size={cards.length} />
+                  </span>
+                  <span className="pack3d__strip" aria-hidden="true">
+                    <PackArt tone={opening.tone} name={opening.packName} size={cards.length} />
+                  </span>
+                </span>
+                <span className="pack3d__face pack3d__back" aria-hidden="true">
+                  <Logo />
+                  <small>Série 1 · 2026</small>
+                </span>
+                <span className="pack3d__side pack3d__side--left" aria-hidden="true" />
+                <span className="pack3d__side pack3d__side--right" aria-hidden="true" />
+                <span className="pack3d__light" aria-hidden="true" />
+              </span>
+            </span>
           </button>
           <div className="opening__flash" aria-hidden="true" />
           <p className="opening__hint">{stage === 'pack' ? 'Touche le pack pour l’ouvrir' : ''}</p>
         </div>
       )}
 
-      {(stage === 'cards' || stage === 'walkout') && (
-        <div className="opening__cards">
+      {(stage === 'cards' || stage === 'walkout') && cards[current] && (
+        <div className="opening__cards opening__cards--single">
           <p className="opening__progress">
-            {opening.packName} · carte {Math.min(revealed + 1, cards.length)} sur {cards.length}
+            {opening.packName} · carte {current + 1} sur {cards.length}
           </p>
-          <div className="opening__row">
-            {cards.map((card, i) => {
-              const shown = i < revealed;
-              const next = i === revealed;
+
+          {/* une seule carte, en grand : clic pour la retourner, puis pour passer à la suivante */}
+          <div className="opening__spot" onPointerMove={tilt3d} onPointerLeave={untilt3d}>
+            {(() => {
+              const card = cards[current];
+              const flipped = revealed > current;
               return (
                 <div
                   key={card.uid}
-                  className={`flip${shown ? ' is-flipped' : ''}${next ? ' is-next' : ''}${!shown && isSpecial(card) ? ' is-special' : ''}${shown && i === focusIndex ? ' is-focus' : ''}`}
-                  style={{ ['--glow' as string]: glowOf(card), animationDelay: `${i * 90}ms` }}
-                  onClick={next ? revealNext : shown ? () => setFocus(i) : undefined}
+                  className={`stage-card${flipped ? ' is-flipped' : ''}${leaving ? ' is-leaving' : ''}${!flipped && isSpecial(card) ? ' is-special' : ''}`}
+                  style={{ ['--glow' as string]: glowOf(card) }}
+                  onClick={advance}
+                  role="button"
+                  tabIndex={-1}
+                  aria-label={flipped ? 'Carte suivante' : 'Retourner la carte'}
                 >
-                  <div className="flip__inner">
-                    <div className="flip__back">
-                      <CardBack />
-                    </div>
-                    <div className="flip__front">
-                      <Card card={card} size="md" />
-                      {shown && <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>}
+                  {/* inclinaison qui suit la souris, flottement lent, puis retournement en 3D */}
+                  <div className="stage-card__tilt tilt3d">
+                    <div className="stage-card__float">
+                      <div className="flip__inner">
+                        <div className="flip__back">
+                          <CardBack />
+                        </div>
+                        <div className="flip__front">
+                          <Card card={card} size="xl" />
+                          {flipped && <CardTag card={card} />}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               );
-            })}
+            })()}
+            <div className="opening__shadow" aria-hidden="true" />
           </div>
+
+          <p className="opening__hint opening__hint--cards">
+            {revealed <= current
+              ? 'Touche la carte pour la retourner'
+              : current < cards.length - 1
+                ? 'Touche pour la carte suivante'
+                : 'Touche pour voir le récapitulatif'}
+          </p>
+
+          {/* les cartes du paquet en miniature : révélées, en cours, à venir */}
+          <div className="opening__tray" aria-hidden="true">
+            {cards.map((card, i) => (
+              <div key={card.uid} className={`tray-slot${i === current ? ' is-current' : ''}${i < revealed ? ' is-revealed' : ''}`}>
+                {i < revealed ? <Card card={card} size="xs" /> : <CardBack />}
+              </div>
+            ))}
+          </div>
+
           <div className="opening__actions">
-            <button type="button" className="btn btn--primary btn--lg" onClick={revealNext} disabled={revealed >= cards.length}>
-              Révéler
+            <button type="button" className="btn btn--primary btn--lg" onClick={advance} disabled={leaving}>
+              {revealed <= current ? 'Retourner' : current < cards.length - 1 ? 'Suivante' : 'Récapitulatif'}
             </button>
             <button type="button" className="btn btn--ghost" onClick={revealAll} disabled={revealed >= cards.length}>
               Tout révéler
             </button>
           </div>
-          {/* sous les boutons, pour que « Révéler » ne bouge pas d'une carte à l'autre */}
-          {focusCard && <CardStats card={focusCard} />}
+          {revealed > current && (
+            <div className="opening__stats">
+              <CardStats card={cards[current]} />
+            </div>
+          )}
         </div>
       )}
 
@@ -328,8 +466,8 @@ export function PackOpening() {
           card={cards[walkoutIndex]}
           onDone={() => {
             setRevealed(walkoutIndex + 1);
+            setCurrent(walkoutIndex);
             setWalkoutIndex(null);
-            setFocus(null);
             setStage('cards');
           }}
         />
@@ -355,7 +493,7 @@ export function PackOpening() {
                     requestAnimationFrame(() => summaryStats.current?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'nearest' }));
                   }}
                 />
-                <span className={`tag ${card.isNew ? 'tag--new' : 'tag--dupe'}`}>{card.isNew ? 'Nouveau' : 'Doublon'}</span>
+                <CardTag card={card} />
               </div>
             ))}
           </div>
