@@ -1,12 +1,12 @@
 # Met le jeu en ligne sur GitHub Pages (https://<compte>.github.io/<dépôt>/) à chaque envoi sur la branche
-# visuels-cartes : construit le jeu avec Vite (sportmasters/dist) puis publie ce dossier.
+# principale : construit le jeu avec Vite (sportmasters/dist) puis publie ce dossier.
 # Réglage à faire une fois dans le dépôt : Settings → Pages → Source : « GitHub Actions ».
 name: Site du jeu
 
 on:
   workflow_dispatch:
   push:
-    branches: [visuels-cartes]
+    branches: [main, visuels-cartes]
 
 permissions:
   contents: read
